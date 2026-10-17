@@ -1,0 +1,131 @@
+{
+  "构造体研发": {
+    "desc": "模拟构造体研发（基准/主题），十连可能出角色、碎片、意识、材料",
+    "data": [
+      {
+        "name": "抽卡",
+        "desc": "使用已选卡池十连（默认主题研发）",
+        "eg": "抽卡",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡基准",
+        "desc": "基准构造体十连（60抽S保底、10抽A保底）",
+        "eg": "抽卡基准",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡百连",
+        "desc": "使用已选卡池百连（10次十连），需开启百连功能",
+        "eg": "抽卡百连",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "武器研发": {
+    "desc": "模拟武器研发，十连可能出武器、突破材料、螺母箱",
+    "data": [
+      {
+        "name": "抽卡武器",
+        "desc": "武器研发十连（30抽6星保底、10抽5星保底）",
+        "eg": "抽卡武器",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡百连武器",
+        "desc": "武器研发百连（10次十连），需开启百连功能",
+        "eg": "抽卡百连武器",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "辅助机研发": {
+    "desc": "模拟辅助机研发，十连可能出辅助机、支援材料",
+    "data": [
+      {
+        "name": "抽卡辅助机",
+        "desc": "辅助机研发十连（20抽S保底、10抽A保底）",
+        "eg": "抽卡辅助机",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡百连辅助机",
+        "desc": "辅助机研发百连（10次十连），需开启百连功能",
+        "eg": "抽卡百连辅助机",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "卡池管理": {
+    "desc": "选择卡池与查看抽卡记录",
+    "data": [
+      {
+        "name": "切换卡池",
+        "desc": "查看版本卡池图并选择卡池（版本角色主题/命运 + 基准/武器/辅助机），选一次",
+        "eg": "切换卡池 2",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡记录",
+        "desc": "查看高稀有度出货记录",
+        "eg": "抽卡记录",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡排名",
+        "desc": "查看天/周/月 UP 角色排名（可加 周 或 月）",
+        "eg": "抽卡排名周",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "模拟绑定",
+        "desc": "绑定/查看 9 位特征码",
+        "eg": "模拟绑定 123456789",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "bot主人功能": {
+    "desc": "Bot 主人功能",
+    "data": [
+      {
+        "name": "更新卡池",
+        "desc": "从官方公告更新当期研发 UP（管理员）",
+        "eg": "更新卡池",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "模拟抽卡帮助",
+        "desc": "查看帮助信息",
+        "eg": "模拟抽卡帮助",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  }
+}

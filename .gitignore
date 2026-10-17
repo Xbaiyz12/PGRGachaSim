@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# 运行时数据（由 gsuid_core 维护）
+data/
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db

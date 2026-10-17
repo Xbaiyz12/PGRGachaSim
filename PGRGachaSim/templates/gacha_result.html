@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>战双模拟抽卡</title>
+<style>
+    :root {
+        --red: #fb5824;
+        --orange: #ff8d1c;
+        --purple: #cb68c2;
+        --blue: #3e70ba;
+        --bg-deep: #070b14;
+        --bg-mid: #0d1526;
+        --line: rgba(120, 160, 220, 0.18);
+        --text-main: #e8f0ff;
+        --text-dim: #7d8aa5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: var(--bg-deep);
+        font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    .container {
+        width: 1200px;
+        padding: 30px 40px 18px;
+        background:
+            radial-gradient(ellipse at 50% -10%, rgba(90, 140, 220, 0.22), transparent 55%),
+            linear-gradient(160deg, #070b14 0%, #0d1526 52%, #070b14 100%);
+        position: relative;
+    }
+
+    .container::after {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid var(--line);
+        pointer-events: none;
+    }
+
+    .header { position: relative; text-align: center; padding: 8px 0 2px; }
+
+    .avatar {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 2px solid rgba(232, 166, 66, 0.85);
+        object-fit: cover;
+    }
+
+    .title {
+        color: var(--text-main);
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-shadow: 0 0 18px rgba(120, 170, 255, 0.45);
+    }
+
+    .subtitle {
+        margin-top: 8px;
+        color: var(--text-dim);
+        font-size: 18px;
+        letter-spacing: 8px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(5, 200px);
+        gap: 16px;
+        justify-content: center;
+        margin-top: 26px;
+    }
+
+    .card {
+        position: relative;
+        width: 200px;
+        height: 278px;
+        border-radius: 10px;
+        border: 2px solid rgba(120, 150, 200, 0.35);
+        background: linear-gradient(180deg, rgba(28, 42, 70, 0.85), rgba(10, 16, 30, 0.95));
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card[data-level="6"] {
+        border-color: var(--red);
+        box-shadow: 0 0 22px rgba(251, 88, 36, 0.4), inset 0 0 24px rgba(251, 88, 36, 0.14);
+    }
+    .card[data-level="5"] {
+        border-color: var(--orange);
+        box-shadow: 0 0 16px rgba(255, 141, 28, 0.32), inset 0 0 20px rgba(255, 141, 28, 0.1);
+    }
+    .card[data-level="4"] {
+        border-color: var(--purple);
+        box-shadow: 0 0 12px rgba(203, 104, 194, 0.26);
+    }
+    .card[data-level="3"] {
+        border-color: var(--blue);
+        box-shadow: 0 0 10px rgba(62, 112, 186, 0.22);
+    }
+
+    .icon {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+        margin-top: 16px;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+    }
+
+    .placeholder {
+        width: 118px;
+        height: 118px;
+        margin-top: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 52px;
+        font-weight: 700;
+        color: rgba(230, 240, 255, 0.35);
+        background: rgba(90, 120, 170, 0.16);
+        border: 1px dashed rgba(120, 160, 220, 0.35);
+    }
+
+    .up {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        padding: 2px 9px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #20160a;
+        background: linear-gradient(90deg, #ff8d1c, #ffd08a);
+    }
+
+    .name {
+        margin-top: auto;
+        width: 100%;
+        padding: 8px 6px 4px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .meta {
+        width: 100%;
+        padding: 2px 10px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .level {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .card[data-level="6"] .level { color: var(--red); }
+    .card[data-level="5"] .level { color: var(--orange); }
+    .card[data-level="4"] .level { color: var(--purple); }
+    .card[data-level="3"] .level { color: var(--blue); }
+
+    .category {
+        font-size: 12px;
+        color: var(--text-dim);
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 22px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        color: var(--text-dim);
+        font-size: 15px;
+    }
+
+    .credit { letter-spacing: 1px; }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            {% if avatar %}<img class="avatar" src="{{ avatar }}" alt="avatar" onerror="this.style.display='none'">{% endif %}
+            <div class="title">{{ pool_name }}</div>
+            <div class="subtitle">{{ draw_type }} 回研发</div>
+        </div>
+
+        <div class="grid">
+            {% for item in items %}
+            <div class="card" data-level="{{ item.level }}">
+                {% if item.is_up %}<div class="up">UP</div>{% endif %}
+                {% if item.icon %}
+                <img class="icon" src="{{ item.icon }}" alt="{{ item.name }}" onerror="this.style.display='none'">
+                {% else %}
+                <div class="placeholder">{{ item.name[0] }}</div>
+                {% endif %}
+                <div class="name">{{ item.name }}</div>
+                <div class="meta">
+                    <span class="level">{{ item.level }}</span>
+                    <span class="category">{{ item.category }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            <div class="code">特征码: {{ signature_code }}</div>
+            <div class="credit">PGRGachaSim by Xbaiyz12</div>
+        </div>
+    </div>
+</body>
+</html>

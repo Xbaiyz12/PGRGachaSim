@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<style>
+    :root {
+        --bg: #070b14;
+        --line: rgba(120, 160, 220, 0.18);
+        --text: #e8f0ff;
+        --dim: #7d8aa5;
+        --gold: #e8a642;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: var(--bg);
+        font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    .container {
+        width: 1200px;
+        padding: 28px 32px 20px;
+        background:
+            radial-gradient(ellipse at 50% -10%, rgba(90, 140, 220, 0.22), transparent 55%),
+            linear-gradient(160deg, #070b14 0%, #0d1526 52%, #070b14 100%);
+    }
+
+    .title {
+        text-align: center;
+        color: var(--text);
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 4px;
+    }
+
+    .sub {
+        text-align: center;
+        color: var(--dim);
+        font-size: 15px;
+        margin-top: 8px;
+        letter-spacing: 2px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(6, 176px);
+        gap: 14px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        background: linear-gradient(180deg, rgba(28, 42, 70, 0.85), rgba(10, 16, 30, 0.95));
+        border: 1px solid var(--line);
+    }
+
+    .figure {
+        width: 100%;
+        height: 110px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+
+    .placeholder {
+        width: 100%;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: rgba(230, 240, 255, 0.3);
+    }
+
+    .name {
+        padding: 6px 6px 0;
+        text-align: center;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .nos {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 8px 8px;
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .footer {
+        text-align: center;
+        color: var(--dim);
+        font-size: 14px;
+        margin-top: 18px;
+        letter-spacing: 1px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">{{ title }}</div>
+        <div class="sub">回复 {{ prefix }}切换卡池 编号 选择 · 每格下方为编号</div>
+
+        <div class="grid">
+            {% for card in cards %}
+            <div class="card">
+                {% if card.figure %}
+                <img class="figure" src="{{ card.figure }}" alt="{{ card.name }}" onerror="this.style.display='none'">
+                {% else %}
+                <div class="placeholder">⚙</div>
+                {% endif %}
+                <div class="name">{{ card.name }}</div>
+                {% if card.theme_no %}
+                <div class="nos"><span>主题 {{ card.theme_no }}</span><span>命运 {{ card.fate_no }}</span></div>
+                {% else %}
+                <div class="nos"><span>编号 {{ card.single_no }}</span></div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="footer">PGRGachaSim by Xbaiyz12</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+[project]
+name = "PGRGachaSim"
+version = "0.1.0"
+description = "战双帕弥什模拟抽卡插件"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx",
+    "jinja2",
+    "sqlmodel",
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
