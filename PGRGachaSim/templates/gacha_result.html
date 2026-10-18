@@ -26,7 +26,7 @@
     .container {
         position: relative;
         width: 1640px;
-        padding: 42px 30px 34px;
+        padding: 96px 30px 84px;
         {% if background %}
         background-image: linear-gradient(180deg, rgba(7, 11, 20, 0.35), rgba(7, 11, 20, 0.55)), url('{{ background }}');
         background-size: cover;
@@ -43,13 +43,13 @@
         position: absolute;
         left: 0;
         right: 0;
-        height: 110px;
+        height: 150px;
         pointer-events: none;
         z-index: 5;
     }
 
-    .particles.top { top: -44px; }
-    .particles.bottom { bottom: -44px; }
+    .particles.top { top: 0; }
+    .particles.bottom { bottom: 0; }
 
     .particle {
         position: absolute;
@@ -268,13 +268,13 @@
 <body>
     <div class="container">
         <div class="particles top">
-            {% for i in range(40) %}
-            <div class="particle" style="left: {{ (i * 37 + 11) % 100 }}%; top: {{ (i * 53 + 7) % 100 }}%; width: {{ 3 + (i % 4) }}px; height: {{ 3 + (i % 4) }}px; opacity: {{ 0.3 + (i % 6) * 0.11 }}"></div>
+            {% for i in range(60) %}
+            <div class="particle" style="left: {{ (i * 37 + 11) % 100 }}%; top: {{ (i * 53 + 7) % 100 }}%; width: {{ 3 + (i % 5) }}px; height: {{ 3 + (i % 5) }}px; opacity: {{ 0.3 + (i % 6) * 0.11 }}"></div>
             {% endfor %}
         </div>
         <div class="particles bottom">
-            {% for i in range(40) %}
-            <div class="particle" style="left: {{ (i * 61 + 19) % 100 }}%; top: {{ (i * 29 + 13) % 100 }}%; width: {{ 3 + (i % 4) }}px; height: {{ 3 + (i % 4) }}px; opacity: {{ 0.26 + (i % 6) * 0.1 }}"></div>
+            {% for i in range(60) %}
+            <div class="particle" style="left: {{ (i * 61 + 19) % 100 }}%; top: {{ (i * 29 + 13) % 100 }}%; width: {{ 3 + (i % 5) }}px; height: {{ 3 + (i % 5) }}px; opacity: {{ 0.26 + (i % 6) * 0.1 }}"></div>
             {% endfor %}
         </div>
 
