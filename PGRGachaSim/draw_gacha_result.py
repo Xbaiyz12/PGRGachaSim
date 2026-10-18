@@ -1,7 +1,8 @@
 """战双模拟抽卡 - 渲染抽卡结果"""
 
-import time
 import base64
+import random
+import time
 from typing import Optional
 from pathlib import Path
 
@@ -49,18 +50,30 @@ def _icon_data_url(url: str) -> str:
 
 
 def _build_items(results: list[GachaResult]) -> list[dict[str, object]]:
-    return [
-        {
-            "name": result["name"],
-            "icon": _icon_data_url(result["icon"]),
-            "figure": _icon_data_url(result["figure"]) if result["figure"] else "",
-            "amount": result["amount"],
-            "level": result["level"],
-            "is_up": result["is_up"],
-            "category": result["category"],
-        }
-        for result in results
-    ]
+    items: list[dict[str, object]] = []
+    for result in results:
+        sparks = [
+            {
+                "x": round(random.uniform(4, 92), 1),
+                "y": round(random.uniform(2, 96), 1),
+                "size": random.choice((2, 3, 4)),
+                "opacity": round(random.uniform(0.45, 0.85), 2),
+            }
+            for _ in range(16)
+        ]
+        items.append(
+            {
+                "name": result["name"],
+                "icon": _icon_data_url(result["icon"]),
+                "figure": _icon_data_url(result["figure"]) if result["figure"] else "",
+                "amount": result["amount"],
+                "level": result["level"],
+                "is_up": result["is_up"],
+                "category": result["category"],
+                "sparks": sparks,
+            }
+        )
+    return items
 
 
 async def _render_remote(html: str) -> Optional[bytes]:
