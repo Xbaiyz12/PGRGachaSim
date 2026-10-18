@@ -106,6 +106,7 @@ async def render_gacha_result(
     signature_code: str = "",
     draw_type: int = 10,
     avatar_path: Optional[Path] = None,
+    daily_count: int = 0,
 ) -> Optional[bytes]:
     """渲染抽卡结果图片，渲染不可用时返回 None"""
     context = {
@@ -114,6 +115,7 @@ async def render_gacha_result(
         "items": _build_items(results),
         "signature_code": signature_code,
         "avatar": _image_to_base64(avatar_path) if avatar_path is not None else "",
+        "daily_count": daily_count,
     }
 
     if GachaSimConfig.get_config("PGRGachaRemoteRenderEnable").data:

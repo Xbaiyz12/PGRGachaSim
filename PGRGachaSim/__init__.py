@@ -123,8 +123,11 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
         signature_code = await data_manager.get_signature(uid)
         if not signature_code:
             signature_code = await data_manager.generate_signature(uid)
+        daily_count = await data_manager.get_daily_count(uid, pool_type)
 
-        image = await render_gacha_result(results, pool["name"], signature_code, count, avatar_path=avatar)
+        image = await render_gacha_result(
+            results, pool["name"], signature_code, count, avatar_path=avatar, daily_count=daily_count
+        )
         if image is not None:
             await bot.send(MessageSegment.image(image))
         elif GachaSimConfig.get_config("PGRGachaTextFallback").data:
@@ -218,10 +221,13 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         signature_code = await data_manager.get_signature(uid)
         if not signature_code:
             signature_code = await data_manager.generate_signature(uid)
+        daily_count = await data_manager.get_daily_count(uid, pool_type)
 
         images: list[bytes] = []
         for results in all_results:
-            image = await render_gacha_result(results, pool["name"], signature_code, 10, avatar_path=avatar)
+            image = await render_gacha_result(
+                results, pool["name"], signature_code, 10, avatar_path=avatar, daily_count=daily_count
+            )
             if image is not None:
                 images.append(image)
 
