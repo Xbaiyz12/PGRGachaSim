@@ -118,6 +118,9 @@ async def render_gacha_result(
         "signature_code": signature_code,
         "avatar": _image_to_base64(avatar_path) if avatar_path is not None else "",
         "daily_count": daily_count,
+        "background": _image_to_base64(TEMPLATE_DIR.parent / "texture2d" / "gacha_bg.jpg")
+        if (TEMPLATE_DIR.parent / "texture2d" / "gacha_bg.jpg").exists()
+        else "",
     }
 
     if GachaSimConfig.get_config("PGRGachaRemoteRenderEnable").data:
