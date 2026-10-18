@@ -26,8 +26,8 @@
     .container {
         position: relative;
         height: 1100px;
-        width: 1860px;
-        padding: 90px 30px 210px;
+        width: 2000px;
+        padding: 100px 30px 200px;
         {% if background %}
         background-image: linear-gradient(180deg, rgba(7, 11, 20, 0.35), rgba(7, 11, 20, 0.55)), url('{{ background }}');
         background-size: cover;
@@ -81,7 +81,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 0;
+        gap: 12px;
         margin-top: 16px;
         position: relative;
         z-index: 2;
@@ -94,29 +94,29 @@
         justify-content: center;
     }
 
-    .col-wrap.lv6 { --spark-color: rgba(255, 70, 40, 0.8); --spark-core: rgba(255, 225, 205, 0.95); }
-    .col-wrap.lv5 { --spark-color: rgba(255, 150, 40, 0.75); --spark-core: rgba(255, 240, 210, 0.9); }
-    .col-wrap.lv4 { --spark-color: rgba(190, 110, 220, 0.7); --spark-core: rgba(248, 230, 255, 0.9); }
-    .col-wrap.lv3 { --spark-color: rgba(80, 150, 230, 0.7); --spark-core: rgba(220, 242, 255, 0.9); }
+    .col-wrap.lv6 { --spark-color: rgba(255, 70, 40, 0.8); --spark-core: rgba(255, 225, 205, 0.95); --pillar-h: 250px; }
+    .col-wrap.lv5 { --spark-color: rgba(255, 150, 40, 0.75); --spark-core: rgba(255, 240, 210, 0.9); --pillar-h: 180px; }
+    .col-wrap.lv4 { --spark-color: rgba(190, 110, 220, 0.7); --spark-core: rgba(248, 230, 255, 0.9); --pillar-h: 100px; }
+    .col-wrap.lv3 { --spark-color: rgba(80, 150, 230, 0.7); --spark-core: rgba(220, 242, 255, 0.9); --pillar-h: 80px; }
 
     .pillar {
         position: absolute;
-        top: calc(-210px * var(--col-scale, 1));
-        left: -7.57%;
+        top: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
+        left: 0;
         right: 0;
-        height: calc(260px * var(--col-scale, 1));
+        height: calc(var(--pillar-h, 260px) * var(--col-scale, 1));
         overflow: hidden;
         pointer-events: none;
         z-index: 0;
-        clip-path: polygon(7.04% 100%, 72.14% 100%, 65.08% 0%, 0% 0%);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .pillar.bottom {
         top: auto;
-        bottom: calc(-210px * var(--col-scale, 1));
+        bottom: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
         left: 0;
-        right: -7.57%;
-        clip-path: polygon(27.89% 0, 92.96% 0, 100% 100%, 34.93% 100%);
+        right: 0;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .pillar::before {
@@ -145,22 +145,27 @@
 
     .pillar-sparks {
         position: absolute;
-        left: -7.57%;
+        left: 0;
         right: 0;
-        top: calc(-210px * var(--col-scale, 1));
-        height: calc(260px * var(--col-scale, 1));
+        top: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
+        height: calc(var(--pillar-h, 260px) * var(--col-scale, 1));
         pointer-events: none;
         z-index: 1;
         overflow: hidden;
-        clip-path: polygon(7.04% 100%, 72.14% 100%, 65.08% 0%, 0% 0%);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .pillar-sparks.bottom {
         top: auto;
-        bottom: calc(-210px * var(--col-scale, 1));
+        bottom: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
         left: 0;
-        right: -7.57%;
-        clip-path: polygon(27.89% 0, 92.96% 0, 100% 100%, 34.93% 100%);
+        right: 0;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    .col-wrap.lv3 .pillar,
+    .col-wrap.lv3 .pillar-sparks {
+        display: none;
     }
 
     .p-spark {
@@ -185,14 +190,14 @@
     .column {
         position: relative;
         z-index: 2;
-        width: 240px;
+        width: 183px;
         border-radius: 4px 4px 2px 2px;
         overflow: hidden;
         background: linear-gradient(180deg, rgba(30, 24, 48, 0.62), rgba(10, 14, 26, 0.55));
         border: 1px solid rgba(255, 255, 255, 0.08);
         transform: scale(var(--col-scale, 1));
         transform-origin: center;
-        clip-path: polygon(0 0, 70% 0, 100% 100%, 30% 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         backdrop-filter: blur(1px);
     }
 
@@ -209,7 +214,6 @@
         height: 7px;
         background: var(--lv4);
         box-shadow: 0 0 18px 2px var(--lv4);
-        transform: skewX(6deg);
     }
 
     .column.lv6 .glow { background: var(--lv6); box-shadow: 0 0 26px 5px var(--lv6); }
@@ -224,7 +228,6 @@
         height: 7px;
         background: var(--lv4);
         box-shadow: 0 0 18px 2px var(--lv4);
-        transform: skewX(6deg);
         z-index: 3;
     }
 
@@ -254,7 +257,6 @@
         letter-spacing: 3px;
         color: rgba(200, 210, 235, 0.22);
         white-space: nowrap;
-        transform: rotate(5deg);
     }
 
     .body {
@@ -264,7 +266,7 @@
         top: 0;
         bottom: 118px;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
         overflow: hidden;
     }
@@ -282,7 +284,6 @@
         width: 92px;
         height: 92px;
         object-fit: contain;
-        margin-bottom: 34px;
         display: block;
         filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5));
     }
@@ -318,7 +319,6 @@
         font-weight: 800;
         letter-spacing: 1px;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-        transform: skewX(6deg);
     }
 
     .name {
@@ -365,7 +365,7 @@
 
         <div class="columns">
             {% for item in items %}
-            <div class="col-wrap lv{{ item.level }}" style="margin: 0 -30px;">
+            <div class="col-wrap lv{{ item.level }}">
                 <div class="pillar"></div>
                 <div class="pillar bottom"></div>
                 {% if item.level >= 5 %}

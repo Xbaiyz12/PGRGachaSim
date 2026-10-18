@@ -237,6 +237,7 @@ class GachaService:
             elif prize_type == "fragment":
                 item = self._pick(characters.get("S", []) + characters.get("A", []) + characters.get("B", []))
                 result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
+                result["figure"] = ""
                 result["name"] = f"{result['name']}碎片×2"
                 results.append(result)
             elif prize_type == "memory":
@@ -326,6 +327,7 @@ class GachaService:
             elif prize_type == "fragment":
                 item = self._pick(s_items + a_items)
                 result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
+                result["figure"] = ""
                 result["name"] = f"支援架构零件-{result['name']}"
                 results.append(result)
             else:
