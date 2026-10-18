@@ -68,6 +68,7 @@ def _build_items(results: list[GachaResult]) -> list[dict[str, object]]:
                 "figure": _icon_data_url(result["figure"]) if result["figure"] else "",
                 "amount": result["amount"],
                 "level": result["level"],
+                "pillar_level": result["pillar_level"],
                 "is_up": result["is_up"],
                 "category": result["category"],
                 "sparks": sparks,

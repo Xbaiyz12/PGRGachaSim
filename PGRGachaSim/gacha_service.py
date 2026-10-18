@@ -15,6 +15,7 @@ class GachaItem(TypedDict, total=False):
 class GachaResult(TypedDict):
     name: str
     level: int
+    pillar_level: int
     category: str
     icon: str
     figure: str
@@ -93,11 +94,13 @@ class GachaService:
         pity_count: int,
         use_shards: bool = False,
         amount: int = 1,
+        pillar_level: int = 0,
     ) -> GachaResult:
         if item is None:
             return GachaResult(
                 name="未知",
                 level=level,
+                pillar_level=pillar_level or level,
                 category=category,
                 icon="",
                 figure="",
@@ -113,6 +116,7 @@ class GachaService:
         return GachaResult(
             name=item.get("name", "未知"),
             level=level,
+            pillar_level=pillar_level or level,
             category=category,
             icon=icon,
             figure=item.get("figure") or "",
@@ -235,8 +239,15 @@ class GachaService:
                 results.append(self._make_result(item, 5, "character", False, 0))
                 sub = 0
             elif prize_type == "fragment":
-                item = self._pick(characters.get("S", []) + characters.get("A", []) + characters.get("B", []))
-                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
+                if random.random() < 0.5:
+                    item = self._pick(characters.get("S", []))
+                    pillar_level = 6
+                else:
+                    item = self._pick(characters.get("A", []) + characters.get("B", []))
+                    pillar_level = 5
+                result = self._make_result(
+                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
+                )
                 result["figure"] = ""
                 result["name"] = f"{result['name']}碎片×2"
                 results.append(result)
@@ -325,8 +336,15 @@ class GachaService:
                 item = self._pick(support.get("skill", []))
                 results.append(self._make_result(item, 4, "material", False, 0))
             elif prize_type == "fragment":
-                item = self._pick(s_items + a_items)
-                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
+                if random.random() < 0.5:
+                    item = self._pick(s_items)
+                    pillar_level = 6
+                else:
+                    item = self._pick(a_items)
+                    pillar_level = 5
+                result = self._make_result(
+                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
+                )
                 result["figure"] = ""
                 result["name"] = f"支援架构零件-{result['name']}"
                 results.append(result)

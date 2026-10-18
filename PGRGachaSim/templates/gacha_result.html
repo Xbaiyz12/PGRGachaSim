@@ -365,10 +365,10 @@
 
         <div class="columns">
             {% for item in items %}
-            <div class="col-wrap lv{{ item.level }}">
+            <div class="col-wrap lv{{ item.pillar_level or item.level }}">
                 <div class="pillar"></div>
                 <div class="pillar bottom"></div>
-                {% if item.level >= 5 %}
+                {% if (item.pillar_level or item.level) >= 5 %}
                 <div class="pillar-sparks">
                     {% for s in item.sparks %}
                     <div class="p-spark" style="left: {{ s['x'] }}%; top: {{ s['y'] }}%; width: {{ s['size'] }}px; height: {{ s['size'] }}px; opacity: {{ s['opacity'] }}"></div>
