@@ -97,6 +97,12 @@ def _parse_versions(raw: object) -> list[VersionData]:
         role = entry.get("role")
         if isinstance(role, str) and role:
             version["role"] = role
+        weapon = entry.get("weapon")
+        if isinstance(weapon, str) and weapon:
+            version["weapon"] = weapon
+        support = entry.get("support")
+        if isinstance(support, str) and support:
+            version["support"] = support
         roles = _parse_str_list(entry.get("roles"))
         if roles:
             version["roles"] = roles

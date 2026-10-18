@@ -48,6 +48,8 @@ class VersionData(TypedDict, total=False):
     icon: str
     roles: list[str]
     role: str
+    weapon: str
+    support: str
 
 
 class GachaData(TypedDict):
@@ -275,30 +277,33 @@ class GachaService:
         pity_a = 10
         s_items = support.get("S", [])
         a_items = support.get("A", [])
+        up_all = pool.get("up_s") or []
+        up_s_items = [entry for entry in s_items if entry.get("name") in up_all]
+        up_a_items = [entry for entry in a_items if entry.get("name") in up_all]
 
         for _ in range(count):
             current += 1
             sub += 1
             if current >= pity_s:
-                item = self._pick(s_items)
+                item = self._pick(up_s_items) if up_s_items and random.random() < 0.8 else self._pick(s_items)
                 results.append(self._make_result(item, 6, "support", False, current))
                 current = 0
                 sub = 0
                 continue
             if sub >= pity_a:
-                item = self._pick(a_items)
+                item = self._pick(up_a_items) if up_a_items and random.random() < 0.8 else self._pick(a_items)
                 results.append(self._make_result(item, 5, "support", False, sub))
                 sub = 0
                 continue
 
             prize_type = _weighted_choice(types)
             if prize_type == "S":
-                item = self._pick(s_items)
+                item = self._pick(up_s_items) if up_s_items and random.random() < 0.8 else self._pick(s_items)
                 results.append(self._make_result(item, 6, "support", False, current))
                 current = 0
                 sub = 0
             elif prize_type == "A":
-                item = self._pick(a_items)
+                item = self._pick(up_a_items) if up_a_items and random.random() < 0.8 else self._pick(a_items)
                 results.append(self._make_result(item, 5, "support", False, sub))
                 sub = 0
             elif prize_type == "exp":

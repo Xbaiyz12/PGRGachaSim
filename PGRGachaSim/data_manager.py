@@ -66,6 +66,15 @@ class DataManager:
         await PGRGachaPool.set_selected(user_id, pool_type, pool_id)
 
     @staticmethod
+    async def get_selected_version(user_id: str) -> str:
+        value = await PGRGachaPool.get_selected(user_id, "version")
+        return value or ""
+
+    @staticmethod
+    async def set_selected_version(user_id: str, version_name: str) -> None:
+        await PGRGachaPool.set_selected(user_id, "version", version_name)
+
+    @staticmethod
     async def add_record(user_id: str, bot_id: str, pool_type: str, result: GachaResult) -> None:
         await PGRGachaRecord.add_record(
             user_id,

@@ -79,7 +79,7 @@ async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) ->
     return False
 
 
-async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int) -> None:
+async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: str = "") -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
         return
@@ -94,6 +94,18 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int) -> None:
         pool["up_s"] = [up_name]
 
     pool_type = pool["type"]
+    if version_name:
+        version_data = next(
+            (entry for entry in pool_manager.get_data()["versions"] if entry.get("name") == version_name),
+            None,
+        )
+        if version_data is not None:
+            if pool_type == "weapon" and version_data.get("weapon"):
+                pool = pool.copy()
+                pool["up_w6"] = [version_data["weapon"]]
+            elif pool_type == "support_unit" and version_data.get("support"):
+                pool = pool.copy()
+                pool["up_s"] = [version_data["support"]]
     uid = ev.user_id
     avatar = await data_manager.get_avatar(uid)
     async with _UserLock(uid):
@@ -134,24 +146,27 @@ async def draw_standard(bot: Bot, ev: Event) -> None:
 
 @sv_gacha.on_fullmatch(("抽卡武器",), block=True)
 async def draw_weapon(bot: Bot, ev: Event) -> None:
-    await _do_draw(bot, ev, "weapon", 10)
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, "weapon", 10, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡辅助机",), block=True)
 async def draw_support(bot: Bot, ev: Event) -> None:
-    await _do_draw(bot, ev, "support_unit", 10)
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, "support_unit", 10, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡百连辅助机",), block=True)
 async def draw_bailian_support(bot: Bot, ev: Event) -> None:
-    await _do_bailian(bot, ev, "support_unit")
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_bailian(bot, ev, "support_unit", version)
 
 
 def _is_official_bot(ev: Event) -> bool:
     return "official" in ev.bot_id.lower()
 
 
-async def _do_bailian(bot: Bot, ev: Event, pool_id: str) -> None:
+async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "") -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
         return
@@ -169,6 +184,18 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str) -> None:
         pool["up_s"] = [up_name]
 
     pool_type = pool["type"]
+    if version_name:
+        version_data = next(
+            (entry for entry in pool_manager.get_data()["versions"] if entry.get("name") == version_name),
+            None,
+        )
+        if version_data is not None:
+            if pool_type == "weapon" and version_data.get("weapon"):
+                pool = pool.copy()
+                pool["up_w6"] = [version_data["weapon"]]
+            elif pool_type == "support_unit" and version_data.get("support"):
+                pool = pool.copy()
+                pool["up_s"] = [version_data["support"]]
     uid = ev.user_id
     at_sender = bool(ev.group_id)
     await bot.send(f"🎰 开始 {pool['name']} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
@@ -232,7 +259,8 @@ async def draw_bailian(bot: Bot, ev: Event) -> None:
 
 @sv_gacha.on_fullmatch(("抽卡百连武器",), block=True)
 async def draw_bailian_weapon(bot: Bot, ev: Event) -> None:
-    await _do_bailian(bot, ev, "weapon")
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_bailian(bot, ev, "weapon", version)
 
 
 async def _switch_pool(bot: Bot, ev: Event) -> None:
@@ -327,7 +355,18 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
 
     label = next(label for option_id, label in options if option_id == selected_id)
     await data_manager.set_selected_pool(ev.user_id, "gacha", selected_id)
-    await bot.send(f"已切换到 {label}，之后 {prefix}抽卡 使用该卡池~", at_sender)
+    version_name = ""
+    if selected_id.startswith("char_theme:"):
+        role = selected_id.split(":", 1)[1]
+        for version in pool_manager.get_data()["versions"]:
+            if version.get("role") == role:
+                version_name = version.get("name", "")
+                break
+    await data_manager.set_selected_version(ev.user_id, version_name)
+    await bot.send(
+        f"已切换到 {label}，之后 {prefix}抽卡 / {prefix}抽卡武器 / {prefix}抽卡辅助机 使用该版本 UP~",
+        at_sender,
+    )
 
 
 @sv_gacha.on_command(("切换卡池",), block=True)
