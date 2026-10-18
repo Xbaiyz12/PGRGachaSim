@@ -1390,7 +1390,29 @@
     ]
   },
   "materials": {
-    "exp": [
+    "memories4": [
+      {
+        "name": "阿基米德",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/4epmrjbkjnyvmzcod8m1a6qjgccf28m.png"
+      },
+      {
+        "name": "爱迪生",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/17/oekf2fgbglgfb5wa8zvqtptvopivqwk.png"
+      },
+      {
+        "name": "爱丽丝",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/f/fd/ka40cpcendl30cxy1pm8nkplrhu42ia.png"
+      },
+      {
+        "name": "坎宁安",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/e9/s3si6djhpvp3kz331fjy83z3ng54zdn.png"
+      },
+      {
+        "name": "意识强化素材IV",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/94/cez8mkqnec9b7gn9ynlwdm7e6bcdiul.png"
+      }
+    ],
+    "expPods": [
       {
         "name": "经验仓·大",
         "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/ad/3hvdbvz59ai3nwznpxp5edemptyz4dy.png"
@@ -1400,7 +1422,7 @@
         "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/93/6rpbeawv8s14dlanntyq947l1r03731.png"
       }
     ],
-    "overclock": [
+    "overClock": [
       {
         "name": "武器突破核心·高",
         "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/5lhxfv22f65n6xj48vzm2o96crpahkf.png"

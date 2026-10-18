@@ -97,7 +97,7 @@
     .columns {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
         gap: 9px;
         margin-top: 16px;
         position: relative;
@@ -275,7 +275,7 @@
 
         <div class="columns">
             {% for item in items %}
-            <div class="column lv{{ item.level }}" style="height: {{ 600 - loop.index0 * 14 }}px;">
+            <div class="column lv{{ item.level }}" style="height: {{ 600 - loop.index0 * 4 }}px;">
                 <div class="glow"></div>
                 <div class="rail">PUNISHING RESEARCH</div>
                 <div class="body">
