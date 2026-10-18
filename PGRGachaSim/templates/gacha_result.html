@@ -6,11 +6,10 @@
 <style>
     :root {
         --bg: #070b14;
-        --line: rgba(120, 160, 220, 0.16);
         --text: #e8f0ff;
         --dim: #7d8aa5;
         --gold: #e8a642;
-        --lv6: #ffb63c;
+        --lv6: #ff3b30;
         --lv5: #ff8d1c;
         --lv4: #cb68c2;
         --lv3: #3e70ba;
@@ -21,20 +20,48 @@
     body {
         background: var(--bg);
         font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+        overflow: visible;
     }
 
     .container {
-        width: 1600px;
-        padding: 22px 26px 16px;
+        position: relative;
+        width: 1640px;
+        padding: 42px 30px 34px;
         background:
-            radial-gradient(ellipse at 50% 0%, rgba(70, 110, 190, 0.25), transparent 55%),
+            radial-gradient(ellipse at 50% 0%, rgba(70, 110, 190, 0.22), transparent 55%),
             linear-gradient(160deg, #070b14 0%, #0b1222 55%, #070b14 100%);
+        overflow: visible;
+    }
+
+    .particles {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 110px;
+        pointer-events: none;
+        z-index: 5;
+    }
+
+    .particles.top { top: -44px; }
+    .particles.bottom { bottom: -44px; }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, #ffe3b0 0%, rgba(255, 180, 60, 0.65) 45%, transparent 72%);
+        box-shadow: 0 0 10px 2px rgba(255, 180, 60, 0.5);
+    }
+
+    .particles.bottom .particle {
+        background: radial-gradient(circle, #d9c6ff 0%, rgba(150, 110, 255, 0.6) 45%, transparent 72%);
+        box-shadow: 0 0 10px 2px rgba(150, 110, 255, 0.45);
     }
 
     .topbar {
         position: relative;
         height: 62px;
         text-align: center;
+        z-index: 6;
     }
 
     .daily {
@@ -70,22 +97,25 @@
     .columns {
         display: flex;
         justify-content: center;
+        align-items: flex-end;
         gap: 9px;
-        margin-top: 14px;
+        margin-top: 16px;
+        position: relative;
+        z-index: 2;
     }
 
     .column {
         position: relative;
         width: 148px;
-        height: 590px;
         border-radius: 4px 4px 2px 2px;
         overflow: hidden;
         background: linear-gradient(180deg, rgba(30, 24, 48, 0.95), rgba(10, 14, 26, 0.98));
         border: 1px solid rgba(255, 255, 255, 0.06);
+        transform-origin: bottom center;
     }
 
-    .column.lv6 { background: linear-gradient(180deg, rgba(64, 40, 12, 0.95), rgba(16, 12, 8, 0.98)); }
-    .column.lv5 { background: linear-gradient(180deg, rgba(54, 30, 12, 0.95), rgba(14, 10, 8, 0.98)); }
+    .column.lv6 { background: linear-gradient(180deg, rgba(78, 16, 16, 0.96), rgba(20, 8, 8, 0.99)); }
+    .column.lv5 { background: linear-gradient(180deg, rgba(62, 36, 12, 0.96), rgba(16, 10, 8, 0.99)); }
     .column.lv4 { background: linear-gradient(180deg, rgba(44, 22, 46, 0.95), rgba(12, 10, 16, 0.98)); }
     .column.lv3 { background: linear-gradient(180deg, rgba(18, 30, 50, 0.95), rgba(8, 12, 20, 0.98)); }
 
@@ -99,8 +129,8 @@
         box-shadow: 0 0 18px 2px var(--lv4);
     }
 
-    .column.lv6 .glow { background: var(--lv6); box-shadow: 0 0 22px 3px var(--lv6); }
-    .column.lv5 .glow { background: var(--lv5); box-shadow: 0 0 18px 2px var(--lv5); }
+    .column.lv6 .glow { background: var(--lv6); box-shadow: 0 0 26px 5px var(--lv6); }
+    .column.lv5 .glow { background: var(--lv5); box-shadow: 0 0 20px 3px var(--lv5); }
     .column.lv3 .glow { background: var(--lv3); box-shadow: 0 0 16px 2px var(--lv3); }
 
     .up {
@@ -212,11 +242,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 14px;
+        margin-top: 16px;
         padding: 0 6px;
         color: var(--dim);
         font-size: 14px;
         letter-spacing: 1px;
+        position: relative;
+        z-index: 6;
     }
 
     .credit { color: rgba(125, 138, 165, 0.9); }
@@ -224,6 +256,17 @@
 </head>
 <body>
     <div class="container">
+        <div class="particles top">
+            {% for i in range(40) %}
+            <div class="particle" style="left: {{ (i * 37 + 11) % 100 }}%; top: {{ (i * 53 + 7) % 100 }}%; width: {{ 3 + (i % 4) }}px; height: {{ 3 + (i % 4) }}px; opacity: {{ 0.3 + (i % 6) * 0.11 }}"></div>
+            {% endfor %}
+        </div>
+        <div class="particles bottom">
+            {% for i in range(40) %}
+            <div class="particle" style="left: {{ (i * 61 + 19) % 100 }}%; top: {{ (i * 29 + 13) % 100 }}%; width: {{ 3 + (i % 4) }}px; height: {{ 3 + (i % 4) }}px; opacity: {{ 0.26 + (i % 6) * 0.1 }}"></div>
+            {% endfor %}
+        </div>
+
         <div class="topbar">
             {% if avatar %}<img class="avatar" src="{{ avatar }}" alt="avatar" onerror="this.style.display='none'">{% endif %}
             <div class="daily">今日已抽 {{ daily_count }} 次</div>
@@ -232,7 +275,7 @@
 
         <div class="columns">
             {% for item in items %}
-            <div class="column lv{{ item.level }}">
+            <div class="column lv{{ item.level }}" style="height: {{ 600 - loop.index0 * 14 }}px;">
                 <div class="glow"></div>
                 <div class="rail">PUNISHING RESEARCH</div>
                 <div class="body">
