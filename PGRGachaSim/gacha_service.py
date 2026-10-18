@@ -17,6 +17,8 @@ class GachaResult(TypedDict):
     level: int
     category: str
     icon: str
+    figure: str
+    amount: int
     is_up: bool
     pity_count: int
 
@@ -90,6 +92,7 @@ class GachaService:
         is_up: bool,
         pity_count: int,
         use_shards: bool = False,
+        amount: int = 1,
     ) -> GachaResult:
         if item is None:
             return GachaResult(
@@ -97,6 +100,8 @@ class GachaService:
                 level=level,
                 category=category,
                 icon="",
+                figure="",
+                amount=amount,
                 is_up=is_up,
                 pity_count=pity_count,
             )
@@ -110,6 +115,8 @@ class GachaService:
             level=level,
             category=category,
             icon=icon,
+            figure=item.get("figure") or "",
+            amount=amount,
             is_up=is_up,
             pity_count=pity_count,
         )
@@ -229,7 +236,7 @@ class GachaService:
                 sub = 0
             elif prize_type == "fragment":
                 item = self._pick(characters.get("S", []) + characters.get("A", []) + characters.get("B", []))
-                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True)
+                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
                 result["name"] = f"{result['name']}碎片×2"
                 results.append(result)
             elif prize_type == "memory":
@@ -318,7 +325,7 @@ class GachaService:
                 results.append(self._make_result(item, 4, "material", False, 0))
             elif prize_type == "fragment":
                 item = self._pick(s_items + a_items)
-                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True)
+                result = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
                 result["name"] = f"支援架构零件-{result['name']}"
                 results.append(result)
             else:
