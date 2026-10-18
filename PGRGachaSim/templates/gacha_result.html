@@ -94,29 +94,27 @@
         justify-content: center;
     }
 
-    .col-wrap.lv6 { --spark-color: rgba(255, 70, 40, 0.8); --spark-core: rgba(255, 225, 205, 0.95); --pillar-h: 250px; }
-    .col-wrap.lv5 { --spark-color: rgba(255, 150, 40, 0.75); --spark-core: rgba(255, 240, 210, 0.9); --pillar-h: 180px; }
-    .col-wrap.lv4 { --spark-color: rgba(190, 110, 220, 0.7); --spark-core: rgba(248, 230, 255, 0.9); --pillar-h: 100px; }
-    .col-wrap.lv3 { --spark-color: rgba(80, 150, 230, 0.7); --spark-core: rgba(220, 242, 255, 0.9); --pillar-h: 80px; }
+    .col-wrap.lv6 { --spark-color: rgba(255, 59, 48, 0.85); --spark-core: rgba(255, 225, 205, 0.95); --pillar-h: 250px; }
+    .col-wrap.lv5 { --spark-color: rgba(255, 141, 28, 0.82); --spark-core: rgba(255, 240, 210, 0.9); --pillar-h: 180px; }
+    .col-wrap.lv4 { --spark-color: rgba(203, 104, 194, 0.75); --spark-core: rgba(248, 230, 255, 0.9); --pillar-h: 100px; }
+    .col-wrap.lv3 { --spark-color: rgba(62, 112, 186, 0.7); --spark-core: rgba(220, 242, 255, 0.9); --pillar-h: 0px; }
 
     .pillar {
         position: absolute;
-        top: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
+        top: calc(var(--pillar-h, 250px) * -1);
         left: 0;
         right: 0;
-        height: calc(var(--pillar-h, 260px) * var(--col-scale, 1));
-        overflow: hidden;
+        height: var(--pillar-h, 250px);
+        overflow: visible;
         pointer-events: none;
         z-index: 0;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .pillar.bottom {
         top: auto;
-        bottom: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
+        bottom: calc(var(--pillar-h, 250px) * -1);
         left: 0;
         right: 0;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
     .pillar::before {
@@ -140,64 +138,42 @@
             var(--spark-color) 45%,
             transparent 100%
         );
-        opacity: 0.75;
+        opacity: 0.85;
     }
 
-    .pillar-sparks {
+    .pillar::after {
+        content: "";
         position: absolute;
-        left: 0;
-        right: 0;
-        top: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
-        height: calc(var(--pillar-h, 260px) * var(--col-scale, 1));
+        left: -18px;
+        right: -18px;
+        bottom: 0;
+        height: 130px;
+        background: radial-gradient(ellipse at 50% 100%, var(--spark-color) 0%, transparent 72%);
+        filter: blur(14px);
+        opacity: 0.9;
         pointer-events: none;
-        z-index: 1;
-        overflow: hidden;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     }
 
-    .pillar-sparks.bottom {
-        top: auto;
-        bottom: calc(var(--pillar-h, 260px) * -1 * var(--col-scale, 1));
-        left: 0;
-        right: 0;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    .pillar.bottom::after {
+        bottom: auto;
+        top: 0;
+        background: radial-gradient(ellipse at 50% 0%, var(--spark-color) 0%, transparent 72%);
     }
 
-    .col-wrap.lv3 .pillar,
-    .col-wrap.lv3 .pillar-sparks {
+    .col-wrap.lv3 .pillar {
         display: none;
-    }
-
-    .p-spark {
-        position: absolute;
-        border-radius: 50%;
-    }
-
-    .col-wrap.lv6 .p-spark {
-        background: radial-gradient(circle, #ffe0c8 0%, rgba(255, 90, 50, 0.8) 40%, transparent 72%);
-        box-shadow: 0 0 6px 1px rgba(255, 90, 50, 0.6);
-    }
-
-    .col-wrap.lv5 .p-spark {
-        background: radial-gradient(circle, #ffe9b8 0%, rgba(255, 160, 50, 0.8) 40%, transparent 72%);
-        box-shadow: 0 0 6px 1px rgba(255, 160, 50, 0.6);
-    }
-
-    .col-wrap::before,
-    .col-wrap::after {
     }
 
     .column {
         position: relative;
         z-index: 2;
         width: 183px;
+        height: 800px;
         border-radius: 4px 4px 2px 2px;
         overflow: hidden;
         background: linear-gradient(180deg, rgba(30, 24, 48, 0.62), rgba(10, 14, 26, 0.55));
         border: 1px solid rgba(255, 255, 255, 0.08);
-        transform: scale(var(--col-scale, 1));
         transform-origin: center;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         backdrop-filter: blur(1px);
     }
 
@@ -206,9 +182,8 @@
     .column.lv4 { background: linear-gradient(180deg, rgba(44, 22, 46, 0.62), rgba(12, 10, 16, 0.55)); }
     .column.lv3 { background: linear-gradient(180deg, rgba(18, 30, 50, 0.62), rgba(8, 12, 20, 0.55)); }
 
-    .glow {
+    .glow, .glow-bottom {
         position: absolute;
-        top: 0;
         left: 0;
         right: 0;
         height: 7px;
@@ -216,24 +191,12 @@
         box-shadow: 0 0 18px 2px var(--lv4);
     }
 
-    .column.lv6 .glow { background: var(--lv6); box-shadow: 0 0 26px 5px var(--lv6); }
-    .column.lv5 .glow { background: var(--lv5); box-shadow: 0 0 20px 3px var(--lv5); }
-    .column.lv3 .glow { background: var(--lv3); box-shadow: 0 0 16px 2px var(--lv3); }
+    .glow { top: 0; }
+    .glow-bottom { bottom: 0; z-index: 3; }
 
-    .glow-bottom {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 7px;
-        background: var(--lv4);
-        box-shadow: 0 0 18px 2px var(--lv4);
-        z-index: 3;
-    }
-
-    .column.lv6 .glow-bottom { background: var(--lv6); box-shadow: 0 0 26px 5px var(--lv6); }
-    .column.lv5 .glow-bottom { background: var(--lv5); box-shadow: 0 0 20px 3px var(--lv5); }
-    .column.lv3 .glow-bottom { background: var(--lv3); box-shadow: 0 0 16px 2px var(--lv3); }
+    .column.lv6 .glow, .column.lv6 .glow-bottom { background: var(--lv6); box-shadow: 0 0 26px 5px var(--lv6); }
+    .column.lv5 .glow, .column.lv5 .glow-bottom { background: var(--lv5); box-shadow: 0 0 20px 3px var(--lv5); }
+    .column.lv3 .glow, .column.lv3 .glow-bottom { background: var(--lv3); box-shadow: 0 0 16px 2px var(--lv3); }
 
     .up {
         position: absolute;
@@ -368,36 +331,24 @@
             <div class="col-wrap lv{{ item.pillar_level or item.level }}">
                 <div class="pillar"></div>
                 <div class="pillar bottom"></div>
-                {% if (item.pillar_level or item.level) >= 5 %}
-                <div class="pillar-sparks">
-                    {% for s in item.sparks %}
-                    <div class="p-spark" style="left: {{ s['x'] }}%; top: {{ s['y'] }}%; width: {{ s['size'] }}px; height: {{ s['size'] }}px; opacity: {{ s['opacity'] }}"></div>
-                    {% endfor %}
+                <div class="column lv{{ item.level }}">
+                    <div class="glow"></div>
+                    <div class="rail">PUNISHING RESEARCH</div>
+                    <div class="body">
+                        {% if item.figure and item.category != 'fragment' %}
+                        <img class="figure" src="{{ item.figure }}" alt="{{ item.name }}" onerror="this.style.display='none'">
+                        {% elif item.icon %}
+                        <img class="icon" src="{{ item.icon }}" alt="{{ item.name }}" onerror="this.style.display='none'">
+                        {% else %}
+                        <div class="placeholder">{{ item.name[:1] or "?" }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="shade"></div>
+                    {% if item.is_up %}<div class="up">UP</div>{% endif %}
+                    <div class="count">x{{ item.amount }}</div>
+                    <div class="name">{{ item.name }}</div>
+                    <div class="glow-bottom"></div>
                 </div>
-                <div class="pillar-sparks bottom">
-                    {% for s in item.sparks %}
-                    <div class="p-spark" style="left: {{ s['x'] }}%; top: {{ 100 - s['y'] }}%; width: {{ s['size'] }}px; height: {{ s['size'] }}px; opacity: {{ s['opacity'] }}"></div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <div class="column lv{{ item.level }}" style="height: 800px;">
-                <div class="glow"></div>
-                <div class="rail">PUNISHING RESEARCH</div>
-                <div class="body">
-                    {% if item.figure %}
-                    <img class="figure" src="{{ item.figure }}" alt="{{ item.name }}" onerror="this.style.display='none'">
-                    {% elif item.icon %}
-                    <img class="icon" src="{{ item.icon }}" alt="{{ item.name }}" onerror="this.style.display='none'">
-                    {% else %}
-                    <div class="placeholder">{{ item.name[:1] or "?" }}</div>
-                    {% endif %}
-                </div>
-                <div class="shade"></div>
-                {% if item.is_up %}<div class="up">UP</div>{% endif %}
-                <div class="count">x{{ item.amount }}</div>
-                <div class="name">{{ item.name }}</div>
-                <div class="glow-bottom"></div>
-            </div>
             </div>
             {% endfor %}
         </div>

@@ -1,7 +1,7 @@
 """战双模拟抽卡 - 数据管理层"""
 
 import random
-from typing import Literal, Optional, TypedDict
+from typing import Literal, TypedDict
 from pathlib import Path
 from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -58,7 +58,7 @@ class DataManager:
         await PGRGachaDaily.add_daily_count(user_id, pool_type, count)
 
     @staticmethod
-    async def get_selected_pool(user_id: str, pool_type: str) -> Optional[str]:
+    async def get_selected_pool(user_id: str, pool_type: str) -> str | None:
         return await PGRGachaPool.get_selected(user_id, pool_type)
 
     @staticmethod
@@ -104,7 +104,7 @@ class DataManager:
         ]
 
     @staticmethod
-    async def get_signature(user_id: str) -> Optional[str]:
+    async def get_signature(user_id: str) -> str | None:
         return await PGRGachaSignature.get_signature(user_id)
 
     @staticmethod
@@ -149,7 +149,7 @@ class DataManager:
         return entries[: max(1, min(limit, 50))]
 
     @staticmethod
-    async def get_avatar(user_id: str) -> Optional[Path]:
+    async def get_avatar(user_id: str) -> Path | None:
         if not user_id.isdigit():
             return None
         avatar_dir = GACHA_SIM_MAIN_PATH / "avatars"

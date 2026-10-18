@@ -25,13 +25,19 @@ Plugins(name="PGRGachaSim", force_prefix=["pgr", "zs"], allow_empty_prefix=False
 sv_gacha = SV("战双模拟抽卡", priority=1)
 
 _USER_LOCKS: dict[str, asyncio.BoundedSemaphore] = {}
+_MAX_CACHED_LOCKS = 1024
 
 
 def _get_user_lock(uid: str) -> asyncio.BoundedSemaphore:
-    lock = _USER_LOCKS.get(uid)
-    if lock is None:
-        lock = asyncio.BoundedSemaphore(1)
-        _USER_LOCKS[uid] = lock
+    if uid in _USER_LOCKS:
+        return _USER_LOCKS[uid]
+    if len(_USER_LOCKS) >= _MAX_CACHED_LOCKS:
+        # 清理未被占用的闲置锁，防止长期运行内存泄漏
+        to_remove = [k for k, v in _USER_LOCKS.items() if not v.locked()]
+        for k in to_remove[:256]:
+            _USER_LOCKS.pop(k, None)
+    lock = asyncio.BoundedSemaphore(1)
+    _USER_LOCKS[uid] = lock
     return lock
 
 
@@ -52,6 +58,11 @@ class _UserLock:
         exc_tb: types.TracebackType | None,
     ) -> None:
         self._lock.release()
+
+
+def _format_rarity(rarity: str) -> str:
+    mapping = {"6": "6★ [S级]", "5": "5★ [A级]", "4": "4★ [B级]", "3": "3★"}
+    return mapping[rarity] if rarity in mapping else rarity
 
 
 async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) -> bool:
@@ -93,17 +104,18 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
         pool = pool.copy()
         pool["up_s"] = [up_name]
 
-    pool_type = pool["type"]
+    pool_type = pool["type"] if "type" in pool else ""
     if version_name:
+        versions = pool_manager.get_data()["versions"]
         version_data = next(
-            (entry for entry in pool_manager.get_data()["versions"] if entry.get("name") == version_name),
+            (entry for entry in versions if "name" in entry and entry["name"] == version_name),
             None,
         )
         if version_data is not None:
-            if pool_type == "weapon" and version_data.get("weapon"):
+            if pool_type == "weapon" and "weapon" in version_data and version_data["weapon"]:
                 pool = pool.copy()
                 pool["up_w6"] = [version_data["weapon"]]
-            elif pool_type == "support_unit" and version_data.get("support"):
+            elif pool_type == "support_unit" and "support" in version_data and version_data["support"]:
                 pool = pool.copy()
                 pool["up_s"] = [version_data["support"]]
     uid = ev.user_id
@@ -125,41 +137,42 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
             signature_code = await data_manager.generate_signature(uid)
         daily_count = await data_manager.get_daily_count(uid, pool_type)
 
+        pool_name = pool["name"] if "name" in pool else "活动研发"
         image = await render_gacha_result(
-            results, pool["name"], signature_code, count, avatar_path=avatar, daily_count=daily_count
+            results, pool_name, signature_code, count, avatar_path=avatar, daily_count=daily_count
         )
         if image is not None:
             await bot.send(MessageSegment.image(image))
         elif GachaSimConfig.get_config("PGRGachaTextFallback").data:
-            await bot.send(format_text_result(results, pool["name"], signature_code), bool(ev.group_id))
+            await bot.send(format_text_result(results, pool_name, signature_code), bool(ev.group_id))
         else:
             await bot.send("图片渲染失败", bool(ev.group_id))
 
 
-@sv_gacha.on_fullmatch(("抽卡",), block=True)
+@sv_gacha.on_fullmatch(("抽卡", "战双抽卡"), block=True)
 async def draw_selected(bot: Bot, ev: Event) -> None:
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
     await _do_draw(bot, ev, selected, 10)
 
 
-@sv_gacha.on_fullmatch(("抽卡基准",), block=True)
+@sv_gacha.on_fullmatch(("抽卡基准", "战双抽卡基准"), block=True)
 async def draw_standard(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, "char_standard", 10)
 
 
-@sv_gacha.on_fullmatch(("抽卡武器",), block=True)
+@sv_gacha.on_fullmatch(("抽卡武器", "战双抽卡武器"), block=True)
 async def draw_weapon(bot: Bot, ev: Event) -> None:
     version = await data_manager.get_selected_version(ev.user_id)
     await _do_draw(bot, ev, "weapon", 10, version)
 
 
-@sv_gacha.on_fullmatch(("抽卡辅助机",), block=True)
+@sv_gacha.on_fullmatch(("抽卡辅助机", "战双抽卡辅助机"), block=True)
 async def draw_support(bot: Bot, ev: Event) -> None:
     version = await data_manager.get_selected_version(ev.user_id)
     await _do_draw(bot, ev, "support_unit", 10, version)
 
 
-@sv_gacha.on_fullmatch(("抽卡百连辅助机",), block=True)
+@sv_gacha.on_fullmatch(("抽卡百连辅助机", "战双抽卡百连辅助机"), block=True)
 async def draw_bailian_support(bot: Bot, ev: Event) -> None:
     version = await data_manager.get_selected_version(ev.user_id)
     await _do_bailian(bot, ev, "support_unit", version)
@@ -186,22 +199,24 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         pool = pool.copy()
         pool["up_s"] = [up_name]
 
-    pool_type = pool["type"]
+    pool_type = pool["type"] if "type" in pool else ""
     if version_name:
+        versions = pool_manager.get_data()["versions"]
         version_data = next(
-            (entry for entry in pool_manager.get_data()["versions"] if entry.get("name") == version_name),
+            (entry for entry in versions if "name" in entry and entry["name"] == version_name),
             None,
         )
         if version_data is not None:
-            if pool_type == "weapon" and version_data.get("weapon"):
+            if pool_type == "weapon" and "weapon" in version_data and version_data["weapon"]:
                 pool = pool.copy()
                 pool["up_w6"] = [version_data["weapon"]]
-            elif pool_type == "support_unit" and version_data.get("support"):
+            elif pool_type == "support_unit" and "support" in version_data and version_data["support"]:
                 pool = pool.copy()
                 pool["up_s"] = [version_data["support"]]
     uid = ev.user_id
     at_sender = bool(ev.group_id)
-    await bot.send(f"🎰 开始 {pool['name']} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
+    pool_name = pool["name"] if "name" in pool else "活动研发"
+    await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
     avatar = await data_manager.get_avatar(uid)
 
     async with _UserLock(uid):
@@ -226,7 +241,7 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         images: list[bytes] = []
         for results in all_results:
             image = await render_gacha_result(
-                results, pool["name"], signature_code, 10, avatar_path=avatar, daily_count=daily_count
+                results, pool_name, signature_code, 10, avatar_path=avatar, daily_count=daily_count
             )
             if image is not None:
                 images.append(image)
@@ -234,10 +249,11 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         if not images:
             high = [result for results in all_results for result in results if result["level"] >= 5]
             if high:
-                lines = [f"【{pool['name']} 百连】高稀有度："]
+                lines = [f"【{pool_name} 百连】高稀有度："]
                 for result in high[:30]:
                     up_tag = " [UP]" if result["is_up"] else ""
-                    lines.append(f"{result['level']} {result['name']}{up_tag}")
+                    rarity_text = _format_rarity(str(result["level"]))
+                    lines.append(f"{rarity_text} {result['name']}{up_tag}")
                 await bot.send("\n".join(lines), at_sender)
             else:
                 await bot.send("百连渲染失败，请稍后重试", at_sender)
@@ -248,7 +264,7 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         elif GachaSimConfig.get_config("PGRGachaBailianMerge").data and not _is_official_bot(ev):
             await bot.send(MessageSegment.node([MessageSegment.image(image) for image in images]))
         else:
-            # QQ 官机不支持合并转发，且单条消息最多 4 张图，分批发送
+            # 官机不支持合并转发且单条限4图，分批按间隔发送
             batch_size = 4 if _is_official_bot(ev) else 10
             for start in range(0, len(images), batch_size):
                 batch = [MessageSegment.image(image) for image in images[start : start + batch_size]]
@@ -257,13 +273,13 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
                     await asyncio.sleep(0.8)
 
 
-@sv_gacha.on_fullmatch(("抽卡百连",), block=True)
+@sv_gacha.on_fullmatch(("抽卡百连", "战双抽卡百连"), block=True)
 async def draw_bailian(bot: Bot, ev: Event) -> None:
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
     await _do_bailian(bot, ev, selected)
 
 
-@sv_gacha.on_fullmatch(("抽卡百连武器",), block=True)
+@sv_gacha.on_fullmatch(("抽卡百连武器", "战双抽卡百连武器"), block=True)
 async def draw_bailian_weapon(bot: Bot, ev: Event) -> None:
     version = await data_manager.get_selected_version(ev.user_id)
     await _do_bailian(bot, ev, "weapon", version)
@@ -280,8 +296,9 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
     options: list[tuple[str, str]] = []
 
     version_roles: list[str] = []
-    for version in data.get("versions", []):
-        role = version.get("role") or ""
+    versions = data["versions"] if "versions" in data else []
+    for version in versions:
+        role = version["role"] if "role" in version else ""
         if role and role not in version_roles:
             version_roles.append(role)
     for name in version_roles:
@@ -297,8 +314,8 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         options.append((option_id, label))
 
     version_cards: list[dict[str, object]] = []
-    for version in data.get("versions", []):
-        role = version.get("role") or ""
+    for version in versions:
+        role = version["role"] if "role" in version else ""
         if not role:
             continue
         theme_no = 0
@@ -308,11 +325,13 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
                 theme_no = index
             elif option_id == f"char_fate:{role}":
                 fate_no = index
-        label = f"{version.get('name', '')} · {role}"
+        v_name = version["name"] if "name" in version else ""
+        label = f"{v_name} · {role}"
+        icon_url = version["icon"] if "icon" in version else ""
         version_cards.append(
             {
                 "name": label,
-                "figure": version.get("icon", ""),
+                "figure": icon_url,
                 "theme_no": theme_no,
                 "fate_no": fate_no,
             }
@@ -362,11 +381,11 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
     label = next(label for option_id, label in options if option_id == selected_id)
     await data_manager.set_selected_pool(ev.user_id, "gacha", selected_id)
     version_name = ""
-    if selected_id.startswith("char_theme:"):
+    if selected_id.startswith(("char_theme:", "char_fate:")):
         role = selected_id.split(":", 1)[1]
-        for version in pool_manager.get_data()["versions"]:
-            if version.get("role") == role:
-                version_name = version.get("name", "")
+        for version in versions:
+            if "role" in version and version["role"] == role:
+                version_name = version["name"] if "name" in version else ""
                 break
     await data_manager.set_selected_version(ev.user_id, version_name)
     await bot.send(
@@ -375,12 +394,12 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
     )
 
 
-@sv_gacha.on_command(("切换卡池",), block=True)
+@sv_gacha.on_command(("切换卡池", "战双切换卡池"), block=True)
 async def switch_pool(bot: Bot, ev: Event) -> None:
     await _switch_pool(bot, ev)
 
 
-@sv_gacha.on_command(("抽卡排名",), block=True)
+@sv_gacha.on_command(("抽卡排名", "战双抽卡排名"), block=True)
 async def draw_rank(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -407,7 +426,7 @@ async def draw_rank(bot: Bot, ev: Event) -> None:
     await bot.send("\n".join(lines), bool(ev.group_id))
 
 
-@sv_gacha.on_fullmatch(("更新卡池",), block=True)
+@sv_gacha.on_fullmatch(("更新卡池", "战双更新卡池"), block=True)
 async def update_pools(bot: Bot, ev: Event) -> None:
     if ev.user_pm is None or ev.user_pm > 0:
         return
@@ -425,7 +444,7 @@ async def update_pools(bot: Bot, ev: Event) -> None:
     await bot.send(f"卡池已更新，当期 UP: {'、'.join(names)}", at_sender)
 
 
-@sv_gacha.on_fullmatch(("抽卡记录",), block=True)
+@sv_gacha.on_fullmatch(("抽卡记录", "战双抽卡记录"), block=True)
 async def draw_record(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -440,11 +459,14 @@ async def draw_record(bot: Bot, ev: Event) -> None:
     lines = [f"共 {len(records)} 条高稀有度记录："]
     for record in records[:20]:
         up_tag = " [UP]" if record["is_up"] else ""
-        lines.append(f"{record['rarity']} {record['name']}{up_tag} - 第{record['pity_count']}抽")
+        rarity_str = str(record["rarity"])
+        rarity_text = _format_rarity(rarity_str)
+        pity_num = record["pity_count"]
+        lines.append(f"{rarity_text} {record['name']}{up_tag} - 第{pity_num}抽")
     await bot.send("\n".join(lines), at_sender)
 
 
-@sv_gacha.on_command(("模拟绑定",), block=True)
+@sv_gacha.on_command(("模拟绑定", "战双模拟绑定"), block=True)
 async def bind_signature(bot: Bot, ev: Event) -> None:
     uid = ev.user_id
     user_input = ev.text.strip() if ev.text else ""
@@ -474,6 +496,7 @@ async def bind_signature(bot: Bot, ev: Event) -> None:
     await bot.send(f"特征码绑定成功！\n你的特征码: {user_input}", at_sender)
 
 
-@sv_gacha.on_fullmatch(("模拟抽卡帮助",), block=True)
+@sv_gacha.on_fullmatch(("模拟抽卡帮助", "战双模拟抽卡帮助", "战双抽卡帮助"), block=True)
 async def send_gacha_help(bot: Bot, ev: Event) -> None:
-    await bot.send_option(await get_help(ev.user_pm), [])
+    pm_val = ev.user_pm if ev.user_pm is not None else 6
+    await bot.send_option(await get_help(pm_val), [])

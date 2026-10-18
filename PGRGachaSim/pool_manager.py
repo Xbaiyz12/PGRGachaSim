@@ -3,7 +3,6 @@
 import json
 import shutil
 import hashlib
-from typing import Optional
 from pathlib import Path
 
 from gsuid_core.logger import logger
@@ -19,8 +18,6 @@ ICON_DIR = PLUGIN_DIR / "texture2d"
 DATA_DIR = get_res_path() / "PGRGachaSim"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 USER_DATA_FILE = DATA_DIR / "gacha_data.json"
-
-POOL_ORDER = ("char_standard", "char_theme", "char_fate", "char_collab", "weapon", "weapon_collab")
 
 
 def _parse_items(raw: object) -> list[GachaItem]:
@@ -61,7 +58,7 @@ def _parse_group(raw: object) -> dict[str, list[GachaItem]]:
     return result
 
 
-def _parse_data(raw: object) -> Optional[GachaData]:
+def _parse_data(raw: object) -> GachaData | None:
     if not isinstance(raw, dict):
         return None
     return GachaData(
@@ -110,7 +107,7 @@ def _parse_versions(raw: object) -> list[VersionData]:
     return result
 
 
-def _parse_pool(pool_id: str, raw: object) -> Optional[PoolData]:
+def _parse_pool(pool_id: str, raw: object) -> PoolData | None:
     if not isinstance(raw, dict):
         return None
     name = raw.get("name")
@@ -157,7 +154,7 @@ class PoolManager:
     """卡池管理器"""
 
     def __init__(self) -> None:
-        self._data: Optional[GachaData] = None
+        self._data: GachaData | None = None
         self._pools: dict[str, PoolData] = {}
         self._loaded = False
 
@@ -199,24 +196,9 @@ class PoolManager:
             return GachaData(characters={}, weapons={}, materials={}, support={}, versions=[], standard_s=[])
         return self._data
 
-    def get_pool(self, pool_id: str) -> Optional[PoolData]:
+    def get_pool(self, pool_id: str) -> PoolData | None:
         self._load()
         return self._pools.get(pool_id)
-
-    def get_pools(self) -> list[PoolData]:
-        self._load()
-        pools = [self._pools[pool_id] for pool_id in POOL_ORDER if pool_id in self._pools]
-        pools.extend(pool for pool_id, pool in self._pools.items() if pool_id not in POOL_ORDER)
-        return pools
-
-    def get_theme_pool(self) -> Optional[PoolData]:
-        return self.get_pool("char_theme")
-
-    def get_standard_pool(self) -> Optional[PoolData]:
-        return self.get_pool("char_standard")
-
-    def get_weapon_pool(self) -> Optional[PoolData]:
-        return self.get_pool("weapon")
 
     def reload(self) -> None:
         """清空缓存并重新读取数据（供更新卡池调用）"""
@@ -225,7 +207,7 @@ class PoolManager:
         self._loaded = False
         self._load()
 
-    def find_icon_path(self, url: str) -> Optional[Path]:
+    def find_icon_path(self, url: str) -> Path | None:
         """按图标 URL 查本地缓存文件（文件名 = md5(url) + 扩展名）"""
         if not url.startswith("http"):
             return None

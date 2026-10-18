@@ -2,8 +2,6 @@
 
 import time
 import base64
-import random
-from typing import Optional
 from pathlib import Path
 
 import httpx
@@ -19,9 +17,13 @@ TEMPLATE_DIR = Path(__file__).parent / "templates"
 gacha_templates = Environment(loader=FileSystemLoader([str(TEMPLATE_DIR)]))
 
 try:
-    from playwright.async_api import async_playwright as _async_playwright
+    from playwright.async_api import Error as PlaywrightError, async_playwright as _async_playwright
 except ImportError:
     _async_playwright = None
+
+    class PlaywrightError(Exception):
+        pass
+
 
 _LEVEL_LABELS = {6: "红", 5: "橙", 4: "紫", 3: "蓝"}
 
@@ -52,32 +54,24 @@ def _icon_data_url(url: str) -> str:
 def _build_items(results: list[GachaResult]) -> list[dict[str, object]]:
     items: list[dict[str, object]] = []
     for result in results:
-        sparks = [
-            {
-                "x": round(random.uniform(4, 92), 1),
-                "y": round(random.uniform(2, 96), 1),
-                "size": random.choice((2, 3, 4)),
-                "opacity": round(random.uniform(0.45, 0.85), 2),
-            }
-            for _ in range(16)
-        ]
+        is_fragment = result["category"] == "fragment"
+        figure_url = "" if is_fragment else result["figure"]
         items.append(
             {
                 "name": result["name"],
                 "icon": _icon_data_url(result["icon"]),
-                "figure": _icon_data_url(result["figure"]) if result["figure"] else "",
+                "figure": _icon_data_url(figure_url) if figure_url else "",
                 "amount": result["amount"],
                 "level": result["level"],
                 "pillar_level": result["pillar_level"],
                 "is_up": result["is_up"],
                 "category": result["category"],
-                "sparks": sparks,
             }
         )
     return items
 
 
-async def _render_remote(html: str) -> Optional[bytes]:
+async def _render_remote(html: str) -> bytes | None:
     url = str(GachaSimConfig.get_config("PGRGachaRemoteRenderUrl").data)
     if not url:
         return None
@@ -95,8 +89,8 @@ async def _render_remote(html: str) -> Optional[bytes]:
         return None
 
 
-async def _render_html_local(template: Template, context: dict[str, object]) -> Optional[bytes]:
-    """本地 Playwright 渲染，不依赖 XWUID 的外置渲染配置"""
+async def _render_html_local(template: Template, context: dict[str, object]) -> bytes | None:
+    """本地 Playwright 渲染，视口与画布对齐并安全释放浏览器"""
     if _async_playwright is None:
         logger.warning("[战双·模拟抽卡] Playwright 未安装，跳过图片渲染")
         return None
@@ -104,15 +98,19 @@ async def _render_html_local(template: Template, context: dict[str, object]) -> 
     try:
         async with _async_playwright() as playwright:
             browser = await playwright.chromium.launch()
-            page = await browser.new_page()
-            await page.set_content(html, wait_until="load")
-            container = page.locator(".container")
-            await container.wait_for(timeout=5000)
-            screenshot = await container.screenshot(type="jpeg", quality=90)
-            await browser.close()
-            return screenshot
-    except Exception as error:
-        logger.warning(f"[战双·模拟抽卡] 本地渲染失败: {error}")
+            try:
+                page = await browser.new_page(viewport={"width": 2000, "height": 1100})
+                await page.set_content(html, wait_until="load")
+                container = page.locator(".container")
+                await container.wait_for(timeout=5000)
+                return await container.screenshot(type="jpeg", quality=90)
+            finally:
+                await browser.close()
+    except TimeoutError as error:
+        logger.error(f"[战双·模拟抽卡] 本地渲染元素等待超时: {error}")
+        return None
+    except (PlaywrightError, OSError) as error:
+        logger.error(f"[战双·模拟抽卡] 本地渲染失败: {error}")
         return None
 
 
@@ -121,9 +119,9 @@ async def render_gacha_result(
     pool_name: str,
     signature_code: str = "",
     draw_type: int = 10,
-    avatar_path: Optional[Path] = None,
+    avatar_path: Path | None = None,
     daily_count: int = 0,
-) -> Optional[bytes]:
+) -> bytes | None:
     """渲染抽卡结果图片，渲染不可用时返回 None"""
     context = {
         "pool_name": pool_name,
@@ -148,7 +146,7 @@ async def render_gacha_result(
 
 async def render_pool_select(
     cards: list[dict[str, object]], prefix: str = "pgr", title: str = "切换卡池"
-) -> Optional[bytes]:
+) -> bytes | None:
     """渲染卡池选择图：每格显示图片 + 名称 + 编号"""
     rendered: list[dict[str, object]] = []
     for card in cards:

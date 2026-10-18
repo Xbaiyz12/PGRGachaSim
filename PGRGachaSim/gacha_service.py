@@ -69,7 +69,11 @@ def empty_pity() -> PityData:
 
 
 def _weighted_choice(weights: list[tuple[str, float]]) -> str:
+    if not weights:
+        return ""
     total = sum(weight for _, weight in weights)
+    if total <= 0:
+        return weights[0][0]
     roll = random.random() * total
     upto = 0.0
     for name, weight in weights:
@@ -77,6 +81,14 @@ def _weighted_choice(weights: list[tuple[str, float]]) -> str:
         if roll <= upto:
             return name
     return weights[-1][0]
+
+
+def _item_str(item: GachaItem, key: str) -> str:
+    if key in item:
+        val = item[key]
+        if isinstance(val, str):
+            return val
+    return ""
 
 
 class GachaService:
@@ -100,7 +112,7 @@ class GachaService:
             return GachaResult(
                 name="未知",
                 level=level,
-                pillar_level=pillar_level or level,
+                pillar_level=pillar_level if pillar_level > 0 else level,
                 category=category,
                 icon="",
                 figure="",
@@ -108,18 +120,23 @@ class GachaService:
                 is_up=is_up,
                 pity_count=pity_count,
             )
-        icon = ""
+        name = _item_str(item, "name") or "未知"
+        shards_icon = _item_str(item, "shardsIcon")
+        main_icon = _item_str(item, "mainIcon")
+        figure = "" if category == "fragment" else _item_str(item, "figure")
+
         if use_shards:
-            icon = item.get("shardsIcon") or item.get("mainIcon") or ""
+            icon = shards_icon or main_icon
         else:
-            icon = item.get("mainIcon") or item.get("shardsIcon") or ""
+            icon = main_icon or shards_icon
+
         return GachaResult(
-            name=item.get("name", "未知"),
+            name=name,
             level=level,
-            pillar_level=pillar_level or level,
+            pillar_level=pillar_level if pillar_level > 0 else level,
             category=category,
             icon=icon,
-            figure=item.get("figure") or "",
+            figure=figure,
             amount=amount,
             is_up=is_up,
             pity_count=pity_count,
@@ -132,10 +149,12 @@ class GachaService:
         up_rate: float,
         guaranteed_up: bool,
     ) -> tuple[GachaItem | None, bool, bool]:
-        """返回 (物品, 是否UP, 新的guaranteed_up)；歪卡只从 fallback（常驻）里出"""
-        if up_items and (guaranteed_up or random.random() * 100 < up_rate):
+        """按概率抽取UP或常驻物品，返回 (item, is_up, next_guaranteed_up)"""
+        if up_items and (guaranteed_up or random.random() * 100.0 < up_rate):
             return random.choice(up_items), True, False
-        return (random.choice(fallback_items) if fallback_items else None), False, bool(up_items and not guaranteed_up)
+        chosen = random.choice(fallback_items) if fallback_items else None
+        next_guarantee = bool(up_items and not guaranteed_up)
+        return chosen, False, next_guarantee
 
     def perform_draw(
         self,
@@ -144,7 +163,7 @@ class GachaService:
         pity: PityData,
         count: int = 10,
     ) -> list[GachaResult]:
-        pool_type = str(pool.get("type", ""))
+        pool_type = pool["type"] if "type" in pool else ""
         if pool_type.startswith("weapon"):
             results = self._draw_weapon(pool, data, pity, count)
         elif pool_type == "support_unit":
@@ -164,110 +183,133 @@ class GachaService:
         results: list[GachaResult] = []
         characters = data["characters"]
         materials = data["materials"]
-        weights = pool.get("weights", {})
+        weights = pool["weights"] if "weights" in pool else {}
         current = pity["current_count"]
         sub = pity["sub_count"]
         guaranteed_up = pity["guaranteed_up"]
-        a_len = len(characters.get("A", []))
-        b_len = len(characters.get("B", []))
-        ab_total = float(weights.get("AB", 0))
-        a_weight = ab_total * a_len / (a_len + b_len) if (a_len + b_len) else 0.0
-        b_weight = ab_total * b_len / (a_len + b_len) if (a_len + b_len) else 0.0
+
+        a_list = characters["A"] if "A" in characters else []
+        b_list = characters["B"] if "B" in characters else []
+        s_list = characters["S"] if "S" in characters else []
+        a_len = len(a_list)
+        b_len = len(b_list)
+        ab_total = weights["AB"] if "AB" in weights else 0.0
+        a_weight = ab_total * a_len / (a_len + b_len) if (a_len + b_len) > 0 else 0.0
+        b_weight = ab_total * b_len / (a_len + b_len) if (a_len + b_len) > 0 else 0.0
+
+        base_s_weight = weights["S"] if "S" in weights else 0.5
         types = [
-            ("S", float(weights.get("S", 0))),
+            ("S", base_s_weight),
             ("A", a_weight),
             ("B", b_weight),
-            ("fragment", float(weights.get("fragment", 0))),
-            ("memory", float(weights.get("memory", 0))),
-            ("overclock", float(weights.get("overclock", 0))),
-            ("exp", float(weights.get("exp", 0))),
-            ("cogs", float(weights.get("cogs", 0))),
+            ("fragment", weights["fragment"] if "fragment" in weights else 0.0),
+            ("memory", weights["memory"] if "memory" in weights else 0.0),
+            ("overclock", weights["overclock"] if "overclock" in weights else 0.0),
+            ("exp", weights["exp"] if "exp" in weights else 0.0),
+            ("cogs", weights["cogs"] if "cogs" in weights else 0.0),
         ]
-        is_fate = pool.get("type") == "char_fate"
-        base_s = float(weights.get("S", 0.5))
-        pity_s = int(pool.get("total", 60))
+
+        pool_type = pool["type"] if "type" in pool else ""
+        is_fate = pool_type == "char_fate"
+        is_standard = pool_type == "char_standard"
+        pity_s = pool["total"] if "total" in pool else (100 if is_fate else 60)
         pity_a = 10
-        up_rate_s = float(pool.get("up_rate_s", 0))
-        up_rate_a = float(pool.get("up_rate_a", 80))
-        up_s = pool.get("up_s", [])
-        up_a = pool.get("up_a", [])
-        s_items = characters.get("S", [])
-        standard_names = data.get("standard_s", [])
-        standard_items = [item for item in s_items if item.get("name") in standard_names] or s_items
-        up_items = [item for item in s_items if item.get("name") in up_s]
-        a_items = characters.get("A", [])
-        a_up_items = [item for item in a_items if item.get("name") in up_a]
-        is_standard = pool.get("type") == "char_standard"
+        up_rate_s = pool["up_rate_s"] if "up_rate_s" in pool else 100.0
+        up_rate_a = pool["up_rate_a"] if "up_rate_a" in pool else 80.0
+        up_s = pool["up_s"] if "up_s" in pool else []
+        up_a = pool["up_a"] if "up_a" in pool else []
+
+        standard_names = set(data["standard_s"]) if "standard_s" in data else set()
+        standard_items = [item for item in s_list if _item_str(item, "name") in standard_names] or s_list
+        up_items = [item for item in s_list if _item_str(item, "name") in up_s]
+        a_up_items = [item for item in a_list if _item_str(item, "name") in up_a]
 
         for _ in range(count):
             current += 1
             sub += 1
+
+            # 命运池 80~100 抽动态上调 S 级综合概率
             if is_fate:
-                types[0] = ("S", 1.9 if current >= 80 else base_s)
+                if current >= 80:
+                    ramp_rate = base_s_weight + (current - 80) * 4.95
+                    types[0] = ("S", min(100.0, ramp_rate))
+                else:
+                    types[0] = ("S", base_s_weight)
+
+            # S级硬保底检查
             if current >= pity_s:
                 if is_standard:
                     item = self._pick(standard_items)
                     is_up = False
                 else:
                     item, is_up, guaranteed_up = self._pick_up(up_items, standard_items, up_rate_s, guaranteed_up)
-                results.append(self._make_result(item, 6, "character", is_up, current))
+                results.append(self._make_result(item, 6, "character", is_up, current, pillar_level=6))
                 current = 0
-                sub = 0
-                continue
-            if sub >= pity_a:
-                item, is_up, _ = self._pick_up(a_up_items, a_items, up_rate_a, False)
-                results.append(self._make_result(item, 5, "character", is_up, sub))
                 sub = 0
                 continue
 
             prize_type = _weighted_choice(types)
+
+            # 自然抽中 S 级
             if prize_type == "S":
                 if is_standard:
                     item = self._pick(standard_items)
                     is_up = False
                 else:
                     item, is_up, guaranteed_up = self._pick_up(up_items, standard_items, up_rate_s, guaranteed_up)
-                results.append(self._make_result(item, 6, "character", is_up, current))
+                results.append(self._make_result(item, 6, "character", is_up, current, pillar_level=6))
                 current = 0
                 sub = 0
-            elif prize_type == "A":
-                item, is_up, _ = self._pick_up(a_up_items, a_items, up_rate_a, False)
-                results.append(self._make_result(item, 5, "character", is_up, sub))
+                continue
+
+            # 未出S时检查 A 级次级保底
+            if sub >= pity_a or prize_type == "A":
+                item, is_up, _ = self._pick_up(a_up_items, a_list, up_rate_a, False)
+                results.append(self._make_result(item, 5, "character", is_up, sub, pillar_level=5))
                 sub = 0
-            elif prize_type == "B":
-                item = self._pick(characters.get("B", []))
-                results.append(self._make_result(item, 5, "character", False, 0))
-                sub = 0
+                continue
+
+            if prize_type == "B":
+                item = self._pick(b_list)
+                results.append(self._make_result(item, 4, "character", False, 0, pillar_level=4))
+                # B 级角色不重置 A 级保底 sub 计数
             elif prize_type == "fragment":
-                s_shards = [item for item in characters.get("S", []) if item.get("shardsIcon")]
-                ab_shards = [
-                    item for item in characters.get("A", []) + characters.get("B", []) if item.get("shardsIcon")
-                ]
-                if random.random() < 0.5:
+                s_shards = [it for it in s_list if _item_str(it, "shardsIcon")]
+                a_shards = [it for it in a_list if _item_str(it, "shardsIcon")]
+                b_shards = [it for it in b_list if _item_str(it, "shardsIcon")]
+                roll_val = random.random()
+                if roll_val < 0.2 and s_shards:
                     item = self._pick(s_shards)
-                    pillar_level = 6
+                    pillar_lvl = 6
+                elif roll_val < 0.6 and a_shards:
+                    item = self._pick(a_shards)
+                    pillar_lvl = 5
                 else:
-                    item = self._pick(ab_shards)
-                    pillar_level = 5
-                result = self._make_result(
-                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
+                    item = self._pick(b_shards or a_shards or s_list)
+                    pillar_lvl = 4
+                res = self._make_result(
+                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_lvl
                 )
-                result["figure"] = ""
-                result["name"] = f"{result['name']}碎片×2"
-                results.append(result)
+                res["figure"] = ""
+                res["name"] = f"{res['name']}碎片×2"
+                results.append(res)
             elif prize_type == "memory":
-                item = self._pick(materials.get("memories4", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                mem_list = materials["memories4"] if "memories4" in materials else []
+                item = self._pick(mem_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
             elif prize_type == "overclock":
-                item = self._pick(materials.get("overClock", []))
-                level = 3 if item is not None and "初" in item.get("name", "") else 4
-                results.append(self._make_result(item, level, "material", False, 0))
+                oc_list = materials["overClock"] if "overClock" in materials else []
+                item = self._pick(oc_list)
+                lvl = 3 if item is not None and "初" in _item_str(item, "name") else 4
+                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
             elif prize_type == "exp":
-                item = self._pick(materials.get("expPods", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                exp_list = materials["expPods"] if "expPods" in materials else []
+                item = self._pick(exp_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
             else:
-                item = self._pick(materials.get("cogs", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                cogs_list = materials["cogs"] if "cogs" in materials else []
+                item = self._pick(cogs_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
 
         pity["current_count"] = current
         pity["sub_count"] = sub
@@ -284,82 +326,94 @@ class GachaService:
         results: list[GachaResult] = []
         support = data["support"]
         materials = data["materials"]
-        weights = pool.get("weights", {})
+        weights = pool["weights"] if "weights" in pool else {}
         current = pity["current_count"]
         sub = pity["sub_count"]
+        guaranteed_up = pity["guaranteed_up"]
+
         types = [
-            ("S", float(weights.get("S", 0))),
-            ("A", float(weights.get("A", 0))),
-            ("exp", float(weights.get("exp", 0))),
-            ("overclock", float(weights.get("overclock", 0))),
-            ("skill", float(weights.get("skill", 0))),
-            ("fragment", float(weights.get("fragment", 0))),
-            ("cogs", float(weights.get("cogs", 0))),
+            ("S", weights["S"] if "S" in weights else 0.0),
+            ("A", weights["A"] if "A" in weights else 0.0),
+            ("exp", weights["exp"] if "exp" in weights else 0.0),
+            ("overclock", weights["overclock"] if "overclock" in weights else 0.0),
+            ("skill", weights["skill"] if "skill" in weights else 0.0),
+            ("fragment", weights["fragment"] if "fragment" in weights else 0.0),
+            ("cogs", weights["cogs"] if "cogs" in weights else 0.0),
         ]
-        pity_s = int(pool.get("total", 20))
+        pity_s = pool["total"] if "total" in pool else 20
         pity_a = 10
-        s_items = support.get("S", [])
-        a_items = support.get("A", [])
-        up_all = pool.get("up_s") or []
-        up_s_items = [entry for entry in s_items if entry.get("name") in up_all]
-        up_a_items = [entry for entry in a_items if entry.get("name") in up_all]
+        s_items = support["S"] if "S" in support else []
+        a_items = support["A"] if "A" in support else []
+        up_s = pool["up_s"] if "up_s" in pool else []
+        up_a = pool["up_a"] if "up_a" in pool else []
+        up_s_items = [entry for entry in s_items if _item_str(entry, "name") in up_s]
+        up_a_items = [entry for entry in a_items if _item_str(entry, "name") in up_a]
 
         for _ in range(count):
             current += 1
             sub += 1
+
+            # S级保底判定
             if current >= pity_s:
-                item = self._pick(up_s_items) if up_s_items and random.random() < 0.8 else self._pick(s_items)
-                results.append(self._make_result(item, 6, "support", False, current))
+                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, 80.0, guaranteed_up)
+                results.append(self._make_result(item, 6, "support", is_up, current, pillar_level=6))
                 current = 0
-                sub = 0
-                continue
-            if sub >= pity_a:
-                item = self._pick(up_a_items) if up_a_items and random.random() < 0.8 else self._pick(a_items)
-                results.append(self._make_result(item, 5, "support", False, sub))
                 sub = 0
                 continue
 
             prize_type = _weighted_choice(types)
+
+            # 自然出 S 级
             if prize_type == "S":
-                item = self._pick(up_s_items) if up_s_items and random.random() < 0.8 else self._pick(s_items)
-                results.append(self._make_result(item, 6, "support", False, current))
+                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, 80.0, guaranteed_up)
+                results.append(self._make_result(item, 6, "support", is_up, current, pillar_level=6))
                 current = 0
                 sub = 0
-            elif prize_type == "A":
-                item = self._pick(up_a_items) if up_a_items and random.random() < 0.8 else self._pick(a_items)
-                results.append(self._make_result(item, 5, "support", False, sub))
+                continue
+
+            # 次级 A 级保底或自然出 A
+            if sub >= pity_a or prize_type == "A":
+                item, is_up, _ = self._pick_up(up_a_items, a_items, 80.0, False)
+                results.append(self._make_result(item, 5, "support", is_up, sub, pillar_level=5))
                 sub = 0
-            elif prize_type == "exp":
-                item = self._pick(support.get("exp", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                continue
+
+            if prize_type == "exp":
+                exp_list = support["exp"] if "exp" in support else []
+                item = self._pick(exp_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
             elif prize_type == "overclock":
-                item = self._pick(support.get("overClock", []))
-                level = 3 if item is not None and "小" in item.get("name", "") else 4
-                results.append(self._make_result(item, level, "material", False, 0))
+                oc_list = support["overClock"] if "overClock" in support else []
+                item = self._pick(oc_list)
+                lvl = 3 if item is not None and "小" in _item_str(item, "name") else 4
+                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
             elif prize_type == "skill":
-                item = self._pick(support.get("skill", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                skill_list = support["skill"] if "skill" in support else []
+                item = self._pick(skill_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
             elif prize_type == "fragment":
-                s_shards = [item for item in s_items if item.get("shardsIcon")]
-                a_shards = [item for item in a_items if item.get("shardsIcon")]
-                if random.random() < 0.5:
+                s_shards = [it for it in s_items if _item_str(it, "shardsIcon")]
+                a_shards = [it for it in a_items if _item_str(it, "shardsIcon")]
+                if random.random() < 0.5 and s_shards:
                     item = self._pick(s_shards)
-                    pillar_level = 6
+                    pillar_lvl = 6
                 else:
-                    item = self._pick(a_shards)
-                    pillar_level = 5
-                result = self._make_result(
-                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
+                    item = self._pick(a_shards or s_items)
+                    pillar_lvl = 5
+                res = self._make_result(
+                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_lvl
                 )
-                result["figure"] = ""
-                result["name"] = f"支援架构零件-{result['name']}"
-                results.append(result)
+                res["figure"] = ""
+                res["name"] = f"支援架构零件-{res['name']}"
+                results.append(res)
             else:
-                item = self._pick(materials.get("cogs", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                cogs_list = materials["cogs"] if "cogs" in materials else []
+                item = self._pick(cogs_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
 
         pity["current_count"] = current
         pity["sub_count"] = sub
+        pity["guaranteed_up"] = guaranteed_up
         return results
 
     def _draw_weapon(
@@ -372,62 +426,72 @@ class GachaService:
         results: list[GachaResult] = []
         weapons = data["weapons"]
         materials = data["materials"]
-        weights = pool.get("weights", {})
+        weights = pool["weights"] if "weights" in pool else {}
         current = pity["current_count"]
         sub = pity["sub_count"]
         guaranteed_up = pity["guaranteed_up"]
+
         types = [
-            ("6", float(weights.get("6", 0))),
-            ("5", float(weights.get("5", 0))),
-            ("4", float(weights.get("4", 0))),
-            ("3", float(weights.get("3", 0))),
-            ("overclock", float(weights.get("overclock", 0))),
-            ("cogs", float(weights.get("cogs", 0))),
+            ("6", weights["6"] if "6" in weights else 0.0),
+            ("5", weights["5"] if "5" in weights else 0.0),
+            ("4", weights["4"] if "4" in weights else 0.0),
+            ("3", weights["3"] if "3" in weights else 0.0),
+            ("overclock", weights["overclock"] if "overclock" in weights else 0.0),
+            ("cogs", weights["cogs"] if "cogs" in weights else 0.0),
         ]
-        pity_6 = int(pool.get("total", 30))
+        pity_6 = pool["total"] if "total" in pool else 30
         pity_5 = 10
-        up_rate_w6 = float(pool.get("up_rate_w6", 80))
-        up_w6 = pool.get("up_w6", [])
-        w6_items = weapons.get("6", [])
-        w6_up_items = [item for item in w6_items if item.get("name") in up_w6]
+        up_rate_w6 = pool["up_rate_w6"] if "up_rate_w6" in pool else 80.0
+        up_w6 = pool["up_w6"] if "up_w6" in pool else []
+        w6_items = weapons["6"] if "6" in weapons else []
+        w5_items = weapons["5"] if "5" in weapons else []
+        w4_items = weapons["4"] if "4" in weapons else []
+        w3_items = weapons["3"] if "3" in weapons else []
+        w6_up_items = [item for item in w6_items if _item_str(item, "name") in up_w6]
 
         for _ in range(count):
             current += 1
             sub += 1
+
+            # 6星保底检查
             if current >= pity_6:
                 item, is_up, guaranteed_up = self._pick_up(w6_up_items, w6_items, up_rate_w6, guaranteed_up)
-                results.append(self._make_result(item, 6, "weapon", is_up, current))
+                results.append(self._make_result(item, 6, "weapon", is_up, current, pillar_level=6))
                 current = 0
-                sub = 0
-                continue
-            if sub >= pity_5:
-                item = self._pick(weapons.get("5", []))
-                results.append(self._make_result(item, 5, "weapon", False, sub))
                 sub = 0
                 continue
 
             prize_type = _weighted_choice(types)
+
+            # 自然抽中 6星
             if prize_type == "6":
                 item, is_up, guaranteed_up = self._pick_up(w6_up_items, w6_items, up_rate_w6, guaranteed_up)
-                results.append(self._make_result(item, 6, "weapon", is_up, current))
+                results.append(self._make_result(item, 6, "weapon", is_up, current, pillar_level=6))
                 current = 0
                 sub = 0
-            elif prize_type == "5":
-                item = self._pick(weapons.get("5", []))
-                results.append(self._make_result(item, 5, "weapon", False, sub))
+                continue
+
+            # 5星次级保底检查或自然抽中 5星
+            if sub >= pity_5 or prize_type == "5":
+                item = self._pick(w5_items)
+                results.append(self._make_result(item, 5, "weapon", False, sub, pillar_level=5))
                 sub = 0
-            elif prize_type == "4":
-                item = self._pick(weapons.get("4", []))
-                results.append(self._make_result(item, 4, "weapon", False, 0))
+                continue
+
+            if prize_type == "4":
+                item = self._pick(w4_items)
+                results.append(self._make_result(item, 4, "weapon", False, 0, pillar_level=4))
             elif prize_type == "3":
-                item = self._pick(weapons.get("3", []))
-                results.append(self._make_result(item, 3, "weapon", False, 0))
+                item = self._pick(w3_items)
+                results.append(self._make_result(item, 3, "weapon", False, 0, pillar_level=3))
             elif prize_type == "overclock":
-                item = self._pick(materials.get("overClock", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                oc_list = materials["overClock"] if "overClock" in materials else []
+                item = self._pick(oc_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
             else:
-                item = self._pick(materials.get("cogs", []))
-                results.append(self._make_result(item, 4, "material", False, 0))
+                cogs_list = materials["cogs"] if "cogs" in materials else []
+                item = self._pick(cogs_list)
+                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
 
         pity["current_count"] = current
         pity["sub_count"] = sub

@@ -1,12 +1,11 @@
 """战双模拟抽卡 - 数据库模型"""
 
 import time
-from typing import Optional
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from sqlmodel import Field, col, select, update
-from sqlalchemy import func
+from sqlalchemy import Index, UniqueConstraint, func
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,10 +18,13 @@ _BEIJING = ZoneInfo("Asia/Shanghai")
 class PGRGachaPity(BaseIDModel, table=True):
     """保底数据表"""
 
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        UniqueConstraint("user_id", "pool_type", name="uq_pgr_pity_user_pool"),
+        {"extend_existing": True},
+    )
 
-    user_id: str = Field(title="用户ID")
-    pool_type: str = Field(title="卡池类型")
+    user_id: str = Field(title="用户ID", index=True)
+    pool_type: str = Field(title="卡池类型", index=True)
     current_count: int = Field(default=0, title="最高稀有度计数")
     sub_count: int = Field(default=0, title="次级保底计数")
     guaranteed_up: bool = Field(default=False, title="大保底")
@@ -35,7 +37,7 @@ class PGRGachaPity(BaseIDModel, table=True):
         session: AsyncSession,
         user_id: str,
         pool_type: str,
-    ) -> Optional["PGRGachaPity"]:
+    ) -> "PGRGachaPity | None":
         stmt = select(cls).where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
         result = await session.execute(stmt)
         return result.scalars().first()
@@ -79,17 +81,21 @@ class PGRGachaPity(BaseIDModel, table=True):
 class PGRGachaRecord(BaseIDModel, table=True):
     """出货记录表"""
 
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        Index("ix_pgr_record_user_created", "user_id", "created_at"),
+        Index("ix_pgr_record_up_stats", "is_up", "item_type", "rarity", "created_at"),
+        {"extend_existing": True},
+    )
 
-    user_id: str = Field(title="用户ID")
+    user_id: str = Field(title="用户ID", index=True)
     bot_id: str = Field(default="", title="平台")
     pool_type: str = Field(title="卡池类型")
     name: str = Field(title="名称")
-    rarity: str = Field(default="S", title="稀有度")
+    rarity: str = Field(default="6", title="稀有度")
     item_type: str = Field(default="character", title="类型")
     is_up: bool = Field(default=False, title="是否UP")
     pity_count: int = Field(default=0, title="第几抽")
-    created_at: int = Field(default=0, title="时间戳")
+    created_at: int = Field(default=0, title="时间戳", index=True)
 
     @classmethod
     @with_session
@@ -120,6 +126,15 @@ class PGRGachaRecord(BaseIDModel, table=True):
         )
 
     @classmethod
+    @with_session
+    async def add_records_batch(
+        cls,
+        session: AsyncSession,
+        records: list["PGRGachaRecord"],
+    ) -> None:
+        session.add_all(records)
+
+    @classmethod
     @with_read_session
     async def get_history(
         cls,
@@ -144,7 +159,7 @@ class PGRGachaRecord(BaseIDModel, table=True):
             .where(
                 col(cls.is_up).is_(True),
                 col(cls.item_type) == "character",
-                col(cls.rarity) == "6",
+                col(cls.rarity).in_(["6", "S"]),
                 col(cls.created_at) >= start_ts,
                 col(cls.created_at) <= end_ts,
             )
@@ -157,10 +172,13 @@ class PGRGachaRecord(BaseIDModel, table=True):
 class PGRGachaPool(BaseIDModel, table=True):
     """卡池选择表"""
 
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        UniqueConstraint("user_id", "pool_type", name="uq_pgr_pool_user_pool"),
+        {"extend_existing": True},
+    )
 
-    user_id: str = Field(title="用户ID")
-    pool_type: str = Field(title="卡池类型")
+    user_id: str = Field(title="用户ID", index=True)
+    pool_type: str = Field(title="卡池类型", index=True)
     selected_pool_id: str = Field(default="", title="选中的卡池ID")
 
     @classmethod
@@ -170,7 +188,7 @@ class PGRGachaPool(BaseIDModel, table=True):
         session: AsyncSession,
         user_id: str,
         pool_type: str,
-    ) -> Optional[str]:
+    ) -> str | None:
         stmt = select(cls).where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
         result = await session.execute(stmt)
         record = result.scalars().first()
@@ -204,11 +222,15 @@ class PGRGachaPool(BaseIDModel, table=True):
 class PGRGachaDaily(BaseIDModel, table=True):
     """每日计数表"""
 
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        UniqueConstraint("user_id", "pool_type", "date", name="uq_pgr_daily_user_pool_date"),
+        Index("ix_pgr_daily_date_user", "date", "user_id"),
+        {"extend_existing": True},
+    )
 
-    user_id: str = Field(title="用户ID")
-    pool_type: str = Field(title="卡池类型")
-    date: str = Field(title="日期")
+    user_id: str = Field(title="用户ID", index=True)
+    pool_type: str = Field(title="卡池类型", index=True)
+    date: str = Field(title="日期", index=True)
     count: int = Field(default=0, title="抽卡次数")
 
     @classmethod
@@ -274,10 +296,13 @@ class PGRGachaDaily(BaseIDModel, table=True):
 class PGRGachaSignature(BaseIDModel, table=True):
     """用户特征码表"""
 
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        UniqueConstraint("signature_code", name="uq_pgr_sig_code"),
+        {"extend_existing": True},
+    )
 
-    user_id: str = Field(title="用户ID")
-    signature_code: str = Field(title="9位数字特征码")
+    user_id: str = Field(title="用户ID", unique=True, index=True)
+    signature_code: str = Field(title="9位数字特征码", index=True)
 
     @classmethod
     @with_read_session
@@ -285,7 +310,7 @@ class PGRGachaSignature(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
-    ) -> Optional[str]:
+    ) -> str | None:
         stmt = select(cls).where(col(cls.user_id) == user_id)
         result = await session.execute(stmt)
         record = result.scalars().first()
