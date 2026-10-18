@@ -2,6 +2,8 @@
 
 import time
 import base64
+import asyncio
+from typing import TypedDict
 from pathlib import Path
 
 import httpx
@@ -26,6 +28,25 @@ except ImportError:
 
 
 _LEVEL_LABELS = {6: "红", 5: "橙", 4: "紫", 3: "蓝"}
+_BG_BASE64_CACHE: str = ""
+
+
+class PoolSelectCard(TypedDict, total=False):
+    name: str
+    figure: str
+    theme_no: int | str
+    fate_no: int | str
+    single_no: int | str
+
+
+def _get_bg_base64() -> str:
+    """获取背景图 base64，优先使用内存缓存避免重复 IO"""
+    global _BG_BASE64_CACHE
+    if not _BG_BASE64_CACHE:
+        bg_path = TEMPLATE_DIR.parent / "texture2d" / "gacha_bg.jpg"
+        if bg_path.exists():
+            _BG_BASE64_CACHE = _image_to_base64(bg_path)
+    return _BG_BASE64_CACHE
 
 
 def _image_to_base64(path: Path) -> str:
@@ -130,9 +151,7 @@ async def render_gacha_result(
         "signature_code": signature_code,
         "avatar": _image_to_base64(avatar_path) if avatar_path is not None else "",
         "daily_count": daily_count,
-        "background": _image_to_base64(TEMPLATE_DIR.parent / "texture2d" / "gacha_bg.jpg")
-        if (TEMPLATE_DIR.parent / "texture2d" / "gacha_bg.jpg").exists()
-        else "",
+        "background": _get_bg_base64(),
     }
 
     if GachaSimConfig.get_config("PGRGachaRemoteRenderEnable").data:
@@ -144,20 +163,72 @@ async def render_gacha_result(
     return await _render_html_local(gacha_templates.get_template("gacha_result.html"), context)
 
 
+async def render_gacha_results_batch(
+    batches: list[dict[str, object]],
+) -> list[bytes]:
+    """批量渲染抽卡结果（如百连），复用单个 Chromium 进程以大幅降低冷启动开销"""
+    if not batches:
+        return []
+
+    # 若启用了远程渲染，则走并发远程请求
+    if GachaSimConfig.get_config("PGRGachaRemoteRenderEnable").data:
+        template = gacha_templates.get_template("gacha_result.html")
+        tasks = []
+        for ctx in batches:
+            html = template.render(**ctx)
+            tasks.append(_render_remote(html))
+        remote_results = await asyncio.gather(*tasks)
+        valid_results = [res for res in remote_results if res is not None]
+        if len(valid_results) == len(batches):
+            return valid_results
+
+    if _async_playwright is None:
+        logger.warning("[战双·模拟抽卡] Playwright 未安装，跳过图片渲染")
+        return []
+
+    template = gacha_templates.get_template("gacha_result.html")
+    rendered_images: list[bytes] = []
+
+    try:
+        async with _async_playwright() as playwright:
+            browser = await playwright.chromium.launch()
+            try:
+                page = await browser.new_page(viewport={"width": 2000, "height": 1100})
+                for ctx in batches:
+                    html = template.render(**ctx)
+                    await page.set_content(html, wait_until="load")
+                    container = page.locator(".container")
+                    await container.wait_for(timeout=5000)
+                    img_bytes = await container.screenshot(type="jpeg", quality=90)
+                    rendered_images.append(img_bytes)
+            finally:
+                await browser.close()
+    except TimeoutError as error:
+        logger.error(f"[战双·模拟抽卡] 批量渲染等待超时: {error}")
+    except (PlaywrightError, OSError) as error:
+        logger.error(f"[战双·模拟抽卡] 批量渲染失败: {error}")
+
+    return rendered_images
+
+
 async def render_pool_select(
-    cards: list[dict[str, object]], prefix: str = "pgr", title: str = "切换卡池"
+    cards: list[PoolSelectCard], prefix: str = "pgr", title: str = "切换卡池"
 ) -> bytes | None:
     """渲染卡池选择图：每格显示图片 + 名称 + 编号"""
     rendered: list[dict[str, object]] = []
     for card in cards:
-        figure = card.get("figure")
+        figure = card["figure"] if "figure" in card else ""
+        name = card["name"] if "name" in card else ""
+        theme_no = card["theme_no"] if "theme_no" in card else None
+        fate_no = card["fate_no"] if "fate_no" in card else None
+        single_no = card["single_no"] if "single_no" in card else None
         rendered.append(
             {
-                "name": card.get("name", ""),
-                "figure": _icon_data_url(figure) if isinstance(figure, str) else "",
-                "theme_no": card.get("theme_no"),
-                "fate_no": card.get("fate_no"),
-                "single_no": card.get("single_no"),
+                "name": name,
+                "figure": _icon_data_url(figure) if figure else "",
+                "theme_no": theme_no,
+                "fate_no": fate_no,
+                "single_no": single_no,
             }
         )
     context = {"cards": rendered, "prefix": prefix, "title": title}

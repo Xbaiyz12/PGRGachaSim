@@ -7,6 +7,7 @@ from typing import Literal
 from httpx import HTTPError
 
 from gsuid_core.sv import SV, Plugins, get_plugin_available_prefix
+from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
@@ -17,7 +18,15 @@ from .gacha_config import GachaSimConfig
 from .gacha_update import update_current_pools
 from .pool_manager import pool_manager
 from .gacha_service import GachaResult, gacha_service
-from .draw_gacha_result import format_text_result, render_pool_select, render_gacha_result
+from .draw_gacha_result import (
+    _build_items,
+    _get_bg_base64,
+    _image_to_base64,
+    format_text_result,
+    render_pool_select,
+    render_gacha_result,
+    render_gacha_results_batch,
+)
 from .gacha_help.get_help import get_help
 
 Plugins(name="PGRGachaSim", force_prefix=["pgr", "zs"], allow_empty_prefix=False)
@@ -155,9 +164,20 @@ async def draw_selected(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, selected, 10)
 
 
+@sv_gacha.on_fullmatch(("单抽", "战双单抽"), block=True)
+async def draw_selected_single(bot: Bot, ev: Event) -> None:
+    selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
+    await _do_draw(bot, ev, selected, 1)
+
+
 @sv_gacha.on_fullmatch(("抽卡基准", "战双抽卡基准"), block=True)
 async def draw_standard(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, "char_standard", 10)
+
+
+@sv_gacha.on_fullmatch(("单抽基准", "战双单抽基准"), block=True)
+async def draw_standard_single(bot: Bot, ev: Event) -> None:
+    await _do_draw(bot, ev, "char_standard", 1)
 
 
 @sv_gacha.on_fullmatch(("抽卡武器", "战双抽卡武器"), block=True)
@@ -166,10 +186,22 @@ async def draw_weapon(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, "weapon", 10, version)
 
 
+@sv_gacha.on_fullmatch(("单抽武器", "战双单抽武器"), block=True)
+async def draw_weapon_single(bot: Bot, ev: Event) -> None:
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, "weapon", 1, version)
+
+
 @sv_gacha.on_fullmatch(("抽卡辅助机", "战双抽卡辅助机"), block=True)
 async def draw_support(bot: Bot, ev: Event) -> None:
     version = await data_manager.get_selected_version(ev.user_id)
     await _do_draw(bot, ev, "support_unit", 10, version)
+
+
+@sv_gacha.on_fullmatch(("单抽辅助机", "战双单抽辅助机"), block=True)
+async def draw_support_single(bot: Bot, ev: Event) -> None:
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, "support_unit", 1, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡百连辅助机", "战双抽卡百连辅助机"), block=True)
@@ -238,13 +270,21 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
             signature_code = await data_manager.generate_signature(uid)
         daily_count = await data_manager.get_daily_count(uid, pool_type)
 
-        images: list[bytes] = []
-        for results in all_results:
-            image = await render_gacha_result(
-                results, pool_name, signature_code, 10, avatar_path=avatar, daily_count=daily_count
-            )
-            if image is not None:
-                images.append(image)
+        bg_base64 = _get_bg_base64()
+        avatar_b64 = _image_to_base64(avatar) if avatar is not None else ""
+        batches = [
+            {
+                "pool_name": pool_name,
+                "draw_type": 10,
+                "items": _build_items(res),
+                "signature_code": signature_code,
+                "avatar": avatar_b64,
+                "daily_count": daily_count,
+                "background": bg_base64,
+            }
+            for res in all_results
+        ]
+        images = await render_gacha_results_batch(batches)
 
         if not images:
             high = [result for results in all_results for result in results if result["level"] >= 5]
@@ -494,6 +534,105 @@ async def bind_signature(bot: Bot, ev: Event) -> None:
 
     await data_manager.set_signature(uid, user_input)
     await bot.send(f"特征码绑定成功！\n你的特征码: {user_input}", at_sender)
+
+
+@sv_gacha.on_fullmatch(("保底", "战双保底", "垫抽", "战双垫抽"), block=True)
+async def query_pity(bot: Bot, ev: Event) -> None:
+    if not GachaSimConfig.get_config("PGRGachaEnabled").data:
+        await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
+        return
+
+    uid = ev.user_id
+    at_sender = bool(ev.group_id)
+    pities = await data_manager.get_all_pity(uid)
+    if not pities:
+        await bot.send("你还没有任何抽卡保底记录，快去抽卡试试吧！", at_sender)
+        return
+
+    pool_name_map = {
+        "char_theme": "主题活动研发",
+        "char_fate": "命运主题研发",
+        "char_standard": "基准角色研发",
+        "weapon": "狙击武器研发",
+        "support_unit": "辅助机研发",
+    }
+    lines = ["【指挥官·研发保底进度】"]
+    for p in pities:
+        name = pool_name_map.get(p.pool_type, p.pool_type)
+        status_line = f"• {name}：当前已垫 {p.current_count} 抽（总抽数 {p.total_count}）"
+        if p.guaranteed_up:
+            status_line += " [大保底已就绪]"
+        lines.append(status_line)
+
+    await bot.send("\n".join(lines), at_sender)
+
+
+@sv_gacha.on_fullmatch(("重置保底", "战双重置保底"), block=True)
+async def reset_user_pity(bot: Bot, ev: Event) -> None:
+    if not GachaSimConfig.get_config("PGRGachaEnabled").data:
+        await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
+        return
+
+    uid = ev.user_id
+    at_sender = bool(ev.group_id)
+    count = await data_manager.reset_pity(uid)
+    await bot.send(f"已成功为你重置了 {count} 个卡池的垫抽与保底计数！", at_sender)
+
+
+@sv_gacha.on_fullmatch(("抽卡统计", "战双抽卡统计", "欧气分析", "战双欧气分析"), block=True)
+async def query_stats(bot: Bot, ev: Event) -> None:
+    if not GachaSimConfig.get_config("PGRGachaEnabled").data:
+        await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
+        return
+
+    uid = ev.user_id
+    at_sender = bool(ev.group_id)
+    stats = await data_manager.get_user_stats(uid)
+    total_pulls = stats["total_pulls"] if "total_pulls" in stats else 0
+    if not total_pulls:
+        await bot.send("暂无抽卡统计数据，先去抽几发吧！", at_sender)
+        return
+
+    s_count = stats["s_count"] if "s_count" in stats else 0
+    a_count = stats["a_count"] if "a_count" in stats else 0
+    avg_s = stats["avg_s_pulls"] if "avg_s_pulls" in stats else 0
+    s_rate = stats["s_rate"] if "s_rate" in stats else 0.0
+
+    lines = [
+        "【指挥官·模拟抽卡欧气报告】",
+        f"• 累计研发：{total_pulls} 抽",
+        f"• 获得 S/6★：{s_count} 个（综合出率 {s_rate}%）",
+        f"• 获得 A/5★：{a_count} 个",
+        f"• 平均 S 抽数：{avg_s} 抽",
+    ]
+    latest_s = stats["latest_s"] if "latest_s" in stats and isinstance(stats["latest_s"], list) else []
+    if latest_s:
+        lines.append("\n最近出货记录：")
+        for item in latest_s:
+            if isinstance(item, dict):
+                up_tag = " [UP]" if ("is_up" in item and item["is_up"]) else ""
+                name_str = item["name"] if "name" in item else "未知"
+                pity_str = item["pity_count"] if "pity_count" in item else "?"
+                lines.append(f"  - {name_str}{up_tag} (第 {pity_str} 抽)")
+
+    await bot.send("\n".join(lines), at_sender)
+
+
+@scheduler.scheduled_job("cron", hour=4, minute=0)
+async def _scheduled_sync_pools() -> None:
+    """每日凌晨 4 点定时同步官方卡池公告"""
+    logger.info("[战双·模拟抽卡] 正在执行每日卡池自动同步...")
+    try:
+        updated = await update_current_pools()
+        if updated:
+            pool_manager.reload()
+            logger.info("[战双·模拟抽卡] 每日卡池自动同步成功")
+        else:
+            logger.info("[战双·模拟抽卡] 每日卡池检查完成，暂无更新")
+    except HTTPError as e:
+        logger.error(f"[战双·模拟抽卡] 每日卡池自动同步网络异常: {e}")
+    except OSError as e:
+        logger.error(f"[战双·模拟抽卡] 每日卡池自动同步IO异常: {e}")
 
 
 @sv_gacha.on_fullmatch(("模拟抽卡帮助", "战双模拟抽卡帮助", "战双抽卡帮助"), block=True)

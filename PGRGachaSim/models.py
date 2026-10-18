@@ -43,6 +43,36 @@ class PGRGachaPity(BaseIDModel, table=True):
         return result.scalars().first()
 
     @classmethod
+    @with_read_session
+    async def get_all_pity(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+    ) -> list["PGRGachaPity"]:
+        stmt = select(cls).where(col(cls.user_id) == user_id)
+        result = await session.execute(stmt)
+        return list(result.scalars().all())
+
+    @classmethod
+    @with_session
+    async def reset_pity(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+        pool_type: str | None = None,
+    ) -> int:
+        conds = [col(cls.user_id) == user_id]
+        if pool_type:
+            conds.append(col(cls.pool_type) == pool_type)
+        stmt = (
+            update(cls)
+            .where(*conds)
+            .values(current_count=0, sub_count=0, guaranteed_up=False)
+        )
+        result = await session.execute(stmt)
+        return result.rowcount if isinstance(result, CursorResult) else 0
+
+    @classmethod
     @with_session
     async def save_pity(
         cls,
@@ -143,6 +173,17 @@ class PGRGachaRecord(BaseIDModel, table=True):
         limit: int = 50,
     ) -> list["PGRGachaRecord"]:
         stmt = select(cls).where(col(cls.user_id) == user_id).order_by(col(cls.created_at).desc()).limit(limit)
+        result = await session.execute(stmt)
+        return list(result.scalars().all())
+
+    @classmethod
+    @with_read_session
+    async def get_user_records(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+    ) -> list["PGRGachaRecord"]:
+        stmt = select(cls).where(col(cls.user_id) == user_id).order_by(col(cls.created_at).asc())
         result = await session.execute(stmt)
         return list(result.scalars().all())
 

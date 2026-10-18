@@ -27,6 +27,14 @@ class DataManager:
     """数据管理器 - 封装数据库操作"""
 
     @staticmethod
+    async def get_all_pity(user_id: str) -> list[PGRGachaPity]:
+        return await PGRGachaPity.get_all_pity(user_id)
+
+    @staticmethod
+    async def reset_pity(user_id: str, pool_type: str | None = None) -> int:
+        return await PGRGachaPity.reset_pity(user_id, pool_type)
+
+    @staticmethod
     async def get_pity_data(user_id: str, pool_type: str) -> PityData:
         pity = await PGRGachaPity.get_pity(user_id, pool_type)
         if pity is None:
@@ -102,6 +110,29 @@ class DataManager:
             }
             for record in records
         ]
+
+    @staticmethod
+    async def get_user_stats(user_id: str) -> dict[str, object]:
+        """统计用户的抽卡出货和欧气情况"""
+        pities = await PGRGachaPity.get_all_pity(user_id)
+        records = await PGRGachaRecord.get_user_records(user_id)
+        total_pulls = sum(p.total_count for p in pities)
+        s_count = sum(1 for r in records if r.rarity == "6")
+        a_count = sum(1 for r in records if r.rarity == "5")
+        s_records = [r for r in records if r.rarity == "6"]
+        avg_s_pulls = (sum(r.pity_count for r in s_records) / len(s_records)) if s_records else 0.0
+
+        return {
+            "total_pulls": total_pulls,
+            "s_count": s_count,
+            "a_count": a_count,
+            "avg_s_pulls": round(avg_s_pulls, 1),
+            "s_rate": round(s_count / total_pulls * 100, 2) if total_pulls > 0 else 0.0,
+            "latest_s": [
+                {"name": r.name, "pity_count": r.pity_count, "is_up": r.is_up}
+                for r in reversed(s_records[-5:])
+            ],
+        }
 
     @staticmethod
     async def get_signature(user_id: str) -> str | None:

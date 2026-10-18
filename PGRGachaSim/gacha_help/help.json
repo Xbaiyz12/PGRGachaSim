@@ -11,9 +11,25 @@
         "need_admin": false
       },
       {
+        "name": "单抽",
+        "desc": "使用已选卡池进行单次抽取",
+        "eg": "单抽",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "抽卡基准",
         "desc": "基准构造体十连（60抽S保底、10抽A保底）",
         "eg": "抽卡基准",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "单抽基准",
+        "desc": "基准构造体单抽",
+        "eg": "单抽基准",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -40,6 +56,14 @@
         "need_admin": false
       },
       {
+        "name": "单抽武器",
+        "desc": "武器研发单抽",
+        "eg": "单抽武器",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "抽卡百连武器",
         "desc": "武器研发百连（10次十连），需开启百连功能",
         "eg": "抽卡百连武器",
@@ -61,6 +85,14 @@
         "need_admin": false
       },
       {
+        "name": "单抽辅助机",
+        "desc": "辅助机研发单抽",
+        "eg": "单抽辅助机",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "抽卡百连辅助机",
         "desc": "辅助机研发百连（10次十连），需开启百连功能",
         "eg": "抽卡百连辅助机",
@@ -71,12 +103,36 @@
     ]
   },
   "卡池管理": {
-    "desc": "选择卡池与查看抽卡记录",
+    "desc": "选择卡池、查询保底与欧气统计",
     "data": [
       {
         "name": "切换卡池",
         "desc": "查看版本卡池图并选择卡池（版本角色主题/命运 + 基准/武器/辅助机），选一次",
         "eg": "切换卡池 2",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "保底",
+        "desc": "查看各卡池当前已垫抽数与大保底状态",
+        "eg": "保底",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "重置保底",
+        "desc": "清空并重置所有卡池的垫抽计数与保底状态",
+        "eg": "重置保底",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡统计",
+        "desc": "查看个人模拟抽卡总览与欧气分析报告",
+        "eg": "抽卡统计",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

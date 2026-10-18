@@ -40,6 +40,32 @@
         overflow: visible;
     }
 
+    .container.single-mode {
+        width: 1000px;
+        height: 1100px;
+        padding: 100px 50px 200px;
+    }
+
+    .container.single-mode .column {
+        width: 320px;
+        height: 800px;
+    }
+
+    .container.single-mode .name {
+        font-size: 16px;
+        height: 42px;
+        line-height: 42px;
+    }
+
+    .container.single-mode .count {
+        font-size: 36px;
+        bottom: 48px;
+    }
+
+    .container.single-mode .body {
+        bottom: 140px;
+    }
+
     .topbar {
         position: relative;
         height: 62px;
@@ -319,7 +345,7 @@
 </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container{% if draw_type == 1 %} single-mode{% endif %}">
         <div class="topbar">
             {% if avatar %}<img class="avatar" src="{{ avatar }}" alt="avatar" onerror="this.style.display='none'">{% endif %}
             <div class="daily">今日已抽 {{ daily_count }} 次</div>
