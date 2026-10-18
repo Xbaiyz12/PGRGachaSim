@@ -1,8 +1,8 @@
 """战双模拟抽卡 - 渲染抽卡结果"""
 
+import time
 import base64
 import random
-import time
 from typing import Optional
 from pathlib import Path
 
