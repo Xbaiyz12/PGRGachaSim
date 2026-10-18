@@ -239,11 +239,15 @@ class GachaService:
                 results.append(self._make_result(item, 5, "character", False, 0))
                 sub = 0
             elif prize_type == "fragment":
+                s_shards = [item for item in characters.get("S", []) if item.get("shardsIcon")]
+                ab_shards = [
+                    item for item in characters.get("A", []) + characters.get("B", []) if item.get("shardsIcon")
+                ]
                 if random.random() < 0.5:
-                    item = self._pick(characters.get("S", []))
+                    item = self._pick(s_shards)
                     pillar_level = 6
                 else:
-                    item = self._pick(characters.get("A", []) + characters.get("B", []))
+                    item = self._pick(ab_shards)
                     pillar_level = 5
                 result = self._make_result(
                     item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
@@ -336,11 +340,13 @@ class GachaService:
                 item = self._pick(support.get("skill", []))
                 results.append(self._make_result(item, 4, "material", False, 0))
             elif prize_type == "fragment":
+                s_shards = [item for item in s_items if item.get("shardsIcon")]
+                a_shards = [item for item in a_items if item.get("shardsIcon")]
                 if random.random() < 0.5:
-                    item = self._pick(s_items)
+                    item = self._pick(s_shards)
                     pillar_level = 6
                 else:
-                    item = self._pick(a_items)
+                    item = self._pick(a_shards)
                     pillar_level = 5
                 result = self._make_result(
                     item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_level
