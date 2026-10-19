@@ -41,10 +41,12 @@ def _get_user_lock(uid: str) -> asyncio.BoundedSemaphore:
     if uid in _USER_LOCKS:
         return _USER_LOCKS[uid]
     if len(_USER_LOCKS) >= _MAX_CACHED_LOCKS:
-        # 清理未被占用的闲置锁，防止长期运行内存泄漏
-        to_remove = [k for k, v in _USER_LOCKS.items() if not v.locked()]
-        for k in to_remove[:256]:
-            _USER_LOCKS.pop(k, None)
+        # 全量清理闲置锁，防止长期运行内存泄漏
+        for key in [k for k, v in _USER_LOCKS.items() if not v.locked()]:
+            _USER_LOCKS.pop(key)
+    if len(_USER_LOCKS) >= _MAX_CACHED_LOCKS:
+        # 1024 锁全部在用的极端情况下用临时锁兜底，保证字典不突破上限
+        return asyncio.BoundedSemaphore(1)
     lock = asyncio.BoundedSemaphore(1)
     _USER_LOCKS[uid] = lock
     return lock
@@ -248,12 +250,13 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
     uid = ev.user_id
     at_sender = bool(ev.group_id)
     pool_name = pool["name"] if "name" in pool else "活动研发"
-    await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
     avatar = await data_manager.get_avatar(uid)
 
     async with _UserLock(uid):
         if not await _check_daily_limit(bot, ev, pool_type, 100):
             return
+        # 次数校验通过后再发提示，避免超限时先收到「开始」再收到拒绝
+        await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
         pity = await data_manager.get_pity_data(uid, pool_type)
         all_results: list[list[GachaResult]] = []
         for _ in range(10):
@@ -350,6 +353,7 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         ("weapon", "武器研发"),
         ("weapon_collab", "联动武器狙击"),
         ("support_unit", "辅助机研发"),
+        ("char_collab", "联动成员狙击"),
     ):
         options.append((option_id, label))
 
@@ -469,6 +473,7 @@ async def draw_rank(bot: Bot, ev: Event) -> None:
 @sv_gacha.on_fullmatch(("更新卡池", "战双更新卡池"), block=True)
 async def update_pools(bot: Bot, ev: Event) -> None:
     if ev.user_pm is None or ev.user_pm > 0:
+        await bot.send("更新卡池仅限主人使用", bool(ev.group_id))
         return
     at_sender = bool(ev.group_id)
     await bot.send("正在从官方公告更新当期卡池...", at_sender)
@@ -629,10 +634,8 @@ async def _scheduled_sync_pools() -> None:
             logger.info("[战双·模拟抽卡] 每日卡池自动同步成功")
         else:
             logger.info("[战双·模拟抽卡] 每日卡池检查完成，暂无更新")
-    except HTTPError as e:
-        logger.error(f"[战双·模拟抽卡] 每日卡池自动同步网络异常: {e}")
-    except OSError as e:
-        logger.error(f"[战双·模拟抽卡] 每日卡池自动同步IO异常: {e}")
+    except (HTTPError, OSError, ValueError) as e:
+        logger.error(f"[战双·模拟抽卡] 每日卡池自动同步异常: {e}")
 
 
 @sv_gacha.on_fullmatch(("模拟抽卡帮助", "战双模拟抽卡帮助", "战双抽卡帮助"), block=True)

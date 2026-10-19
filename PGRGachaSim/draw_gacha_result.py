@@ -211,9 +211,7 @@ async def render_gacha_results_batch(
     return rendered_images
 
 
-async def render_pool_select(
-    cards: list[PoolSelectCard], prefix: str = "pgr", title: str = "切换卡池"
-) -> bytes | None:
+async def render_pool_select(cards: list[PoolSelectCard], prefix: str = "pgr", title: str = "切换卡池") -> bytes | None:
     """渲染卡池选择图：每格显示图片 + 名称 + 编号"""
     rendered: list[dict[str, object]] = []
     for card in cards:

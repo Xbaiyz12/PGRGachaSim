@@ -547,57 +547,6 @@
         "figure": "https://prod-alicdn-community.kurobbs.com/forum/2cf1e43eccb54f72b3615c79ad56462c20240518.png",
         "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/27a1a2e4ef8a46869527e61ee9a8394220240510.png"
       }
-    ],
-    "T": [
-      {
-        "name": "诺安·逆旅",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/7/7f/ab4ghw0arcgm1xzwm75skmr58vj4649.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/93/0pcvgh26mbf6c9c0add7lpnp9f8u02k.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/4/49/3ejldsk95yhcez9zg665djwpxeugjgs.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/7/71/di00u5cvoqdgpddm53xb4pd0l1ad45a.png"
-      },
-      {
-        "name": "哈卡玛·隐星",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/08/rhe7bp3o3gitakho3ydpchqw81ijgt3.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f7/kb4r7mh2pmso9sgkwv0vr2jkwt6fntl.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/d6/onpwl6ju24fivptp4kejy4cdn5ui372.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/d/dc/5h528hqamcv5rzdiyfo6zh2mr4hp0m6.png"
-      },
-      {
-        "name": "蒲牢·华钟",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/8/8a/17g17n5tz272nvy3wnjz3bjsx5o2j2u.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/41/pm1rfs6hd6yhvcg43gmfh9t1wgxrhta.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/4/48/ak2mkcr7laiurnlciycwi94c6kxunu9.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/f/f2/kse8c7qlqvstxnduoikbqkup9lgb5iy.png"
-      },
-      {
-        "name": "罗兰·戏炎",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/tugi4px1dz1dsq49zi7w56dk8oea1jy.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/08/2euzwehxh139wn8kd5eqpyvkqtur004.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/3/31/2olu0h5m25q105ujtl4a754wvlu5uxk.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/c/c1/3bmf4hs33xheovbgx17pdfsxbqil9p3.png"
-      },
-      {
-        "name": "赛琳娜·岚音",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/8/89/gxjybro5m7g7zw25vfh5aorwj4knlo4.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/48/pxc0drdeo6q36aiifrox7s6dyrx4fqh.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/f/ff/lrldm426d4yd5pr32hbys2d5id2p1q1.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/2/2b/6nnihfs66798hp80q7nhl7jdtntb3px.png"
-      },
-      {
-        "name": "曲·雀翎",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/d/df/97k4yt5rnyeyjsmc8ul4svepqoj5bxl.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/50/o5n2xq49byvgi1vdoz39krjwi3jhsmv.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/8/89/1tiemuc99erc4wxjwtkqywt7s4yhdg5.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/9/95/0aya0wyiksu6otdmnguw61oiuxs44e3.png"
-      },
-      {
-        "name": "卡穆·狂犬",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/ee/adpuv3u9rvdj3wuzl5a6oy3t5qhx4rs.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/48/itd1sv5350dsiguwylievw03n5jgaf2.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/a/a6/er2te1hjf62xofb1k0b8ooepra52ctl.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/1/11/44ibsfur6nu1wc4lwq4xje80qbmbhrf.png"
-      }
     ]
   },
   "weapons": {
@@ -917,6 +866,18 @@
       {
         "name": "★黑岩巨炮",
         "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8c7b16633ece4a379bf1a13fb44689d320240518.png"
+      },
+      {
+        "name": "时针&分针",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6d28e38cf4dc49f89315efa016d6c4e620260929.png"
+      },
+      {
+        "name": "魔剑但丁",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e5bcf2d6034bb892a5d7cc7e932e2920250430.png"
+      },
+      {
+        "name": "阎魔刀",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82590637d2ae462a91d8f6a22429ed3820250430.png"
       }
     ],
     "5": [
@@ -1499,6 +1460,12 @@
         "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/23c430df614c436485342b0d369fd81c20260907.png"
       },
       {
+        "name": "派得里",
+        "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/0b/g0iz609qkgrn2ullkc38uhtupcgwqtk.png",
+        "image": "https://patchwiki.biligame.com/images/zspms/e/ec/bqucemvsbl3zeidtnn9hz4881f20xdn.png",
+        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d8/eh2w7uawfidi8fm8d32fyiqxnhicwki.png"
+      },
+      {
         "name": "大公",
         "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e309ca7558274893a30263aad7c134d720260629.png"
       },
@@ -1617,6 +1584,18 @@
       {
         "name": "霜誓",
         "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3c09300636de4f23877d06fda72724ed20240428.png"
+      },
+      {
+        "name": "刻刻帝",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f62364e249a245e0a02e9849f2c6a53320261002.png"
+      },
+      {
+        "name": "科沃兹",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2e68705598542c1a885f5485d36cf3520250429.png"
+      },
+      {
+        "name": "幻影剑",
+        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e9ecaef41204e78a0b643cf6069331620250429.png"
       }
     ],
     "A": [
@@ -1876,153 +1855,9 @@
     "曲·雀翎",
     "卡穆·狂犬"
   ],
-  "weapons_other": [
-    {
-      "name": "时针&分针",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6d28e38cf4dc49f89315efa016d6c4e620260929.png"
-    },
-    {
-      "name": "指针",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a0adad6f81644245aa7f6b956e7c9d6e20260929.png"
-    },
-    {
-      "name": "无光暮途",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/cb9a65f6864045df9fb8c653d88f631720260522.png"
-    },
-    {
-      "name": "试作型枪刃组AX-01",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d96ec37efee640748df329d71427b4c920260522.png"
-    },
-    {
-      "name": "空境悬海的涟漪",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/98a5f88135824f42b3cead58027b492620251017.png"
-    },
-    {
-      "name": "离裂",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2c26853348d74e91a3c4bda8d7a9bddd20250725.png"
-    },
-    {
-      "name": "魔剑但丁",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e5bcf2d6034bb892a5d7cc7e932e2920250430.png"
-    },
-    {
-      "name": "阎魔刀",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82590637d2ae462a91d8f6a22429ed3820250430.png"
-    },
-    {
-      "name": "不毁玓光",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b03b51c2617642139c7532cccc59610320240518.png"
-    },
-    {
-      "name": "标准型战术旋棍",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d95bccd77a24d898687fb73b0ecada420240518.png"
-    },
-    {
-      "name": "白夜噪点",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bd3c4d7244ad432fbc399ea706ab34a520240518.png"
-    },
-    {
-      "name": "PESW-Ⅱ改",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ff2cd5bd39414936982a4d309682674520240518.png"
-    },
-    {
-      "name": "黯月摧朽",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b0ce83f82ee74a0791d083991a98d69c20240518.png"
-    },
-    {
-      "name": "再临",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7353dd87636043c28cf6b9ad5211063320240518.png"
-    },
-    {
-      "name": "四零式战术长枪·改",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c3aa7e8f07504a138685cb4faaabf51920240518.png"
-    },
-    {
-      "name": "四零式战术长枪",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c7aac67b9f784cc38d9a788388a4695320240518.png"
-    },
-    {
-      "name": "纯白契约·改",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/fe46fccb73a34a1ea007e5ced54b57e720240518.png"
-    },
-    {
-      "name": "纯白契约",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d49c82bd5bc4f64b8ca8f5f4ba1ebf520240518.png"
-    },
-    {
-      "name": "漆黑誓约·改",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/fe8ac30d58d447aaa75375a1ea7d8ee020240518.png"
-    },
-    {
-      "name": "漆黑誓约",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0807eb36c6294dd98b17274c4616fed820240518.png"
-    },
-    {
-      "name": "制式刀",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ec55924a387549618834d265b187291520240518.png"
-    },
-    {
-      "name": "白麟出涧",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f510d9bc6b3149628c865bf29921e9b320240518.png"
-    },
-    {
-      "name": "RL-03C 黑刺",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4aca66a7bf44471ebceea944c19d039520240518.png"
-    },
-    {
-      "name": "开门红",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/92e0d21f970e4fc280fa6fc29a1a6c5c20240518.png"
-    },
-    {
-      "name": "猎隼E-3320",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f1f1d603c79b44cf9308ad652dc0c2b620240518.png"
-    },
-    {
-      "name": "浮游装置",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4ec433538b5f4cec852bd195f6ce9c6c20240518.png"
-    },
-    {
-      "name": "元夜",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c19bad37dc1d4656b7171b6586754b0e20240518.png"
-    },
-    {
-      "name": "伯利恒之星",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/cabc7cd3f0d84f4b88dbf80fafb99a1e20240518.png"
-    }
-  ],
-  "support_other": [
-    {
-      "name": "刻刻帝",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f62364e249a245e0a02e9849f2c6a53320261002.png"
-    },
-    {
-      "name": "派德里",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/764be3bacf124f4e803eec6abf79666620260731.png"
-    },
-    {
-      "name": "异身",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3015897ff7074cc697946b023740947c20260519.png"
-    },
-    {
-      "name": "浮浮",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/197059b36a874c9aa245eb0d5c0664e420251016.png"
-    },
-    {
-      "name": "科沃兹",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2e68705598542c1a885f5485d36cf3520250429.png"
-    },
-    {
-      "name": "幻影剑",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e9ecaef41204e78a0b643cf6069331620250429.png"
-    },
-    {
-      "name": "啸牙",
-      "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c511c318b7b24c74a02b1911dea71a2a20250327.png"
-    }
-  ],
   "versions": [
     {
-      "name": "V4.8 远信回响",
+      "name": "V4.8 远信回响·破渊",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
       "entryId": "1551987946890117120",
       "roles": [
@@ -2030,7 +1865,18 @@
       ],
       "role": "阿德莱德·破渊",
       "weapon": "不孤航炬",
-      "support": "沃托"
+      "support": "凯尔派"
+    },
+    {
+      "name": "V4.8 远信回响·狂三",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
+      "entryId": "1551987946890117120",
+      "roles": [
+        "时崎狂三"
+      ],
+      "role": "时崎狂三",
+      "weapon": "时针&分针",
+      "support": "刻刻帝"
     },
     {
       "name": "V4.7 歧海循光",
@@ -2040,7 +1886,8 @@
         "卡列尼娜·烬航"
       ],
       "role": "卡列尼娜·烬航",
-      "weapon": "尼弗尔海姆的辰星"
+      "weapon": "尼弗尔海姆的辰星",
+      "support": "派得里"
     },
     {
       "name": "V4.6 孑念空行",
@@ -2050,7 +1897,8 @@
         "海伦汀·安魂"
       ],
       "role": "海伦汀·安魂",
-      "weapon": "遥听归乡的晚钟"
+      "weapon": "遥听归乡的晚钟",
+      "support": "大公"
     },
     {
       "name": "V4.5 长路归航",
@@ -2059,8 +1907,7 @@
       "roles": [
         "露西亚·逆冕"
       ],
-      "role": "露西亚·逆冕",
-      "support": "冷观"
+      "role": "露西亚·逆冕"
     },
     {
       "name": "V4.4 烈日将烬",
@@ -2081,7 +1928,8 @@
         "涅缇娅·亡歌"
       ],
       "role": "涅缇娅·亡歌",
-      "weapon": "旧日讣告"
+      "weapon": "旧日讣告",
+      "support": "摩利甘"
     },
     {
       "name": "V4.2 冬冕的凋亡",
@@ -2092,7 +1940,7 @@
       ],
       "role": "罗塞塔·极锋",
       "weapon": "幻象戟·统合",
-      "support": "沃托"
+      "support": "波灵"
     },
     {
       "name": "V4.1 推想视限",
@@ -2102,7 +1950,8 @@
         "布偶熊·骇影"
       ],
       "role": "布偶熊·骇影",
-      "weapon": "霓虹穿梭机"
+      "weapon": "霓虹穿梭机",
+      "support": "吡啵"
     },
     {
       "name": "V4.0 眠于厄寐之境",
@@ -2121,7 +1970,8 @@
         "维罗妮卡·铮骨"
       ],
       "role": "维罗妮卡·铮骨",
-      "weapon": "怒霆敕天"
+      "weapon": "怒霆敕天",
+      "support": "鳞垒"
     },
     {
       "name": "V3.7 织奏序言",
@@ -2142,23 +1992,27 @@
       ],
       "role": "比安卡·晖暮",
       "weapon": "奥罗拉",
-      "support": "沃托"
+      "support": "浊璃"
     },
     {
-      "name": "V3.5 幻寂鸣泣曲",
+      "name": "V3.5 幻寂鸣泣曲·但丁",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
       "roles": [
         "但丁"
       ],
-      "role": "但丁"
+      "role": "但丁",
+      "weapon": "魔剑但丁",
+      "support": "科沃兹"
     },
     {
-      "name": "V3.5 幻寂鸣泣曲",
+      "name": "V3.5 幻寂鸣泣曲·维吉尔",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
       "roles": [
         "维吉尔"
       ],
-      "role": "维吉尔"
+      "role": "维吉尔",
+      "weapon": "阎魔刀",
+      "support": "幻影剑"
     },
     {
       "name": "V3.4 末路燎原",
@@ -2168,8 +2022,7 @@
         "薇拉·灼惘"
       ],
       "role": "薇拉·灼惘",
-      "weapon": "烬劫归墟",
-      "support": "元谒"
+      "weapon": "烬劫归墟"
     },
     {
       "name": "V3.3 逐生复始",
@@ -2189,7 +2042,8 @@
         "赛琳娜·希声"
       ],
       "role": "赛琳娜·希声",
-      "weapon": "奥菲厄斯的摇篮"
+      "weapon": "奥菲厄斯的摇篮",
+      "support": "雪歌"
     },
     {
       "name": "V3.1 醉狱谲笼",
@@ -2200,77 +2054,180 @@
       ],
       "role": "莉莉丝·谬影",
       "weapon": "繁宵蜃景之哀",
-      "support": "沃托"
+      "support": "彼莉"
     },
     {
-      "name": "V3.0 锈夜逐光",
+      "name": "V3.0 锈夜逐光·幻日",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
       "entryId": "1303285364902662144",
       "roles": [
-        "伊什梅尔·幻日",
-        "露娜·终焉"
+        "伊什梅尔·幻日"
       ],
-      "role": "伊什梅尔·幻日"
+      "role": "伊什梅尔·幻日",
+      "weapon": "伊始与终焉之权",
+      "support": "杼菱"
     },
     {
-      "name": "V2.17 遥行循星",
+      "name": "V3.0 锈夜逐光·终焉",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
+      "entryId": "1303285364902662144",
+      "roles": [
+        "露娜·终焉"
+      ],
+      "role": "露娜·终焉",
+      "weapon": "律条重塑",
+      "support": "肃噩"
+    },
+    {
+      "name": "V2.17 遥行循星·芒星",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
       "entryId": "1286636518388928512",
       "roles": [
-        "七实·芒星之迹",
-        "21号·森息",
-        "露西亚·深红囚影"
+        "七实·芒星之迹"
       ],
-      "role": "七实·芒星之迹"
+      "role": "七实·芒星之迹",
+      "weapon": "隧星盛耀",
+      "support": "鮟棘"
     },
     {
-      "name": "V2.16 晨昏庭影",
+      "name": "V2.17 遥行循星·森息",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
+      "entryId": "1286636518388928512",
+      "roles": [
+        "21号·森息"
+      ],
+      "role": "21号·森息",
+      "weapon": "玛纳加尔姆",
+      "support": "冥牙"
+    },
+    {
+      "name": "V2.17 遥行循星·深红",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
+      "entryId": "1286636518388928512",
+      "roles": [
+        "露西亚·深红囚影"
+      ],
+      "role": "露西亚·深红囚影",
+      "weapon": "夜煌",
+      "support": "掣矩"
+    },
+    {
+      "name": "V2.16 晨昏庭影·森息",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
       "entryId": "1272978633494269952",
       "roles": [
-        "21号·森息",
-        "薇拉·绯耀"
+        "21号·森息"
       ],
-      "role": "21号·森息"
+      "role": "21号·森息",
+      "weapon": "玛纳加尔姆",
+      "support": "冥牙"
     },
     {
-      "name": "V2.15 剪身成蝶",
+      "name": "V2.16 晨昏庭影·绯耀",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
+      "entryId": "1272978633494269952",
+      "roles": [
+        "薇拉·绯耀"
+      ],
+      "role": "薇拉·绯耀",
+      "weapon": "不死鸟",
+      "support": "庭霓"
+    },
+    {
+      "name": "V2.15 剪身成蝶·誓焰",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
       "entryId": "1260274522416754688",
       "roles": [
-        "露西亚·誓焰",
-        "渡边·尘铭",
-        "比安卡·深痕"
+        "露西亚·誓焰"
       ],
-      "role": "露西亚·誓焰"
+      "role": "露西亚·誓焰",
+      "weapon": "拂晓炎翎",
+      "support": "熠空"
     },
     {
-      "name": "V2.14 暮往长离",
+      "name": "V2.15 剪身成蝶·尘铭",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
+      "entryId": "1260274522416754688",
+      "roles": [
+        "渡边·尘铭"
+      ],
+      "role": "渡边·尘铭",
+      "weapon": "镇命者",
+      "support": "夜蝠"
+    },
+    {
+      "name": "V2.15 剪身成蝶·深痕",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
+      "entryId": "1260274522416754688",
+      "roles": [
+        "比安卡·深痕"
+      ],
+      "role": "比安卡·深痕",
+      "weapon": "赫斯提亚",
+      "support": "掣矩"
+    },
+    {
+      "name": "V2.14 暮往长离·明晰梦",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
       "entryId": "1245373336211886080",
       "roles": [
-        "万事·明晰梦",
-        "BRS"
+        "万事·明晰梦"
       ],
-      "role": "万事·明晰梦"
+      "role": "万事·明晰梦",
+      "weapon": "明瞳续昼",
+      "support": "瑞雪"
     },
     {
-      "name": "V2.13 云梁觅影",
+      "name": "V2.14 暮往长离·BRS",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
+      "entryId": "1245373336211886080",
+      "roles": [
+        "BRS"
+      ],
+      "role": "BRS",
+      "weapon": "黑岩巨炮"
+    },
+    {
+      "name": "V2.13 云梁觅影·檀心",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
       "entryId": "1232753868847935488",
       "roles": [
-        "含英·檀心",
-        "卡列尼娜·辉晓",
+        "含英·檀心"
+      ],
+      "role": "含英·檀心",
+      "weapon": "鹏游蝶梦",
+      "support": "寐寤"
+    },
+    {
+      "name": "V2.13 云梁觅影·辉晓",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
+      "entryId": "1232753868847935488",
+      "roles": [
+        "卡列尼娜·辉晓"
+      ],
+      "role": "卡列尼娜·辉晓",
+      "weapon": "聚爆",
+      "support": "暝月"
+    },
+    {
+      "name": "V2.13 云梁觅影·BRS",
+      "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
+      "entryId": "1232753868847935488",
+      "roles": [
         "BRS"
       ],
-      "role": "含英·檀心"
+      "role": "BRS",
+      "weapon": "黑岩巨炮"
     },
     {
       "name": "V2.12 幽塔黎光",
       "icon": "https://prod-alicdn-community.kurobbs.com/forum/24f7616624b346fcad2b36bc1a76e7a420240521.jpg",
       "entryId": "1242203801870913536",
-      "roles": [],
-      "role": ""
+      "roles": [
+        "布丽姬特·耀炎"
+      ],
+      "role": "布丽姬特·耀炎",
+      "weapon": "塞斯特斯"
     },
     {
       "name": "V2.11  镜像星尘",
@@ -2279,7 +2236,9 @@
       "roles": [
         "露娜·终焉"
       ],
-      "role": "露娜·终焉"
+      "role": "露娜·终焉",
+      "weapon": "律条重塑",
+      "support": "肃噩"
     },
     {
       "name": "V2.10源解信标",
@@ -2288,7 +2247,8 @@
       "roles": [
         "丽芙·极昼"
       ],
-      "role": "丽芙·极昼"
+      "role": "丽芙·极昼",
+      "weapon": "赫斯提亚"
     }
   ]
 }

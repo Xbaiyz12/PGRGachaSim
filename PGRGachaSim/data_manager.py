@@ -129,8 +129,7 @@ class DataManager:
             "avg_s_pulls": round(avg_s_pulls, 1),
             "s_rate": round(s_count / total_pulls * 100, 2) if total_pulls > 0 else 0.0,
             "latest_s": [
-                {"name": r.name, "pity_count": r.pity_count, "is_up": r.is_up}
-                for r in reversed(s_records[-5:])
+                {"name": r.name, "pity_count": r.pity_count, "is_up": r.is_up} for r in reversed(s_records[-5:])
             ],
         }
 

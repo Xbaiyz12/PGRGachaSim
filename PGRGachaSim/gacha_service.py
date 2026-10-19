@@ -8,7 +8,6 @@ class GachaItem(TypedDict, total=False):
     name: str
     mainIcon: str
     shardsIcon: str
-    image: str
     figure: str
 
 
@@ -153,8 +152,8 @@ class GachaService:
         if up_items and (guaranteed_up or random.random() * 100.0 < up_rate):
             return random.choice(up_items), True, False
         chosen = random.choice(fallback_items) if fallback_items else None
-        next_guarantee = bool(up_items and not guaranteed_up)
-        return chosen, False, next_guarantee
+        # up_items 为空（未配置 UP）时不清除既有大保底
+        return chosen, False, guaranteed_up or bool(up_items)
 
     def perform_draw(
         self,
@@ -280,16 +279,11 @@ class GachaService:
                 roll_val = random.random()
                 if roll_val < 0.2 and s_shards:
                     item = self._pick(s_shards)
-                    pillar_lvl = 6
                 elif roll_val < 0.6 and a_shards:
                     item = self._pick(a_shards)
-                    pillar_lvl = 5
                 else:
                     item = self._pick(b_shards or a_shards or s_list)
-                    pillar_lvl = 4
-                res = self._make_result(
-                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_lvl
-                )
+                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=4)
                 res["figure"] = ""
                 res["name"] = f"{res['name']}碎片×2"
                 results.append(res)
@@ -381,7 +375,8 @@ class GachaService:
             if prize_type == "exp":
                 exp_list = support["exp"] if "exp" in support else []
                 item = self._pick(exp_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                lvl = 3 if item is not None and "小" in _item_str(item, "name") else 4
+                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
             elif prize_type == "overclock":
                 oc_list = support["overClock"] if "overClock" in support else []
                 item = self._pick(oc_list)
@@ -396,13 +391,9 @@ class GachaService:
                 a_shards = [it for it in a_items if _item_str(it, "shardsIcon")]
                 if random.random() < 0.5 and s_shards:
                     item = self._pick(s_shards)
-                    pillar_lvl = 6
                 else:
                     item = self._pick(a_shards or s_items)
-                    pillar_lvl = 5
-                res = self._make_result(
-                    item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=pillar_lvl
-                )
+                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=4)
                 res["figure"] = ""
                 res["name"] = f"支援架构零件-{res['name']}"
                 results.append(res)

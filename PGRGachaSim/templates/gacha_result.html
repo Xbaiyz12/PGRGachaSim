@@ -371,7 +371,7 @@
                     </div>
                     <div class="shade"></div>
                     {% if item.is_up %}<div class="up">UP</div>{% endif %}
-                    <div class="count">x{{ item.amount }}</div>
+                    {% if item.category != 'fragment' %}<div class="count">x{{ item.amount }}</div>{% endif %}
                     <div class="name">{{ item.name }}</div>
                     <div class="glow-bottom"></div>
                 </div>

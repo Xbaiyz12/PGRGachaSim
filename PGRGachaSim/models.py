@@ -64,11 +64,7 @@ class PGRGachaPity(BaseIDModel, table=True):
         conds = [col(cls.user_id) == user_id]
         if pool_type:
             conds.append(col(cls.pool_type) == pool_type)
-        stmt = (
-            update(cls)
-            .where(*conds)
-            .values(current_count=0, sub_count=0, guaranteed_up=False)
-        )
+        stmt = update(cls).where(*conds).values(current_count=0, sub_count=0, guaranteed_up=False)
         result = await session.execute(stmt)
         return result.rowcount if isinstance(result, CursorResult) else 0
 

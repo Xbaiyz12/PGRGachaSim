@@ -212,10 +212,16 @@ class PoolManager:
         if not url.startswith("http"):
             return None
         digest = hashlib.md5(url.encode()).hexdigest()
+        subdirs = ("角色", "角色碎片", "武器", "辅助机", "材料")
         for ext in (".png", ".jpg", ".jpeg", ".webp"):
-            path = ICON_DIR / (digest + ext)
+            filename = digest + ext
+            path = ICON_DIR / filename
             if path.exists():
                 return path
+            for sub in subdirs:
+                sub_path = ICON_DIR / sub / filename
+                if sub_path.exists():
+                    return sub_path
         return None
 
 
