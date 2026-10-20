@@ -101,6 +101,43 @@ async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) ->
     return False
 
 
+def _apply_version_up(pool: dict, pool_type: str, version_data: dict) -> dict:
+    """把版本数据里的联动 UP 覆盖到 pool 上，返回新 dict。
+    同一大版本（如 V4.8）可能有多个角色，它们共享同一批武器/辅助机 UP，
+    所以先从匹配到的 version 提取 patch 前缀，再合并同 patch 下所有 weapon/support。
+    """
+    updated = pool.copy()
+    all_data = pool_manager.get_data()
+    versions = all_data["versions"] if "versions" in all_data else []
+
+    # 取 patch 前缀（版本 name 空格前的部分），匹配同 patch 下所有条目
+    name = version_data.get("name", "") if isinstance(version_data, dict) else ""
+    patch = name.split(" ", 1)[0] if name else ""
+
+    weapon_names: list[str] = []
+    support_names: list[str] = []
+    for entry in versions:
+        if patch and not entry.get("name", "").startswith(patch):
+            continue
+        w = entry.get("weapon")
+        if isinstance(w, str) and w and w not in weapon_names:
+            weapon_names.append(w)
+        s = entry.get("support")
+        if isinstance(s, str) and s and s not in support_names:
+            support_names.append(s)
+
+    if pool_type == "weapon" and weapon_names:
+        updated["up_w6"] = weapon_names
+    elif pool_type == "support_unit" and support_names:
+        updated["up_s"] = support_names
+    elif pool_type in ("char_theme", "char_fate"):
+        # 角色池：版本数据里有 up_a 字段就覆盖 A 级 UP
+        up_a = version_data.get("up_a") if isinstance(version_data, dict) else None
+        if up_a:
+            updated["up_a"] = list(up_a)
+    return updated
+
+
 async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: str = "") -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -115,20 +152,21 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
         pool = pool.copy()
         pool["up_s"] = [up_name]
 
+    # 联动当前版本的武器/辅助机/UP A 级：version_name 为空时回退最新版本
     pool_type = pool["type"] if "type" in pool else ""
-    if version_name:
-        versions = pool_manager.get_data()["versions"]
+    all_data = pool_manager.get_data()
+    versions = all_data["versions"] if "versions" in all_data else []
+    effective_name = version_name
+    if not effective_name and versions:
+        effective_name = versions[0]["name"] if "name" in versions[0] else ""
+    if effective_name and versions:
         version_data = next(
-            (entry for entry in versions if "name" in entry and entry["name"] == version_name),
+            (entry for entry in versions if "name" in entry and entry["name"] == effective_name),
             None,
         )
         if version_data is not None:
-            if pool_type == "weapon" and "weapon" in version_data and version_data["weapon"]:
-                pool = pool.copy()
-                pool["up_w6"] = [version_data["weapon"]]
-            elif pool_type == "support_unit" and "support" in version_data and version_data["support"]:
-                pool = pool.copy()
-                pool["up_s"] = [version_data["support"]]
+            pool = _apply_version_up(pool, pool_type, version_data)
+
     uid = ev.user_id
     avatar = await data_manager.get_avatar(uid)
     async with _UserLock(uid):
@@ -163,13 +201,15 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
 @sv_gacha.on_fullmatch(("抽卡", "战双抽卡"), block=True)
 async def draw_selected(bot: Bot, ev: Event) -> None:
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    await _do_draw(bot, ev, selected, 10)
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, selected, 10, version)
 
 
 @sv_gacha.on_fullmatch(("单抽", "战双单抽"), block=True)
 async def draw_selected_single(bot: Bot, ev: Event) -> None:
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    await _do_draw(bot, ev, selected, 1)
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_draw(bot, ev, selected, 1, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡基准", "战双抽卡基准"), block=True)
@@ -234,19 +274,18 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         pool["up_s"] = [up_name]
 
     pool_type = pool["type"] if "type" in pool else ""
-    if version_name:
-        versions = pool_manager.get_data()["versions"]
+    all_data = pool_manager.get_data()
+    versions = all_data["versions"] if "versions" in all_data else []
+    effective_name = version_name
+    if not effective_name and versions:
+        effective_name = versions[0]["name"] if "name" in versions[0] else ""
+    if effective_name and versions:
         version_data = next(
-            (entry for entry in versions if "name" in entry and entry["name"] == version_name),
+            (entry for entry in versions if "name" in entry and entry["name"] == effective_name),
             None,
         )
         if version_data is not None:
-            if pool_type == "weapon" and "weapon" in version_data and version_data["weapon"]:
-                pool = pool.copy()
-                pool["up_w6"] = [version_data["weapon"]]
-            elif pool_type == "support_unit" and "support" in version_data and version_data["support"]:
-                pool = pool.copy()
-                pool["up_s"] = [version_data["support"]]
+            pool = _apply_version_up(pool, pool_type, version_data)
     uid = ev.user_id
     at_sender = bool(ev.group_id)
     pool_name = pool["name"] if "name" in pool else "活动研发"
@@ -319,7 +358,8 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
 @sv_gacha.on_fullmatch(("抽卡百连", "战双抽卡百连"), block=True)
 async def draw_bailian(bot: Bot, ev: Event) -> None:
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    await _do_bailian(bot, ev, selected)
+    version = await data_manager.get_selected_version(ev.user_id)
+    await _do_bailian(bot, ev, selected, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡百连武器", "战双抽卡百连武器"), block=True)
@@ -423,7 +463,8 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         return
 
     label = next(label for option_id, label in options if option_id == selected_id)
-    await data_manager.set_selected_pool(ev.user_id, "gacha", selected_id)
+
+    old_version = await data_manager.get_selected_version(ev.user_id)
     version_name = ""
     if selected_id.startswith(("char_theme:", "char_fate:")):
         role = selected_id.split(":", 1)[1]
@@ -431,7 +472,12 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
             if "role" in version and version["role"] == role:
                 version_name = version["name"] if "name" in version else ""
                 break
-    await data_manager.set_selected_version(ev.user_id, version_name)
+    else:
+        # 选非角色池时不清空已有版本，武器/辅助机需要它联动 UP
+        version_name = old_version
+
+    await data_manager.set_selected_pool(ev.user_id, "gacha", selected_id)
+    await data_manager.set_selected_version(ev.user_id, version_name or old_version)
     await bot.send(
         f"已切换到 {label}，之后 {prefix}抽卡 / {prefix}抽卡武器 / {prefix}抽卡辅助机 使用该版本 UP~",
         at_sender,
