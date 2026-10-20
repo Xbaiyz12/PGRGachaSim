@@ -1,2262 +1,2266 @@
 {
-  "_comment": "数据提取自 BWIKI 战双帕弥什「新抽卡模拟器」；概率权重为官方模拟器数值。up 为示例，按当期卡池修改。",
-  "characters": {
-    "B": [
-      {
-        "name": "露西亚·红莲",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/lh9i4ekp7ez5ltubp7bxyhwaqumlpke.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/11/hotp0c0hvyocu39mccwnf84mfm3di77.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/a/ac/n8urfitp2nk5rhjqwsivmddtrwb4hsh.png"
-      },
-      {
-        "name": "丽芙·蚀暗",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/ca/heyo5t18wfq1jytggg0ql4qiavlyv3f.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/ed/2mcsu1ui45x2drmkffm2lhpn6srdpvp.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/7/7e/4nvrt8g8h4is3b13tsxw5262mqt591z.png"
-      },
-      {
-        "name": "七实·风暴",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/ba/kx77p90sirpum5om1hak6dyy3rqpj8q.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/7c/g6q91zotf2xf8x2qhsdnaat6mshs5kv.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/5/52/986y16thkuaul99kmzwur5sfda0ik94.png"
-      }
-    ],
-    "A": [
-      {
-        "name": "斜奏·裁律",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/ee/70no3p476v4hodtmphz9n6ffrt9cryl.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/79/k9e1opdndeprj6qqi42xtdc4ifwqfei.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/4/42/68dgor9wa4ke39bd1v1y4evuldgyvsk.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/9/90/1rf89cczwiqixpr7c7nup3orowyfaxr.png"
-      },
-      {
-        "name": "洁塔薇·破晓",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/af/j7t5p63hvde89sgcvcp4e6vfguak88y.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e8/3k27yrad33mvtef9ydi8nwbf5sav28n.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/3/32/idd9ryo0hcy1rfczz5grz0719ckg9ez.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/0/0e/14iey0j48g22hth27i27e05rjewte5r.png"
-      },
-      {
-        "name": "八咫·徊闪",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6d/ky2fvp0iy8j51388orkr2ur26nqih3p.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/ff/5ek0hd421ixrn1b0m6fzzltmn6k3m6w.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/3/3a/cotgcf8oqyuels2lanfqg741pc3j77u.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/1/1c/8sy1683yywu64vop3xtyhmhsdoyje0r.png"
-      },
-      {
-        "name": "布丽姬特·耀炎",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/5/51/50mb87dl31kmr9iv1in7w7hlfomu8vu.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/db/bq6d1e8u8gkhn657zipcdlfhvwxky0c.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/dd/enhovhfa5qaayk1s23avfp76cejybof.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/d/d1/49t17c5530761xcoo4hpeo45ddkjrm1.png"
-      },
-      {
-        "name": "布偶熊·觅语",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/8/84/1z3chlqzfdbqfeflejcq7asaoltod7w.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/6/60/70il11dc17mc76u9ve6s0avf376zuee.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/b/b8/edcwkmoctg2xwnoqps6b2c1y8pkiwmb.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/f/f2/96z2btp2y8n7peihnrrqxq30jtzayxr.png"
-      },
-      {
-        "name": "诺克提·擎驱",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/09/28axsoret6waqugnygee8vswdc3lzg0.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/01/k5r0b99a3j5h6h24kv5jotw7zsmmq8z.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/f/ff/tri9iearf3wf5qr1hew70rxfbkienvm.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/c/c0/ibzwgkhwtb1u5jsk5be371pvba6w4y5.png"
-      },
-      {
-        "name": "含英·清商",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/j3id8wg6pldu1zx3exyvxv8x32pfpvn.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e9/51zj0e41j1jhtzkogektk4y77xlviu3.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/8/8b/njaqnac9jvyuxdu198vdm9ljis2ytun.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/d/d7/0eiot5rfrbdd0p5bx708do802qr4kk3.png"
-      },
-      {
-        "name": "邦比娜塔·琉璃",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/e4/bqquztx00ymo2cfpabazq7uyneuajd7.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/01/m20pagdr03nhf233gvl7akeej1o3csc.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/4/4c/fs6m7pqrt1kkn92qlr42jvxn67c6gv2.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/0/0d/qcorqpz34i1kf4167xycuwsgf37h42t.png"
-      },
-      {
-        "name": "21号·XXI",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/b0/r1ljjlg16vo2ad72fvad1u8iu37ogro.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/b1/7tzf70dcjh4q79d8xxncapa8q8z58q4.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/8/88/gde1i18k0kjcyxvn6ed88doq7vbqihx.png"
-      },
-      {
-        "name": "万事·明觉",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c5/9h59awuf1culvrcub6yfu0x48qbr53b.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/96/ov488tyf2i7ts7ttalk91rpinjr4qrp.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/3/3a/a6oi0vmeez9ujtrangw5zei9ogh7mvk.png"
-      },
-      {
-        "name": "常羽·游麟",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c6/orw12kssk65enusnylsh7nbnjcm5wsc.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/q0hyubwzjbkt5jgsdt8yjit06zi8mj8.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/5/5b/j27jxuminwgpqwd3jpes8mw20lgved5.png"
-      },
-      {
-        "name": "薇拉·瑰丽",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/24/dokpgapkybcvew3u18o9y2dvgndupd9.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/53/rfb3ge8r4w0uerez2mwh2d9qhwu6tow.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/b/bf/6tg9m3uh57i5mv5h7ldb0jvy3z0mf33.png"
-      },
-      {
-        "name": "库洛姆·弧光",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/d/d1/exa1z29unvutb8enmp3tsv4bsfnr9wu.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/2/22/e4b7juwxmhe7l9aqahstmuf6ktbfdrb.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/9/98/lmde1mwldve3561749d35w2envf5lw7.png"
-      },
-      {
-        "name": "苏菲亚·银牙",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/ee/b68wvf3yb20sip9bks2iryg2ss302sv.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/85/ab2bzhwnh4wnoymehoigfrbi4vubqdn.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/e/ec/quu9itx8zgqeuxm3qanfea8ze5ip14p.png"
-      },
-      {
-        "name": "艾拉·溢彩",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/7/7e/fp3uc5uer0quuecg48jv81kpzqcdt8e.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/30/5o6cnnagt52q3t2s4bmfnbp6ok29x42.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/d/d8/qx9uiequi9a4yg8sohpa8ja3e0sbix1.png"
-      },
-      {
-        "name": "渡边·夙星",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c2/570ho1ydg4nf7542at0refdrnila2bc.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f0/09j1at0kvvqd14z9fx89ppe58h6f1tq.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/0/00/e63f5ddwgvhoqngswhlf725ggm1ux04.png"
-      },
-      {
-        "name": "渡边·夜刃",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/cd/h50g3wl18bqc0uz7ym9vlfnohorbu6t.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a7/tgbqy4vrabj7p0c4hzhy13yzjcsi0z5.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/7/78/6gjbgumlv1278gbpqk64t0zf51ht5uz.png"
-      },
-      {
-        "name": "卡列尼娜·爆裂",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/a2/8aemk3ff6eh05a72nri5tjgapt3k6he.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f1/5e86laasinofdrabkkabgbkb43qfst2.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/9/95/4kzirqo8ztd20r657q1xwyajuf2h7n2.png"
-      },
-      {
-        "name": "神威·重能",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/16/d6jwcnhi8u40tr70y0mchdns33y0axm.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/16/0zgnj52e3dwhwadn8gt1ntb10yehkxp.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/c/c9/97836t6aubl9z0wzor8mdmxawb96ztv.png"
-      },
-      {
-        "name": "比安卡·零度",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/18/34td58e7qx5sx1z2davs9eldic3rrv6.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/ji9zcg4ut2l6hsopdfv9gm9iifk0p2r.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/2/2b/1g134ynjb0d6ybh7ksztm09fmt8n764.png"
-      },
-      {
-        "name": "丽芙·流光",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c3/hy5poscq2v8zy5lj2pqcbg959o06g5r.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/91/aedexd86dvh15xue7dlvz3rksnww7w0.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/8/88/qhljiavtu2n7x1l05rqzmkh8ubr42zv.png"
-      },
-      {
-        "name": "露西亚·黎明",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/23/8dcgya69mhdokpw98jmed25sptfqw6a.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1b/qznqjhi5vpmdujfbmghpzu1e1wqx7vr.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/7/7f/gba7gi5yji25lufpcdt223on2ox3kx6.png"
-      },
-      {
-        "name": "里·异火",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/9d/8bz0fhzo89thf6xmn2klb8orqxthnm8.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/43/bg8wp6p5bvza5slnrjtep3xyc8yypfo.png",
-        "figure": "https://patchwiki.biligame.com/images/zspms/7/79/gn53b82tfbunrgra9m6gfq65voge2jf.png"
-      }
-    ],
-    "S": [
-      {
-        "name": "阿德莱德·破渊",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/957256e9a68249de85c2c44fa2f7050620260904.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/4ize19666csbgiyt0mvhmqvmmoo5raa.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/2/2e/pat06lrt642737gakd2e75e0c2z8l95.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/be44f61531324fb08c702fa33a20480920260904.png",
-        "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
-      },
-      {
-        "name": "卡列尼娜·烬航",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8b7f8418a87d432d9b12fa105289437120260730.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1d/6w3t7dqna584yzwplizjghnr4zm6e30.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/b/b5/64p8c09lwv9g7xuulq8sqbe62m9qjaf.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/8ccd9b8d95e54226942714f36e6ec3fd20260818.png",
-        "banner": "https://i1.hdslb.com/bfs/archive/0add9a49bac1b396c5329011710585689aec1f40.jpg"
-      },
-      {
-        "name": "海伦汀·安魂",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d98a43ed9c2d4fe0b6a9b720b0b5842720260625.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/8e/hogcy1i3kxwq8pv0v2hy7mry1tyreal.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/6/60/e9ha0gkpsdscu7yzd80l0yz9n3m1m12.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/d098374b67f0461da1e5b5fc7918bcf120260625.png",
-        "banner": "https://i0.hdslb.com/bfs/archive/0d7fbf5a379fd5c20b81f1f3676c48e0b88a5a4d.jpg"
-      },
-      {
-        "name": "神威·不落日",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ae2bd64c06640858140f9440ce648a320260406.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d3/t1gevps0kp28mt57ll8y7hesgopto3b.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/6/65/a1hhah63n4zafpeypgij6fxvvidw0uw.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/619d28df7c5b45d29f2cfa3383c236d220260404.png"
-      },
-      {
-        "name": "涅缇娅·亡歌",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f2fbad9aa38241c3a8fdf2e398286e1a20260313.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/71/0gm839vxwh9bxsiuv8azdj93pg1u5wt.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/e/e2/q3u63867pv4gy0h20ogqnhzapie9pcw.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/498d464164cc4499be8c5e3a352508e220260224.png",
-        "banner": "https://i1.hdslb.com/bfs/archive/0b20c91d749f99219f35354df73df1d6fcc2253e.jpg"
-      },
-      {
-        "name": "罗塞塔·极锋",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/682202e1640b41ebb699d65547fdbc5a20260104.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/2/22/msq3erhygun8eogwi020nqhwme6vxgp.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/f/ff/o19v71znjbw2i61efcib8wff6o813wl.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/dd07127ff3ee4ad5a1e741abf3d6849d20260114.png"
-      },
-      {
-        "name": "布偶熊·骇影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/27b590d9a67040fca065d26f352e286820251120.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/99/63uqmcfaxdd3uiodgplqktcf3t4806k.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/3/34/o9wqamowbaeqhf8mz1hwccxl14wxxge.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/2dea991ddf1c4531a68e4d2b4085085f20251120.png"
-      },
-      {
-        "name": "维罗妮卡·铮骨",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1f24f35992af4594a4fc4ddbd226235a20250904.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/58/e7lnfccm5w59yfznu5harhtiedeqy05.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/a/ad/557cerdsu332eum4btknf8k9afeg6h1.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/8d616ff90e8146e9afef4bb94cb44ea120250904.png"
-      },
-      {
-        "name": "比安卡·晖暮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a437b74cb96f496bb56c5eec859ad29820250612.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/87/do8qi2kpr6cuh0l3a0b924ow64d2wi5.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/b/bc/mn9t47cw6csfkd5cdwac84e3z493qqn.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/dc2e79a8e6c6447d8d60957c490c1f3f20250915.png"
-      },
-      {
-        "name": "薇拉·灼惘",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/35bb6b99a3d947b3a338dc56cfb1d1da20250320.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/c/c8/naztv843hgk6tzctvfz9vkz1r00hjpm.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/d7/g4pr5mpsw777itzyyjcfltv9hsrhbcz.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/93de1f2fea1e4f75be66248bddbae28a20250320.png"
-      },
-      {
-        "name": "赛琳娜·希声",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/238fdac8e27a43dbae75f361f5719d7f20250105.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/97/05t3le044qt2yx545p635mdk4m515p2.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/9/97/emxx5tfha2pyazksez6ltzup9uiaewh.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/0a22958a700645a88c5056f175e3a3e520250227.png"
-      },
-      {
-        "name": "莉莉丝·谬影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/91147c93689d469581fa7bcb16035ad820241212.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/4b/ocoo73i86t5lpyolaka3qtu8wtz23x9.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/f/f6/jjjqapahdvy8lchaidrvt0mnlkf9t7q.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/3dc6046bfd724885994c9cf232f7830d20250227.png"
-      },
-      {
-        "name": "伊什梅尔·幻日",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/427ef66c9ce34b439fb84d1ef7947ad220241126.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/da/9nr4bgfokmd3zyno05bf5pn42d0h3aw.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/0/0e/tn1yxcd1unpyvdzoarmuq6tfwo92iad.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/deb7b1d6cec54bdf870f49f12039bfc320241104.png"
-      },
-      {
-        "name": "七实·芒星之迹",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6dc2e705f3144fa85bd1f95b6213bb920240914.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/5b/4zjr7zs566eql7exlyxor2ilil2mb70.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/c/c3/oc0h1k2u8g9m6h7rd5ejassun6bftg7.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/bf0014d996a1406b8d18fcacd83198ee20250227.png"
-      },
-      {
-        "name": "露西亚·誓焰",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/52e624674d534336aeb53f2815226ef620241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9b/doj5ts4zl8ap0ey9iwmmyr360p4h2k0.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/1/18/gz7y4dn17k5itvjyt938sas1vlt77zy.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/10fe978a1cf949efad50e510aebc2b1b20240703.png"
-      },
-      {
-        "name": "万事·明晰梦",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f203d91ebc6443d2909fe9b5796a1b3620240529.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/56/q67727h182811i1cfm7dhea91wl9wxp.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/8/89/5snanm0hptoq1c396c6px3ca6tptdpd.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/cae752a4f6cf4617ac5db72cc4be677020240516.png"
-      },
-      {
-        "name": "含英·檀心",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0c7e96fc429141389233b1d4a707406b20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/0f/bzte85h5yov9n3gi74eughcvii9swh4.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/d0/9e9fpg3ttxzulzzith3ap9bc39h4zxj.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/55070dcbb3254137a3e1c6647fef0bc820250227.png"
-      },
-      {
-        "name": "露娜·终焉",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0feb192f4f864855ad3038b90c1bf0a120241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e4/nttu6n2uwsgwgjwxwhbc9re5utbf0ya.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/9/9a/35xgurnnsqg4pqsywqb3hspdwghkbbn.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/469a2bdb7c99448c86a280913d5326a720250227.png"
-      },
-      {
-        "name": "曲·启明",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5027ac12caba4eeb8d38dfc9d4219ac520241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/95/0bo28dmmtarsh2l27gru5h7sq1mn086.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/3/3f/3ku0o2fevgc17tk9m1yay57iylbmvz3.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/dc18c4f0a9684388bb80a9e1744139e820240517.png"
-      },
-      {
-        "name": "渡边·尘铭",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1b143b7bfeff4c3eb8a0f3798f9245ab20241126.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/ed/80hqzeb3c0p6569hdzrcz5xwfcmxdnj.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/d5/1o7svbm52imlh1salij2xop9gng746f.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/f5d0645113d2474a8dd25857f7785dcc20240516.png"
-      },
-      {
-        "name": "拉弥亚·深谣",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b158a2dc68344edaa78c085b8b9be68820241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a0/8aael5iytq1hx97hcsk9kekfojuhdmv.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/d/d8/fxgz5yb786089zw1zwlij0bmp6j5ubf.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/c069dcb33b71465cb555a7724b4e577e20250227.png"
-      },
-      {
-        "name": "亚里莎·回音",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9b32db828dfb4dc2aac0a505452e9aa520241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/8a/3t3xgvmh7s7d688aods46gvafygfr10.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/b/be/qh4rocldepyacqewwdd8nftqp60x0iu.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/3cdc9e8ba21e4407b44b2c95a52f236320240516.png"
-      },
-      {
-        "name": "21号·森息",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9714cc0922e34f3cb0037d88db1340f920241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/fd/14xuwmo9utcqggmm0sc6o3gwbkdd5wj.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/2/24/6zg3wfptjchxqxcolqzmxl6lf9t2tfh.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/eb465696c80244ee84a7614a6ec06d6620240518.png"
-      },
-      {
-        "name": "露西亚·深红囚影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4206a392001e44539a5ef0ec52fe1ce320241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d3/38ep366i2qb8qg43z555ocvoa4udaq8.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/2/24/tdeu0c385chzz8cbk1sk65yfcyjyg2j.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/e9ae1c38fce64fa689df1377a059e62a20250227.png"
-      },
-      {
-        "name": "艾拉·万华",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4741a64a97642d2aecd601a79a6b7dd20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/71/hm2r2tjrp84mo7g8a31ol8n5zlxo3ll.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/9/96/i98clfq43j1mqeqfam9ym69ynihtavz.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/a63e1ad0f2884aedb200a194f89724ef20240516.png"
-      },
-      {
-        "name": "里·超刻",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1689ade27c8b46c8965ed9b0c854256920241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/0c/9zwge4w64lgawpl0h8p4gx2omq1v371.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/5/5c/9tylsils04vqtfoir4g6z9job5i2jrn.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/76bb222eaa4344b48a27be9b7a9e506020240513.png"
-      },
-      {
-        "name": "比安卡·深痕",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e300afe3f8304a2e9ea4cd67e735274f20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/52/qh0evbuqamwpubot6bi3j9zqvdlanhe.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/fe4fd7c0d558426e8c9ca7e807826de520250227.png"
-      },
-      {
-        "name": "卡列尼娜·辉晓",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/15/drkt0a43gq4wa6dqnfpdr7bs4qty5k9.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/ae/pvv0w6v3ph1gumaoc3a734oxuejpsh1.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/38bdbfab407348ee94339a4989ef9a8220240517.png"
-      },
-      {
-        "name": "七实·遥星之座",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/06f13d64cb2a406bae3d6ee2920666d320241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/bpk7f68ybq3is8m3wc8ip91fobktsek.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/9bf15727719649ecb34043c92f0ecc5e20240517.png"
-      },
-      {
-        "name": "赛琳娜·幻奏",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee350ef29bb94a78887f5a1e2764892320241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/44/gavr4amwtgz4ycwyqa1zwsakyvxavpp.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/42bf52f4dfac42c8866eaab69494a65e20240518.png"
-      },
-      {
-        "name": "丽芙·极昼",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82bf1e1c3991473f9db2b7a83818458420240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/88/ldfhem3ww1n2gm3nezmag4m9lrn2dyc.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/c3816e0f008e4da4a83cc250d7a0497320240516.png"
-      },
-      {
-        "name": "薇拉·绯耀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e527dafbb61342e5b2debecf4e2e9fe620241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a5/rtemypzpshradz90i8akuwu4wad2ra4.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/7047f9b45d7e401abf6b7b14ff8e52c720240517.png"
-      },
-      {
-        "name": "库洛姆·荣光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/39ce5d954cb84c408b334a054f76ad6020240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/b4/q5d0n0ms7sr74mame9f9sm7gyase5jc.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/75e0b28007244cf89763e86f9c89bd7420240516.png"
-      },
-      {
-        "name": "露娜·银冕",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee88cb6eb0ed4b67aeb39ab33dc4924a20240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3e/i24k27luvgrve23x2rgt0krut57rtxx.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/2f730353d9f344179e81395d9ad6180f20240518.png"
-      },
-      {
-        "name": "罗塞塔·凛冽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4123903e3c664eddb11c1b19db0ff9e720241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/bhcpqlv9lu9j0xnt77kk61rz0lqokrn.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/1cb32e2418ee482f82eac94ea65bb9d820240518.png"
-      },
-      {
-        "name": "露西亚·鸦羽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6b9ca48315ba4006a2e0169f9eae0f2f20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/db/rtlof61cc572egruh3leq2ot7bnbkq1.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/3042fc9eaac54310adf24294d42ae02c20240518.png"
-      },
-      {
-        "name": "比安卡·真理",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bdaffd00d9524c418fbe6f4be4233b4520240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/6/65/1xvq9i7bsakehq6ki1cz7twzycly7ze.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/94dc9e86d39442699724dae1ee23633e20240515.png"
-      },
-      {
-        "name": "露西亚·深红之渊",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41e6f78fba5040309ce5b6472c99bdfe20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/77/2ec9t05p82lw2ivcidx3rmw0d55dk5b.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/7bb79785e54d466eb29aab38511d489e20240517.png"
-      },
-      {
-        "name": "七实·脉冲",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/084c095633084ca6bc2d20acccc343dd20240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/34/gb60xem4684d4q2897lh06dhfobwrn6.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/f88c8d47b8934a09b53200424f3e8b8e20240519.png"
-      },
-      {
-        "name": "卡列尼娜·烬燃",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/1c/deeol4o9fm4h8m9tmb1d4hrlgf7fb6j.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/df/dbv5eq313845g1qcnm06w1v6r462mae.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/258fb726901840dc8d7a9cbae051521320240516.png"
-      },
-      {
-        "name": "里·乱数",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6ffb521f501f48479ebb92dbea151f5a20241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1a/sruxwac76hl73r7blyia8v36iotqr43.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/3d81b7c67c4d484ba58d06309f75eac520250227.png"
-      },
-      {
-        "name": "丽芙·仰光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d9bc8901efb2425eb4543ff806dce1bb20240510.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1e/san30dyyg9485ftp3irr1xsfmlh3co4.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/4e9d3560640f478e8dec3f034a3caabf20240519.png"
-      },
-      {
-        "name": "神威·暗能",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7e6d5096f86d48599ff91ae7f6e5765d20240731.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f3/mf2vdj05yiywtz5hjp54o4wahbyzk8n.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/19652fdec62a4873897d02884a3e2c9820240518.png"
-      },
-      {
-        "name": "BRS",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/955c0818c52b4829a0a1dc3fbd91846620241118.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/nwac760n4x71wda5dp8rxudgdoyynal.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/4/46/awjqvnngn9yg5i4q8ub75y0zc3lmerx.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/61c5b16c2e334f21aaf9d86e12264e0720240517.png"
-      },
-      {
-        "name": "时崎狂三",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9436f800ed18449197e2d2a0e885d80d20260929.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/62cca1e102cd4abe9dd79fee26a27c9b20260924.png"
-      },
-      {
-        "name": "但丁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4389298199c1499692009110b9d4ae4a20250429.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/06ef645ab91846cfbe27f27fab8f858b20250429.png"
-      },
-      {
-        "name": "维吉尔",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1cecc56a00e3481581795660ed049c7f20250429.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/63501e6eed5f433882b0d8ea370635ce20250429.png"
-      },
-      {
-        "name": "2B",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1ac7ca71bc2642ebb6aceea6830a417a20240518.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/63e7cd45e20745828f34233cde9662f420240521.png"
-      },
-      {
-        "name": "9S",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f73fb1d54b3d4bad9d9c967e0e53795e20240518.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/d303d7f0725c4ab59f9501bc2ffad94520240518.png",
-        "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
-      },
-      {
-        "name": "A2",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3af09efc4c734175b1cd61a9c19a6ce420240518.png",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/a08a484d08434d78ac07fc19b6a5a93220240520.png"
-      },
-      {
-        "name": "莱亚·祈星",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/bfd95cb842654e66bfe1a49be434991f20261015.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/29d32eca09cf4dbc8da551fba20ea61120261016.png"
-      },
-      {
-        "name": "露西亚·逆冕",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/b0fa772735c743c29b72db6cfae7d8ad20260518.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b4f3739d7f1045b2be1a581c4abad48620260518.png"
-      },
-      {
-        "name": "丽芙·霁梦",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/cf79493d33644401a384b7c908636fc720251016.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f22f75dc774249f9a5ad11fc3ef6d75320251017.png"
-      },
-      {
-        "name": "诺安·逆旅",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/115af5077c284f22a5902d4a70ad4dc320240516.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0f5bf03db4d843ceb8db39fff7e2392020240520.png"
-      },
-      {
-        "name": "哈卡玛·隐星",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/e326573c1f4747b6baaa6bf737adbde320240517.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/01630fb5d33c4ebdb83eded9365a124a20241118.png"
-      },
-      {
-        "name": "蒲牢·华钟",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/800e1e6a862240a9abe72c143b071f1220240518.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df3c14c23d63428eaea441fd70d567d420241118.png"
-      },
-      {
-        "name": "罗兰·戏炎",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/7fc635d8d0a9444fb07d13547d9e4c1620240517.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3ab46f8149ce43448e020274123b01f220241118.png"
-      },
-      {
-        "name": "赛琳娜·岚音",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/a2cba8f39128410cb72d45be58ff931d20240518.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/14d40e38e0844502b911a3a5ab48d94720240510.png"
-      },
-      {
-        "name": "曲·雀翎",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/8da17061475949acafb37659469de30b20240518.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/33fc5b119c7f4e1ab0c47334b00e877c20240510.png",
-        "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
-      },
-      {
-        "name": "卡穆·狂犬",
-        "figure": "https://prod-alicdn-community.kurobbs.com/forum/2cf1e43eccb54f72b3615c79ad56462c20240518.png",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/27a1a2e4ef8a46869527e61ee9a8394220240510.png"
-      }
-    ]
+ "_comment": "数据提取自 BWIKI 战双帕弥什「新抽卡模拟器」；概率权重为官方模拟器数值。up 为示例，按当期卡池修改。",
+ "characters": {
+  "B": [
+   {
+    "name": "露西亚·红莲",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/lh9i4ekp7ez5ltubp7bxyhwaqumlpke.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/11/hotp0c0hvyocu39mccwnf84mfm3di77.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/a/ac/n8urfitp2nk5rhjqwsivmddtrwb4hsh.png"
+   },
+   {
+    "name": "丽芙·蚀暗",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/ca/heyo5t18wfq1jytggg0ql4qiavlyv3f.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/ed/2mcsu1ui45x2drmkffm2lhpn6srdpvp.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/7/7e/4nvrt8g8h4is3b13tsxw5262mqt591z.png"
+   },
+   {
+    "name": "七实·风暴",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/ba/kx77p90sirpum5om1hak6dyy3rqpj8q.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/7c/g6q91zotf2xf8x2qhsdnaat6mshs5kv.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/5/52/986y16thkuaul99kmzwur5sfda0ik94.png"
+   }
+  ],
+  "A": [
+   {
+    "name": "斜奏·裁律",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/ee/70no3p476v4hodtmphz9n6ffrt9cryl.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/79/k9e1opdndeprj6qqi42xtdc4ifwqfei.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/4/42/68dgor9wa4ke39bd1v1y4evuldgyvsk.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/9/90/1rf89cczwiqixpr7c7nup3orowyfaxr.png"
+   },
+   {
+    "name": "洁塔薇·破晓",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/af/j7t5p63hvde89sgcvcp4e6vfguak88y.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e8/3k27yrad33mvtef9ydi8nwbf5sav28n.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/3/32/idd9ryo0hcy1rfczz5grz0719ckg9ez.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/0/0e/14iey0j48g22hth27i27e05rjewte5r.png"
+   },
+   {
+    "name": "八咫·徊闪",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6d/ky2fvp0iy8j51388orkr2ur26nqih3p.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/ff/5ek0hd421ixrn1b0m6fzzltmn6k3m6w.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/3/3a/cotgcf8oqyuels2lanfqg741pc3j77u.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/1/1c/8sy1683yywu64vop3xtyhmhsdoyje0r.png"
+   },
+   {
+    "name": "布丽姬特·耀炎",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/5/51/50mb87dl31kmr9iv1in7w7hlfomu8vu.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/db/bq6d1e8u8gkhn657zipcdlfhvwxky0c.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/d/dd/enhovhfa5qaayk1s23avfp76cejybof.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/d/d1/49t17c5530761xcoo4hpeo45ddkjrm1.png"
+   },
+   {
+    "name": "布偶熊·觅语",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/8/84/1z3chlqzfdbqfeflejcq7asaoltod7w.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/6/60/70il11dc17mc76u9ve6s0avf376zuee.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/b/b8/edcwkmoctg2xwnoqps6b2c1y8pkiwmb.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/f/f2/96z2btp2y8n7peihnrrqxq30jtzayxr.png"
+   },
+   {
+    "name": "诺克提·擎驱",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/09/28axsoret6waqugnygee8vswdc3lzg0.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/01/k5r0b99a3j5h6h24kv5jotw7zsmmq8z.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/f/ff/tri9iearf3wf5qr1hew70rxfbkienvm.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/c/c0/ibzwgkhwtb1u5jsk5be371pvba6w4y5.png"
+   },
+   {
+    "name": "含英·清商",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/j3id8wg6pldu1zx3exyvxv8x32pfpvn.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e9/51zj0e41j1jhtzkogektk4y77xlviu3.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/8/8b/njaqnac9jvyuxdu198vdm9ljis2ytun.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/d/d7/0eiot5rfrbdd0p5bx708do802qr4kk3.png"
+   },
+   {
+    "name": "邦比娜塔·琉璃",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/e4/bqquztx00ymo2cfpabazq7uyneuajd7.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/01/m20pagdr03nhf233gvl7akeej1o3csc.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/4/4c/fs6m7pqrt1kkn92qlr42jvxn67c6gv2.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/0/0d/qcorqpz34i1kf4167xycuwsgf37h42t.png"
+   },
+   {
+    "name": "21号·XXI",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/b0/r1ljjlg16vo2ad72fvad1u8iu37ogro.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/b1/7tzf70dcjh4q79d8xxncapa8q8z58q4.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/8/88/gde1i18k0kjcyxvn6ed88doq7vbqihx.png"
+   },
+   {
+    "name": "万事·明觉",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c5/9h59awuf1culvrcub6yfu0x48qbr53b.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/96/ov488tyf2i7ts7ttalk91rpinjr4qrp.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/3/3a/a6oi0vmeez9ujtrangw5zei9ogh7mvk.png"
+   },
+   {
+    "name": "常羽·游麟",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c6/orw12kssk65enusnylsh7nbnjcm5wsc.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/q0hyubwzjbkt5jgsdt8yjit06zi8mj8.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/5/5b/j27jxuminwgpqwd3jpes8mw20lgved5.png"
+   },
+   {
+    "name": "薇拉·瑰丽",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/24/dokpgapkybcvew3u18o9y2dvgndupd9.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/53/rfb3ge8r4w0uerez2mwh2d9qhwu6tow.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/b/bf/6tg9m3uh57i5mv5h7ldb0jvy3z0mf33.png"
+   },
+   {
+    "name": "库洛姆·弧光",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/d/d1/exa1z29unvutb8enmp3tsv4bsfnr9wu.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/2/22/e4b7juwxmhe7l9aqahstmuf6ktbfdrb.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/9/98/lmde1mwldve3561749d35w2envf5lw7.png"
+   },
+   {
+    "name": "苏菲亚·银牙",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/ee/b68wvf3yb20sip9bks2iryg2ss302sv.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/85/ab2bzhwnh4wnoymehoigfrbi4vubqdn.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/e/ec/quu9itx8zgqeuxm3qanfea8ze5ip14p.png"
+   },
+   {
+    "name": "艾拉·溢彩",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/7/7e/fp3uc5uer0quuecg48jv81kpzqcdt8e.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/30/5o6cnnagt52q3t2s4bmfnbp6ok29x42.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/d/d8/qx9uiequi9a4yg8sohpa8ja3e0sbix1.png"
+   },
+   {
+    "name": "渡边·夙星",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c2/570ho1ydg4nf7542at0refdrnila2bc.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f0/09j1at0kvvqd14z9fx89ppe58h6f1tq.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/0/00/e63f5ddwgvhoqngswhlf725ggm1ux04.png"
+   },
+   {
+    "name": "渡边·夜刃",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/cd/h50g3wl18bqc0uz7ym9vlfnohorbu6t.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a7/tgbqy4vrabj7p0c4hzhy13yzjcsi0z5.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/7/78/6gjbgumlv1278gbpqk64t0zf51ht5uz.png"
+   },
+   {
+    "name": "卡列尼娜·爆裂",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/a2/8aemk3ff6eh05a72nri5tjgapt3k6he.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f1/5e86laasinofdrabkkabgbkb43qfst2.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/9/95/4kzirqo8ztd20r657q1xwyajuf2h7n2.png"
+   },
+   {
+    "name": "神威·重能",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/16/d6jwcnhi8u40tr70y0mchdns33y0axm.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/16/0zgnj52e3dwhwadn8gt1ntb10yehkxp.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/c/c9/97836t6aubl9z0wzor8mdmxawb96ztv.png"
+   },
+   {
+    "name": "比安卡·零度",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/18/34td58e7qx5sx1z2davs9eldic3rrv6.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/ji9zcg4ut2l6hsopdfv9gm9iifk0p2r.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/2/2b/1g134ynjb0d6ybh7ksztm09fmt8n764.png"
+   },
+   {
+    "name": "丽芙·流光",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/c/c3/hy5poscq2v8zy5lj2pqcbg959o06g5r.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/91/aedexd86dvh15xue7dlvz3rksnww7w0.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/8/88/qhljiavtu2n7x1l05rqzmkh8ubr42zv.png"
+   },
+   {
+    "name": "露西亚·黎明",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/23/8dcgya69mhdokpw98jmed25sptfqw6a.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1b/qznqjhi5vpmdujfbmghpzu1e1wqx7vr.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/7/7f/gba7gi5yji25lufpcdt223on2ox3kx6.png"
+   },
+   {
+    "name": "里·异火",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/9d/8bz0fhzo89thf6xmn2klb8orqxthnm8.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/43/bg8wp6p5bvza5slnrjtep3xyc8yypfo.png",
+    "figure": "https://patchwiki.biligame.com/images/zspms/7/79/gn53b82tfbunrgra9m6gfq65voge2jf.png"
+   }
+  ],
+  "S": [
+   {
+    "name": "阿德莱德·破渊",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/957256e9a68249de85c2c44fa2f7050620260904.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/4ize19666csbgiyt0mvhmqvmmoo5raa.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/2/2e/pat06lrt642737gakd2e75e0c2z8l95.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/be44f61531324fb08c702fa33a20480920260904.png",
+    "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
+   },
+   {
+    "name": "卡列尼娜·烬航",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8b7f8418a87d432d9b12fa105289437120260730.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1d/6w3t7dqna584yzwplizjghnr4zm6e30.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/b/b5/64p8c09lwv9g7xuulq8sqbe62m9qjaf.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/8ccd9b8d95e54226942714f36e6ec3fd20260818.png",
+    "banner": "https://i1.hdslb.com/bfs/archive/0add9a49bac1b396c5329011710585689aec1f40.jpg"
+   },
+   {
+    "name": "海伦汀·安魂",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d98a43ed9c2d4fe0b6a9b720b0b5842720260625.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/8e/hogcy1i3kxwq8pv0v2hy7mry1tyreal.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/6/60/e9ha0gkpsdscu7yzd80l0yz9n3m1m12.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/d098374b67f0461da1e5b5fc7918bcf120260625.png",
+    "banner": "https://i0.hdslb.com/bfs/archive/0d7fbf5a379fd5c20b81f1f3676c48e0b88a5a4d.jpg"
+   },
+   {
+    "name": "神威·不落日",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ae2bd64c06640858140f9440ce648a320260406.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d3/t1gevps0kp28mt57ll8y7hesgopto3b.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/6/65/a1hhah63n4zafpeypgij6fxvvidw0uw.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/619d28df7c5b45d29f2cfa3383c236d220260404.png"
+   },
+   {
+    "name": "涅缇娅·亡歌",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f2fbad9aa38241c3a8fdf2e398286e1a20260313.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/71/0gm839vxwh9bxsiuv8azdj93pg1u5wt.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/e/e2/q3u63867pv4gy0h20ogqnhzapie9pcw.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/498d464164cc4499be8c5e3a352508e220260224.png",
+    "banner": "https://i1.hdslb.com/bfs/archive/0b20c91d749f99219f35354df73df1d6fcc2253e.jpg"
+   },
+   {
+    "name": "罗塞塔·极锋",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/682202e1640b41ebb699d65547fdbc5a20260104.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/2/22/msq3erhygun8eogwi020nqhwme6vxgp.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/f/ff/o19v71znjbw2i61efcib8wff6o813wl.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/dd07127ff3ee4ad5a1e741abf3d6849d20260114.png"
+   },
+   {
+    "name": "布偶熊·骇影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/27b590d9a67040fca065d26f352e286820251120.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/99/63uqmcfaxdd3uiodgplqktcf3t4806k.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/3/34/o9wqamowbaeqhf8mz1hwccxl14wxxge.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/2dea991ddf1c4531a68e4d2b4085085f20251120.png"
+   },
+   {
+    "name": "维罗妮卡·铮骨",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1f24f35992af4594a4fc4ddbd226235a20250904.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/58/e7lnfccm5w59yfznu5harhtiedeqy05.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/a/ad/557cerdsu332eum4btknf8k9afeg6h1.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/8d616ff90e8146e9afef4bb94cb44ea120250904.png"
+   },
+   {
+    "name": "比安卡·晖暮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a437b74cb96f496bb56c5eec859ad29820250612.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/87/do8qi2kpr6cuh0l3a0b924ow64d2wi5.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/b/bc/mn9t47cw6csfkd5cdwac84e3z493qqn.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/dc2e79a8e6c6447d8d60957c490c1f3f20250915.png"
+   },
+   {
+    "name": "薇拉·灼惘",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/35bb6b99a3d947b3a338dc56cfb1d1da20250320.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/c/c8/naztv843hgk6tzctvfz9vkz1r00hjpm.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/d/d7/g4pr5mpsw777itzyyjcfltv9hsrhbcz.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/93de1f2fea1e4f75be66248bddbae28a20250320.png"
+   },
+   {
+    "name": "赛琳娜·希声",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/238fdac8e27a43dbae75f361f5719d7f20250105.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/97/05t3le044qt2yx545p635mdk4m515p2.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/9/97/emxx5tfha2pyazksez6ltzup9uiaewh.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/0a22958a700645a88c5056f175e3a3e520250227.png"
+   },
+   {
+    "name": "莉莉丝·谬影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/91147c93689d469581fa7bcb16035ad820241212.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/4b/ocoo73i86t5lpyolaka3qtu8wtz23x9.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/f/f6/jjjqapahdvy8lchaidrvt0mnlkf9t7q.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/3dc6046bfd724885994c9cf232f7830d20250227.png"
+   },
+   {
+    "name": "伊什梅尔·幻日",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/427ef66c9ce34b439fb84d1ef7947ad220241126.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/da/9nr4bgfokmd3zyno05bf5pn42d0h3aw.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/0/0e/tn1yxcd1unpyvdzoarmuq6tfwo92iad.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/deb7b1d6cec54bdf870f49f12039bfc320241104.png"
+   },
+   {
+    "name": "七实·芒星之迹",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6dc2e705f3144fa85bd1f95b6213bb920240914.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/5b/4zjr7zs566eql7exlyxor2ilil2mb70.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/c/c3/oc0h1k2u8g9m6h7rd5ejassun6bftg7.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/bf0014d996a1406b8d18fcacd83198ee20250227.png"
+   },
+   {
+    "name": "露西亚·誓焰",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/52e624674d534336aeb53f2815226ef620241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9b/doj5ts4zl8ap0ey9iwmmyr360p4h2k0.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/1/18/gz7y4dn17k5itvjyt938sas1vlt77zy.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/10fe978a1cf949efad50e510aebc2b1b20240703.png"
+   },
+   {
+    "name": "万事·明晰梦",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f203d91ebc6443d2909fe9b5796a1b3620240529.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/56/q67727h182811i1cfm7dhea91wl9wxp.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/8/89/5snanm0hptoq1c396c6px3ca6tptdpd.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/cae752a4f6cf4617ac5db72cc4be677020240516.png"
+   },
+   {
+    "name": "含英·檀心",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0c7e96fc429141389233b1d4a707406b20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/0f/bzte85h5yov9n3gi74eughcvii9swh4.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/d/d0/9e9fpg3ttxzulzzith3ap9bc39h4zxj.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/55070dcbb3254137a3e1c6647fef0bc820250227.png"
+   },
+   {
+    "name": "露娜·终焉",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0feb192f4f864855ad3038b90c1bf0a120241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/e4/nttu6n2uwsgwgjwxwhbc9re5utbf0ya.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/9/9a/35xgurnnsqg4pqsywqb3hspdwghkbbn.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/469a2bdb7c99448c86a280913d5326a720250227.png"
+   },
+   {
+    "name": "曲·启明",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5027ac12caba4eeb8d38dfc9d4219ac520241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/95/0bo28dmmtarsh2l27gru5h7sq1mn086.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/3/3f/3ku0o2fevgc17tk9m1yay57iylbmvz3.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/dc18c4f0a9684388bb80a9e1744139e820240517.png"
+   },
+   {
+    "name": "渡边·尘铭",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1b143b7bfeff4c3eb8a0f3798f9245ab20241126.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/e/ed/80hqzeb3c0p6569hdzrcz5xwfcmxdnj.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/d/d5/1o7svbm52imlh1salij2xop9gng746f.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/f5d0645113d2474a8dd25857f7785dcc20240516.png"
+   },
+   {
+    "name": "拉弥亚·深谣",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b158a2dc68344edaa78c085b8b9be68820241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a0/8aael5iytq1hx97hcsk9kekfojuhdmv.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/d/d8/fxgz5yb786089zw1zwlij0bmp6j5ubf.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/c069dcb33b71465cb555a7724b4e577e20250227.png"
+   },
+   {
+    "name": "亚里莎·回音",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9b32db828dfb4dc2aac0a505452e9aa520241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/8a/3t3xgvmh7s7d688aods46gvafygfr10.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/b/be/qh4rocldepyacqewwdd8nftqp60x0iu.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/3cdc9e8ba21e4407b44b2c95a52f236320240516.png"
+   },
+   {
+    "name": "21号·森息",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9714cc0922e34f3cb0037d88db1340f920241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/fd/14xuwmo9utcqggmm0sc6o3gwbkdd5wj.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/2/24/6zg3wfptjchxqxcolqzmxl6lf9t2tfh.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/eb465696c80244ee84a7614a6ec06d6620240518.png"
+   },
+   {
+    "name": "露西亚·深红囚影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4206a392001e44539a5ef0ec52fe1ce320241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d3/38ep366i2qb8qg43z555ocvoa4udaq8.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/2/24/tdeu0c385chzz8cbk1sk65yfcyjyg2j.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/e9ae1c38fce64fa689df1377a059e62a20250227.png"
+   },
+   {
+    "name": "艾拉·万华",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4741a64a97642d2aecd601a79a6b7dd20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/71/hm2r2tjrp84mo7g8a31ol8n5zlxo3ll.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/9/96/i98clfq43j1mqeqfam9ym69ynihtavz.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/a63e1ad0f2884aedb200a194f89724ef20240516.png"
+   },
+   {
+    "name": "里·超刻",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1689ade27c8b46c8965ed9b0c854256920241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/0/0c/9zwge4w64lgawpl0h8p4gx2omq1v371.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/5/5c/9tylsils04vqtfoir4g6z9job5i2jrn.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/76bb222eaa4344b48a27be9b7a9e506020240513.png"
+   },
+   {
+    "name": "比安卡·深痕",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e300afe3f8304a2e9ea4cd67e735274f20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/5/52/qh0evbuqamwpubot6bi3j9zqvdlanhe.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/fe4fd7c0d558426e8c9ca7e807826de520250227.png"
+   },
+   {
+    "name": "卡列尼娜·辉晓",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/15/drkt0a43gq4wa6dqnfpdr7bs4qty5k9.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/ae/pvv0w6v3ph1gumaoc3a734oxuejpsh1.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/38bdbfab407348ee94339a4989ef9a8220240517.png"
+   },
+   {
+    "name": "七实·遥星之座",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/06f13d64cb2a406bae3d6ee2920666d320241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/bpk7f68ybq3is8m3wc8ip91fobktsek.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/9bf15727719649ecb34043c92f0ecc5e20240517.png"
+   },
+   {
+    "name": "赛琳娜·幻奏",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee350ef29bb94a78887f5a1e2764892320241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/4/44/gavr4amwtgz4ycwyqa1zwsakyvxavpp.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/42bf52f4dfac42c8866eaab69494a65e20240518.png"
+   },
+   {
+    "name": "丽芙·极昼",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82bf1e1c3991473f9db2b7a83818458420240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/8/88/ldfhem3ww1n2gm3nezmag4m9lrn2dyc.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/c3816e0f008e4da4a83cc250d7a0497320240516.png"
+   },
+   {
+    "name": "薇拉·绯耀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e527dafbb61342e5b2debecf4e2e9fe620241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/a/a5/rtemypzpshradz90i8akuwu4wad2ra4.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/7047f9b45d7e401abf6b7b14ff8e52c720240517.png"
+   },
+   {
+    "name": "库洛姆·荣光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/39ce5d954cb84c408b334a054f76ad6020240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/b/b4/q5d0n0ms7sr74mame9f9sm7gyase5jc.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/75e0b28007244cf89763e86f9c89bd7420240516.png"
+   },
+   {
+    "name": "露娜·银冕",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee88cb6eb0ed4b67aeb39ab33dc4924a20240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3e/i24k27luvgrve23x2rgt0krut57rtxx.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/2f730353d9f344179e81395d9ad6180f20240518.png"
+   },
+   {
+    "name": "罗塞塔·凛冽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4123903e3c664eddb11c1b19db0ff9e720241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/3f/bhcpqlv9lu9j0xnt77kk61rz0lqokrn.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/1cb32e2418ee482f82eac94ea65bb9d820240518.png"
+   },
+   {
+    "name": "露西亚·鸦羽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6b9ca48315ba4006a2e0169f9eae0f2f20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/db/rtlof61cc572egruh3leq2ot7bnbkq1.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/3042fc9eaac54310adf24294d42ae02c20240518.png"
+   },
+   {
+    "name": "比安卡·真理",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bdaffd00d9524c418fbe6f4be4233b4520240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/6/65/1xvq9i7bsakehq6ki1cz7twzycly7ze.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/94dc9e86d39442699724dae1ee23633e20240515.png"
+   },
+   {
+    "name": "露西亚·深红之渊",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41e6f78fba5040309ce5b6472c99bdfe20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/7/77/2ec9t05p82lw2ivcidx3rmw0d55dk5b.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/7bb79785e54d466eb29aab38511d489e20240517.png"
+   },
+   {
+    "name": "七实·脉冲",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/084c095633084ca6bc2d20acccc343dd20240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/3/34/gb60xem4684d4q2897lh06dhfobwrn6.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/f88c8d47b8934a09b53200424f3e8b8e20240519.png"
+   },
+   {
+    "name": "卡列尼娜·烬燃",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/1c/deeol4o9fm4h8m9tmb1d4hrlgf7fb6j.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/df/dbv5eq313845g1qcnm06w1v6r462mae.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/258fb726901840dc8d7a9cbae051521320240516.png"
+   },
+   {
+    "name": "里·乱数",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6ffb521f501f48479ebb92dbea151f5a20241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1a/sruxwac76hl73r7blyia8v36iotqr43.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/3d81b7c67c4d484ba58d06309f75eac520250227.png"
+   },
+   {
+    "name": "丽芙·仰光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d9bc8901efb2425eb4543ff806dce1bb20240510.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/1/1e/san30dyyg9485ftp3irr1xsfmlh3co4.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/4e9d3560640f478e8dec3f034a3caabf20240519.png"
+   },
+   {
+    "name": "神威·暗能",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7e6d5096f86d48599ff91ae7f6e5765d20240731.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/f/f3/mf2vdj05yiywtz5hjp54o4wahbyzk8n.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/19652fdec62a4873897d02884a3e2c9820240518.png"
+   },
+   {
+    "name": "BRS",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/955c0818c52b4829a0a1dc3fbd91846620241118.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/9/9f/nwac760n4x71wda5dp8rxudgdoyynal.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/4/46/awjqvnngn9yg5i4q8ub75y0zc3lmerx.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/61c5b16c2e334f21aaf9d86e12264e0720240517.png"
+   },
+   {
+    "name": "时崎狂三",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9436f800ed18449197e2d2a0e885d80d20260929.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/62cca1e102cd4abe9dd79fee26a27c9b20260924.png"
+   },
+   {
+    "name": "但丁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4389298199c1499692009110b9d4ae4a20250429.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/06ef645ab91846cfbe27f27fab8f858b20250429.png"
+   },
+   {
+    "name": "维吉尔",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1cecc56a00e3481581795660ed049c7f20250429.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/63501e6eed5f433882b0d8ea370635ce20250429.png"
+   },
+   {
+    "name": "2B",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1ac7ca71bc2642ebb6aceea6830a417a20240518.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/63e7cd45e20745828f34233cde9662f420240521.png"
+   },
+   {
+    "name": "9S",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f73fb1d54b3d4bad9d9c967e0e53795e20240518.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/d303d7f0725c4ab59f9501bc2ffad94520240518.png",
+    "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
+   },
+   {
+    "name": "A2",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3af09efc4c734175b1cd61a9c19a6ce420240518.png",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/a08a484d08434d78ac07fc19b6a5a93220240520.png"
+   },
+   {
+    "name": "莱亚·祈星",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/bfd95cb842654e66bfe1a49be434991f20261015.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/29d32eca09cf4dbc8da551fba20ea61120261016.png"
+   },
+   {
+    "name": "露西亚·逆冕",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/b0fa772735c743c29b72db6cfae7d8ad20260518.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b4f3739d7f1045b2be1a581c4abad48620260518.png"
+   },
+   {
+    "name": "丽芙·霁梦",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/cf79493d33644401a384b7c908636fc720251016.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f22f75dc774249f9a5ad11fc3ef6d75320251017.png"
+   },
+   {
+    "name": "诺安·逆旅",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/115af5077c284f22a5902d4a70ad4dc320240516.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0f5bf03db4d843ceb8db39fff7e2392020240520.png"
+   },
+   {
+    "name": "哈卡玛·隐星",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/e326573c1f4747b6baaa6bf737adbde320240517.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/01630fb5d33c4ebdb83eded9365a124a20241118.png"
+   },
+   {
+    "name": "蒲牢·华钟",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/800e1e6a862240a9abe72c143b071f1220240518.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df3c14c23d63428eaea441fd70d567d420241118.png"
+   },
+   {
+    "name": "罗兰·戏炎",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/7fc635d8d0a9444fb07d13547d9e4c1620240517.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3ab46f8149ce43448e020274123b01f220241118.png"
+   },
+   {
+    "name": "赛琳娜·岚音",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/a2cba8f39128410cb72d45be58ff931d20240518.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/14d40e38e0844502b911a3a5ab48d94720240510.png"
+   },
+   {
+    "name": "曲·雀翎",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/8da17061475949acafb37659469de30b20240518.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/33fc5b119c7f4e1ab0c47334b00e877c20240510.png",
+    "banner": "https://i2.hdslb.com/bfs/archive/fec94869a29b97be636bb06e67f8e3e129f1e790.jpg"
+   },
+   {
+    "name": "卡穆·狂犬",
+    "figure": "https://prod-alicdn-community.kurobbs.com/forum/2cf1e43eccb54f72b3615c79ad56462c20240518.png",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/27a1a2e4ef8a46869527e61ee9a8394220240510.png"
+   }
+  ]
+ },
+ "weapons": {
+  "6": [
+   {
+    "name": "不孤航炬",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d94600e43f244fcc88425782415c4e4b20260908.png"
+   },
+   {
+    "name": "尼弗尔海姆的辰星",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bd736745fc0a48148ebafa42423c006820260802.png"
+   },
+   {
+    "name": "遥听归乡的晚钟",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e72f1ca1ce5645329f7e9b01cb8dcac320260629.png"
+   },
+   {
+    "name": "朗日耀斑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a6804901e5b543368f8d60b28bd6dd7620260406.png"
+   },
+   {
+    "name": "旧日讣告",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/be40fbcb6f6c496e816e5b37068fc29020260303.png"
+   },
+   {
+    "name": "幻象戟·统合",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/048372ec22024c378c46aa03d1314aef20260114.png"
+   },
+   {
+    "name": "霓虹穿梭机",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7164b1d0c71e4d0a9cb18c9acf89ce4b20251121.png"
+   },
+   {
+    "name": "怒霆敕天",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/42ab8f63061146a581e8bccfd896f8a120250904.png"
+   },
+   {
+    "name": "噬铰骨殇",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a14f75ef982142fc8ed20450d7f911b220250725.png"
+   },
+   {
+    "name": "奥罗拉",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c69464a438284b1ebc3460620756430320250612.png"
+   },
+   {
+    "name": "烬劫归墟",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b1e494f96cfb4054abcc4bce6b33f62120250321.png"
+   },
+   {
+    "name": "终局裁决者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a4a1552de3a140efa4b4ad72647e068820250304.png"
+   },
+   {
+    "name": "奥菲厄斯的摇篮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d8a9cf5a5be148c3b1920d243d8eb99d20250109.png"
+   },
+   {
+    "name": "繁宵蜃景之哀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f809c49edd614482b988e99f8431863d20241212.png"
+   },
+   {
+    "name": "伊始与终焉之权",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/eb061394c9604014bb251a8c23cf7af620241104.png"
+   },
+   {
+    "name": "隧星盛耀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1ea59c340ef9464c9813b9601b101bb820240918.png"
+   },
+   {
+    "name": "擎殛明王",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e85fbe8f55784b989deccdc5937c588820240806.png"
+   },
+   {
+    "name": "拂晓炎翎",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/50e32d2b34114215bc0816a89a66d92420240710.png"
+   },
+   {
+    "name": "明瞳续昼",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9763fc63f42d406488cee8d2a52f66f220240516.png"
+   },
+   {
+    "name": "玛纳加尔姆",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e25325606e6e45c187c1f116abdb875a20240518.png"
+   },
+   {
+    "name": "暗寂闪光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41f8c5e00c8f45648bc58d6e36eb24a520240518.png"
+   },
+   {
+    "name": "今古",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d78d32aeb824a75beead55231623b4920240518.png"
+   },
+   {
+    "name": "塞斯特斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2511857f185d4079aaca213ca7fbab4120240518.png"
+   },
+   {
+    "name": "骇客锐音",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/405a2f3fb0c648f687a599c4669d598920240518.png"
+   },
+   {
+    "name": "奥兹玛",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8461a33f836b48aab20dc30bde0626a020240518.png"
+   },
+   {
+    "name": "律条重塑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e40de7d680b84088b95094194a58587b20240518.png"
+   },
+   {
+    "name": "墨提斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5d3867d2a3164319aa4f1513e7b636fe20240518.png"
+   },
+   {
+    "name": "呼噜",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e1ad027635af4ac38c44f27560e460c220240518.png"
+   },
+   {
+    "name": "暗夜猎隼",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a14378568b1e43948b33b0f3e3de5db620240518.png"
+   },
+   {
+    "name": "静谧人形之声",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bd371e791dc247bcabb3fdd39dd4f3f620240518.png"
+   },
+   {
+    "name": "红莲狂士",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e646c478461544859735e4e97e2c6fff20240518.png"
+   },
+   {
+    "name": "红樱",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5abde5129d484d62872a479738f28b9120240518.png"
+   },
+   {
+    "name": "沙利叶",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5e74d1acbdd044b48976a06601f94c3520240518.png"
+   },
+   {
+    "name": "朱桦",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7ea744cec79744dbbb6911580d8c6b0d20240518.png"
+   },
+   {
+    "name": "影打-逆断",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4574961557f4224a72fdd7ced940a9520240518.png"
+   },
+   {
+    "name": "天狼星",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f51d4a85f4654b3c8de4fe65d696bc9820240518.png"
+   },
+   {
+    "name": "黑岩巨炮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7244d57865da49e8a5e57e0ceae3970720240518.png"
+   },
+   {
+    "name": "赫斯提亚",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/32b4fcf3d51040f19f9020e617960e4520240518.png"
+   },
+   {
+    "name": "八极",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/67ead0875bf04b6c93769967d34d57c220240518.png"
+   },
+   {
+    "name": "天平",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f828a52472ab4c729b5299ea46e4e7b220240518.png"
+   },
+   {
+    "name": "冈格尼尔",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c9da9d91d786401b84fbb12c5b9f8ab420240518.png"
+   },
+   {
+    "name": "不死鸟",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d33dcfa147404b3cb2355c93e2148d4b20240518.png"
+   },
+   {
+    "name": "鹏游蝶梦",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6782a6eb5a84bc7ac258f73e3fa0c0420240518.png"
+   },
+   {
+    "name": "伽拉忒亚",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3d8465390d6f4f6cb59c81843bc8abce20240518.png"
+   },
+   {
+    "name": "圣艾尔摩",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7239d932ffa64569a3c488807a3e9fea20240518.png"
+   },
+   {
+    "name": "魏紫",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dd08387b69c44ee3a4ffd973e7b10cea20240518.png"
+   },
+   {
+    "name": "赫卡忒",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6cacda1193e44709acfb04b27ed7dec520240518.png"
+   },
+   {
+    "name": "赤红咆哮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/97352c22fbe14ccfa3e01c258124ffd220240518.png"
+   },
+   {
+    "name": "狂乱融合炮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/07d0697ad3ef4fd0acac775c106110fc20240518.png"
+   },
+   {
+    "name": "核基红龙",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bb095a36374c452096b974f8f0022ace20240518.png"
+   },
+   {
+    "name": "星海漫游者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a5d6c5557ebe416f925b6650038d108520240516.png"
+   },
+   {
+    "name": "雷米尔",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5439232c7b9f4c3cba91bf75b9b2604320240518.png"
+   },
+   {
+    "name": "阿斯特莉亚",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d472ae5180f840b28ec7ef21a140965120240518.png"
+   },
+   {
+    "name": "莱特宁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e7016a02dd9640ffa139832928d22f5a20240518.png"
+   },
+   {
+    "name": "零式",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/75022e48798b45379b07fb2c01ad90c020240518.png"
+   },
+   {
+    "name": "神赐者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/704ec35507ec4fe8a07f76b1662600b920240518.png"
+   },
+   {
+    "name": "天龙之风",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/add958df1b1a4417ad921fd8b96d748820240518.png"
+   },
+   {
+    "name": "时隧之钥-斯托克斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/57caf18dbe7f4b5780b50dd45695bcff20240427.png"
+   },
+   {
+    "name": "夜煌",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/180c7ae566364f1793d9a97f5d12f50420240426.png"
+   },
+   {
+    "name": "镇命者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2113d879e77446b686b21350e3bddc1020240518.png"
+   },
+   {
+    "name": "斩魂者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8f7f523bc6bb408ba050c2672937771720240518.png"
+   },
+   {
+    "name": "林中主人",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bb9bb72a7bd24a79a526b9ddaee9f80420240518.png"
+   },
+   {
+    "name": "普罗米修斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6fd9026fc0ba4f3798f07cb5e39e1cc020240518.png"
+   },
+   {
+    "name": "青赫",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/65111d5337234fcba2262a37dc26da8e20240518.png"
+   },
+   {
+    "name": "杜兰德尔",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4b066e754d9b469a94441c833864865620240518.png"
+   },
+   {
+    "name": "无隅",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a0a3aaee9ef24ab7a354b3fa6649e35620240518.png"
+   },
+   {
+    "name": "塔纳托斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ce28b601ad340d1892b4256e6991efc20240518.png"
+   },
+   {
+    "name": "机韵",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/465879d6730a45f88a2e822ba5d9273220240518.png"
+   },
+   {
+    "name": "奇美拉-逆断",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6f33c087245f483e823e0e308b1e4d0720240518.png"
+   },
+   {
+    "name": "萨拉斯特罗",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a1b84498c55c4514b82139a3e524272320240518.png"
+   },
+   {
+    "name": "漆黑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f88fe3ad25984fe0b6d15be900edd61320240518.png"
+   },
+   {
+    "name": "大神威",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6fb321dd21c349e1b0f58d80a69f047b20240518.png"
+   },
+   {
+    "name": "阿波罗",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/effee6772fd246599e4472431fd5d20520240518.png"
+   },
+   {
+    "name": "聚爆",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1f5bb0098b3a4b1e909da2d7f01bc4e520240518.png"
+   },
+   {
+    "name": "铭钥阙影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/368594a3086e4e759068f5107cd0825c20240518.png"
+   },
+   {
+    "name": "零度定标",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ecc727fdbe8a4d8eb8823f8eb2070cf620240503.png"
+   },
+   {
+    "name": "赛因",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/88bb6fcbdb8e427a8e7060ad675f155320240515.png"
+   },
+   {
+    "name": "噬狼枪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/340226d4b9bb44f3a791313ea21aaf2620240503.png"
+   },
+   {
+    "name": "★黑岩巨炮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8c7b16633ece4a379bf1a13fb44689d320240518.png"
+   },
+   {
+    "name": "时针&分针",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6d28e38cf4dc49f89315efa016d6c4e620260929.png"
+   },
+   {
+    "name": "魔剑但丁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e5bcf2d6034bb892a5d7cc7e932e2920250430.png"
+   },
+   {
+    "name": "阎魔刀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82590637d2ae462a91d8f6a22429ed3820250430.png"
+   }
+  ],
+  "5": [
+   {
+    "name": "渊下锻火",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d9ec761e8664452897ee0b89c8449bd20260908.png"
+   },
+   {
+    "name": "附浪辉砂",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c7a3613c84564c55a8496f119c1462b620260802.png"
+   },
+   {
+    "name": "片基灰雾",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df14b1f3b9ca43f8ba9c688577d7cdba20260629.png"
+   },
+   {
+    "name": "BX-02M 寒渊",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1d5f3ce02d074440b29f3da32e083bd820260522.png"
+   },
+   {
+    "name": "斩光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c5ae300409774f1c81b418e3f098802220260406.png"
+   },
+   {
+    "name": "黯羽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/eecb88bfc5514cccb4b412026dae6f0820260303.png"
+   },
+   {
+    "name": "幻象型光戟",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/cd222da693c04ab889ba5525ced837af20260114.png"
+   },
+   {
+    "name": "空岛电音",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ade376669e2f4ea9a3f18ab454df587320251121.png"
+   },
+   {
+    "name": "苍染之莲",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7d9c083ea5884359833f63d12254f1f320251017.png"
+   },
+   {
+    "name": "辉穹",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/38d1b38969614163b99f859cfdc81a5c20250904.png"
+   },
+   {
+    "name": "断脊",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8484516cb7fc4c1191f54005c5fb36bd20250725.png"
+   },
+   {
+    "name": "涤光裂夜",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/defb930d025046eea45a11bc256105bf20250612.png"
+   },
+   {
+    "name": "猎魔大剑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ca0259ae706242feaec4d2b295cebc5820250430.png"
+   },
+   {
+    "name": "阎魔刀·影打",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f26c8a6ed9064c7e9d0c26796f6e46b420250430.png"
+   },
+   {
+    "name": "灼夜",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/be824d3a69654518a36a1546a1c2cef320250321.png"
+   },
+   {
+    "name": "翩行潜夜",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/08db9f42747848f5b7a47ecc54699a5d20250304.png"
+   },
+   {
+    "name": "月桂之冠",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/faa4eedb4d304e6e84d1b858b8975e5a20250109.png"
+   },
+   {
+    "name": "璃昼谜魇",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/23012873d2c04dbb99ee9b30c613871a20241212.png"
+   },
+   {
+    "name": "寰映星键",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3b9149cbf3c849fbbce0702743420f9120241104.png"
+   },
+   {
+    "name": "ZL-09改 辉扬",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/109199e585b744d694b4cca45611e86f20240918.png"
+   },
+   {
+    "name": "祓世御雷",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c40daff04d4b4f2a8b271d5937c1a39120240806.png"
+   },
+   {
+    "name": "雾隐冥光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b8acbf0876c349f08e8a643a63b0130920240710.png"
+   },
+   {
+    "name": "故魂永息",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/66429407160b46099f754ca2bf31d8a620240516.png"
+   },
+   {
+    "name": "三重奏",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/819add48d9b340a0a430d600bf947b3420240518.png"
+   },
+   {
+    "name": "绝境破碎者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2f4e3b4ed667454d9441d7b177a2f7af20240518.png"
+   },
+   {
+    "name": "风回",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/73750b0d4b344c36824300d9535d765a20240518.png"
+   },
+   {
+    "name": "冕饵",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/94e5d2cbcb1b423cacaab3cf3d8dcf5420240518.png"
+   },
+   {
+    "name": "逆行交点",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/35818a1da5b441dfa2087218a41f4b6c20240518.png"
+   },
+   {
+    "name": "阿尼姆斯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b2eb746186fd4bc788e67d505165749420240518.png"
+   },
+   {
+    "name": "苍白羽赫",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/155bae0b455e4fa0a504b0a89a0c328720240518.png"
+   },
+   {
+    "name": "彗星之锋",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5cdca24d43734b8c8ecbac2ca4af510920240518.png"
+   },
+   {
+    "name": "九字之定",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/70f6535dee7d4382a38b50bd7f11e83d20240518.png"
+   },
+   {
+    "name": "双极星间",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8c05fc5f66bc422e870e9161368c1a1620240518.png"
+   },
+   {
+    "name": "FA2D-AP",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/87cc4d59c0834fd0a1dc688287c245ed20240518.png"
+   },
+   {
+    "name": "绯煌骑士",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8e8b01a6c34a4cde9e2504849157d0c620240518.png"
+   },
+   {
+    "name": "月上海棠",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6a258a89012b492487e27ed3e3cfbe6420240518.png"
+   },
+   {
+    "name": "褪色",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/56c686d0c2c9450f81a8fe60dd2a6ceb20240518.png"
+   },
+   {
+    "name": "极夜",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f6ffdd35ea3f44b9bedd32069231099e20240518.png"
+   },
+   {
+    "name": "FPT-II改",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ada5f891a77841e4a4cb70496148439020240518.png"
+   },
+   {
+    "name": "熔岩之柱",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/10fb9a016b674c32b56de37ba41f437b20240518.png"
+   },
+   {
+    "name": "二重虹光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5304dddaa5441ba8b36ca1e697c3eed20240518.png"
+   },
+   {
+    "name": "卫士挂载",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/05314ccfbdb94cb6a70f4e712c1fe9c620240518.png"
+   },
+   {
+    "name": "核子熔断·δ",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9d2e32a0d8474df7896f545a40369f3e20240518.png"
+   },
+   {
+    "name": "绯霆",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4f141d3fff05462d8df98d0833d698d220240518.png"
+   },
+   {
+    "name": "石之心",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/03b4ac60a31f4f9093880196a9000b5620240518.png"
+   },
+   {
+    "name": "奥黛特",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5c84c1f0ebb548429227419f78b067a820240518.png"
+   },
+   {
+    "name": "高频粒子刀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/aa5c44a4258b48e29ed8bac02533ddad20240518.png"
+   },
+   {
+    "name": "归云",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/10b23bc377184132b0401386611573ff20240518.png"
+   },
+   {
+    "name": "纷繁玫瑰",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0c80da2eeafd416e9b021ccf4c6d77ff20240518.png"
+   },
+   {
+    "name": "霜尺",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4a440986f774217aaebaa46d59434a320240518.png"
+   },
+   {
+    "name": "掠影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/527bf2c70b8744d6b1c1654cb3b332d720240518.png"
+   },
+   {
+    "name": "电光石火",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bc4305a8c8244dba98c8be6ad42ceb6e20240518.png"
+   },
+   {
+    "name": "那不勒斯的独奏",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7317b1ca7ddc4333aaaae99cda8aea5620240518.png"
+   },
+   {
+    "name": "动轮大剑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/046a340bd17d438ea64b27d58cc7823120240518.png"
+   },
+   {
+    "name": "卡拉一型铳刃",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6ecd74bc9fb4763a2e746d71f2e677720240518.png"
+   },
+   {
+    "name": "红移",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e39047d58a5e486aaf3bf2a90d14c4c220240518.png"
+   },
+   {
+    "name": "鸿浩锋羽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c6fb0272c068413695472f3a2273812f20240518.png"
+   },
+   {
+    "name": "暗影紫光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/12d0b31ad46e42f28eb90ba910edd2f420240515.png"
+   }
+  ],
+  "4": [
+   {
+    "name": "铁誓",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/49b8279370a74dc1a9316c06201e21c220260908.png"
+   },
+   {
+    "name": "曦刃尺浪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7527a18f8aac4955b3abe660bd648e2b20260802.png"
+   },
+   {
+    "name": "法兰",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3ba6b8b7803c4e37884afe0208602e3120260629.png"
+   },
+   {
+    "name": "折锋",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8f9028c8fead485aafbd8d8a1f4eb96420260406.png"
+   },
+   {
+    "name": "止殇",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b099b5142c58472fa7353939b016165b20260303.png"
+   },
+   {
+    "name": "余震战戟",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d9efa40684da4d9589e720e8fc53c98520260114.png"
+   },
+   {
+    "name": "月壤踏步",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0aa775987fe94dcf941f67a7fb12648820251121.png"
+   },
+   {
+    "name": "试作型镜轮MW-03",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e2cc1ff299d14c7d9e382dbf115108d120251017.png"
+   },
+   {
+    "name": "刺烬",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2690f49383a46c8b979f7794295e4dd20250904.png"
+   },
+   {
+    "name": "殛罪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a9a9bced3459432da298ed33e379f9bb20250612.png"
+   },
+   {
+    "name": "炽陨",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e3fd4cb0e9f40ca806f6621ba34d63420250321.png"
+   },
+   {
+    "name": "泛用型MK-2",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4e7f6bc72df348d1907c94d729619dd420250304.png"
+   },
+   {
+    "name": "凝诗",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e0a6b51224d24e4cb2543f5f83d231b920250109.png"
+   },
+   {
+    "name": "瑰夜绮影",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/71eaa8e699864dc5acf9cf84e20bba7f20241212.png"
+   },
+   {
+    "name": "未元探钥",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/685460cc5fd2406188b846302b588c2d20241104.png"
+   },
+   {
+    "name": "试作型盾斧 ZL-07",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/21aa3aa423ab49feb745214fe862aa2920240918.png"
+   },
+   {
+    "name": "夜行罗刹",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1d34319f5158431084680e5612f3b18520240806.png"
+   },
+   {
+    "name": "试作型LB-疾光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82de8da10bd940569438a77c75e8d30820240710.png"
+   },
+   {
+    "name": "落膛之时",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41337d4c13a24ec4b90a98bdb2cacab120240516.png"
+   },
+   {
+    "name": "噬雷",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9e57d7b382e44745afbbe5d23b0f769920240518.png"
+   },
+   {
+    "name": "试作型重破锤",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a099d622ccd941e680bc9a771697a16f20240518.png"
+   },
+   {
+    "name": "雨断",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/accc815ab06b46c5b721d8a4b6af6d0420240518.png"
+   },
+   {
+    "name": "始",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b1bc585d891f4445863f4e37a15c640220240518.png"
+   },
+   {
+    "name": "环礁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7a05ff89557c4fa79093ef3a018b856820240518.png"
+   },
+   {
+    "name": "协作者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/83efe33fbfe541a6a4dc0b5c39be243d20240518.png"
+   },
+   {
+    "name": "漆色渡鸦",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/15b9b85474b441db9f5c784d07b174e720240518.png"
+   },
+   {
+    "name": "无心利刃",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ab4433eedb3f43ea80f0dcb17ef4c01320240518.png"
+   },
+   {
+    "name": "无铭",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/01aba2c05d1c47aca3c393b5c406833220240518.png"
+   },
+   {
+    "name": "天启",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3796e1ef1ffe47399ad002dbe7326b8320240518.png"
+   },
+   {
+    "name": "崩甲 玖式",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9fa95f3bae65473792093f6fb4cc535620240518.png"
+   },
+   {
+    "name": "子弹蚁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ba2b7359914040b388d3c11e5af9193420240518.png"
+   },
+   {
+    "name": "异端开拓者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ab3096adbb524092911ef09a0fdb5b4920240518.png"
+   },
+   {
+    "name": "长旒旗枪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/083dc183c15a49bdb2eb72d1728f2c9d20240518.png"
+   },
+   {
+    "name": "塞上秋",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df10cb620eeb4654808e513840fd1a1f20240518.png"
+   },
+   {
+    "name": "黯淡",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f4da503e45354b9abc033aa566758cb320240518.png"
+   },
+   {
+    "name": "薄暮幻象",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/42e4194296aa41448bb25a265116944620240518.png"
+   },
+   {
+    "name": "黄金之心",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/05d9440de32d4c4baae5a7807ae184fd20240518.png"
+   },
+   {
+    "name": "螺旋炮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6c026778b1ac4cb8b79c4d5a81d6153820240518.png"
+   },
+   {
+    "name": "试作型“画笔”",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6c338fd0d6854f5782e4fc2c44f0824a20240518.png"
+   },
+   {
+    "name": "滑轮复合弓",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/395164b4827845c4994a7794d1a74d6b20240518.png"
+   },
+   {
+    "name": "型鱼挂载",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5ca408112e0247fa9cad560e2859a65120240518.png"
+   },
+   {
+    "name": "试作型复合兵装",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c2c52979c4094b32abfc9700f68bbcee20240518.png"
+   },
+   {
+    "name": "迅羽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a38ed6787d014a22a8d338e41162859f20240518.png"
+   },
+   {
+    "name": "切割猎手",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d246cd8a53b540bc94acd9d46e8d52cd20240518.png"
+   },
+   {
+    "name": "序曲",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e4a1f2eb611049d8beca6a780b18787d20240518.png"
+   },
+   {
+    "name": "全村的希望",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5e7c4c24de744463a8bc7db1bfbb435020240518.png"
+   },
+   {
+    "name": "黑铁寒星 陆式",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9b3f15e1d9034cf39038c21dd5c89c7620240518.png"
+   },
+   {
+    "name": "拓荒",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/813874dcc75e43139e5ff0037bf3ff4420240518.png"
+   },
+   {
+    "name": "灰钢",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b98be618e4da4594b275ae20cf92efb820240518.png"
+   },
+   {
+    "name": "噬光",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e4d499fa15da485db6ae8b81a608e31120240518.png"
+   },
+   {
+    "name": "噪音",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41644304ff3b4628a14095492fdd254e20240518.png"
+   },
+   {
+    "name": "基准调式",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/55051f8a68e24a97af20bf3fa2b5f6c820240518.png"
+   },
+   {
+    "name": "压乱者",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41a87aa436d54ca7bf1500c9e6e7856120240518.png"
+   },
+   {
+    "name": "制式铳刃",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6ecd74bc9fb4763a2e746d71f2e677720240518.png"
+   },
+   {
+    "name": "怒飙",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df703ff4339046f88e84fbffdcfa11e320240518.png"
+   },
+   {
+    "name": "翠墨雀凌",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3a84c5983cdb4de7ab4721d8c005779920240518.png"
+   },
+   {
+    "name": "黑星",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/78e56b51c44b4d56870e80e34674760520240515.png"
+   }
+  ],
+  "3": [
+   {
+    "name": "护身刀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ec2fd18b2ad46d184a68d2440745f0f20240518.png"
+   },
+   {
+    "name": "制式镰刀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6cd1a53f514843058922c86f55f402d120240518.png"
+   },
+   {
+    "name": "火箭筒",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/02c47b033b9247b69de7c0610bcf8aa720240518.png"
+   },
+   {
+    "name": "练习用复合弓",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3b6d0817ea73417a93ff68c0106ff7f220240518.png"
+   },
+   {
+    "name": "半自律攻击炮",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ad4d95894c68489fa4962869c65cc89620240518.png"
+   },
+   {
+    "name": "双手刀",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6f32198c929e4632ab6c2f2aaa827df420240518.png"
+   },
+   {
+    "name": "作业用链锯",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1fcb06f3d2934997a255e4c67e04fe6020240518.png"
+   },
+   {
+    "name": "大剑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/72e1902ce4bf41fab1a40d3911bf3f6520240518.png"
+   },
+   {
+    "name": "制式枪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/aac674692cc5435488209abd42c0b9c920240622.png"
+   }
+  ]
+ },
+ "materials": {
+  "memories4": [
+   {
+    "name": "阿基米德",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/4epmrjbkjnyvmzcod8m1a6qjgccf28m.png",
+    "figure": "https://pgr-wafer-art/eajimided01001.png"
+   },
+   {
+    "name": "爱迪生",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/17/oekf2fgbglgfb5wa8zvqtptvopivqwk.png",
+    "figure": "https://pgr-wafer-art/eaidishengd01001.png"
+   },
+   {
+    "name": "爱丽丝",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/f/fd/ka40cpcendl30cxy1pm8nkplrhu42ia.png",
+    "figure": "https://pgr-wafer-art/ealiced01001.png"
+   },
+   {
+    "name": "坎宁安",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/e9/s3si6djhpvp3kz331fjy83z3ng54zdn.png",
+    "figure": "https://pgr-wafer-art/ekanningand01001.png"
+   },
+   {
+    "name": "意识强化素材IV",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/94/cez8mkqnec9b7gn9ynlwdm7e6bcdiul.png"
+   }
+  ],
+  "expPods": [
+   {
+    "name": "经验仓·大",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/ad/3hvdbvz59ai3nwznpxp5edemptyz4dy.png"
+   },
+   {
+    "name": "经验仓·特大",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/93/6rpbeawv8s14dlanntyq947l1r03731.png"
+   }
+  ],
+  "overClock": [
+   {
+    "name": "武器突破核心·高",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/5lhxfv22f65n6xj48vzm2o96crpahkf.png"
+   },
+   {
+    "name": "意识突破回路·高",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/12/pudm5iz3oeeta9egwectnxothunioef.png"
+   },
+   {
+    "name": "突破合金·高",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/7/74/p8rvs1ea92oeuclipi5xnwnq3d46mci.png"
+   },
+   {
+    "name": "武器突破核心·初",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/35/iwpx7onm9s2z0d3z94kdpqrc70q2v7t.png"
+   },
+   {
+    "name": "意识突破回路·初",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6c/dv2mn1tgk9f4s5g3iupypkokiykk4wt.png"
+   },
+   {
+    "name": "突破合金·初",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/6z2yrg3sgn0t3t41j7m4236kqsduxq1.png"
+   }
+  ],
+  "cogs": [
+   {
+    "name": "特大型螺母包",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/b7/tot3z76d1lq2ug0r0j5gyy0byevuylu.png"
+   },
+   {
+    "name": "超大型螺母包",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/3a/h97ctq971twwgtc6h0mcmq5jlrowh5y.png"
+   }
+  ]
+ },
+ "support": {
+  "S": [
+   {
+    "name": "凯尔派",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/23c430df614c436485342b0d369fd81c20260907.png"
+   },
+   {
+    "name": "派得里",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/0b/g0iz609qkgrn2ullkc38uhtupcgwqtk.png",
+    "image": "https://patchwiki.biligame.com/images/zspms/e/ec/bqucemvsbl3zeidtnn9hz4881f20xdn.png",
+    "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d8/eh2w7uawfidi8fm8d32fyiqxnhicwki.png"
+   },
+   {
+    "name": "大公",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e309ca7558274893a30263aad7c134d720260629.png"
+   },
+   {
+    "name": "焰燧",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f0cc554409e0412c87dd2d67718dd3ca20260420.png"
+   },
+   {
+    "name": "摩利甘",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7028a5147b1141b494199f9de8efb86320260227.png"
+   },
+   {
+    "name": "波灵",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/16401fb51e444414a02ebe9ebe027a3220260109.png"
+   },
+   {
+    "name": "吡啵",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a7165918584a4f62b2fdcfc90ceac30820251221.png"
+   },
+   {
+    "name": "鳞垒",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/67823a5edc59437599683579eef64ebb20250904.png"
+   },
+   {
+    "name": "浊璃",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/66e0fd5b7e6b4ae89d202e906a67015320250612.png"
+   },
+   {
+    "name": "雪歌",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/752f122deae540359d198d5063ac831420250121.png"
+   },
+   {
+    "name": "彼莉",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4ee212d7e7604321aea00aaca965873c20241212.png"
+   },
+   {
+    "name": "杼菱",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee68bfdf8b894e5d84e48d95bf77620920241104.png"
+   },
+   {
+    "name": "鮟棘",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/091e37304c8d48f1910aed092675d79420240918.png"
+   },
+   {
+    "name": "熠空",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2849a2315e7e4bc0a109982cd9a5202f20240710.png"
+   },
+   {
+    "name": "瑞雪",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1cb0057d20364514b18476e50a9cac5b20240516.png"
+   },
+   {
+    "name": "寐寤",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e933b92b05b345daa1c3e560ba55760620240429.png"
+   },
+   {
+    "name": "肃噩",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3749e464eccd483f93f6c2552bacf9dc20240425.png"
+   },
+   {
+    "name": "徽羽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c0cb1eb522be4f1b986e4b27646c118420240116.png"
+   },
+   {
+    "name": "夜蝠",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/50633988820d4951be84f48087d0c13720240119.png"
+   },
+   {
+    "name": "潜泽",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/579d7c8a4d654df7a6d8065f0d06208d20240116.png"
+   },
+   {
+    "name": "冥牙",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2254fbc24ef34314b49470dcc924291020240128.png"
+   },
+   {
+    "name": "坼霆",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e55e683959f64330ba689b29fc95211220240130.png"
+   },
+   {
+    "name": "虹霁",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dd8cf19ac4c141efae3355c1bf4b3e8320240124.png"
+   },
+   {
+    "name": "掣矩",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d7a3dfa882524701bffc130d642bfb1e20240426.png"
+   },
+   {
+    "name": "霏粼",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/255e49042a5e436eaea8293be2c7b83120240426.png"
+   },
+   {
+    "name": "昼翼",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dc4143a1f98a4b97849a968a70f2b45720240429.png"
+   },
+   {
+    "name": "啸钺",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e8916bf97f438eabdf4e9b4c0cec5a20240427.png"
+   },
+   {
+    "name": "暝月",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f7492bd8c3ea497b99ed1ecda02dd8cb20240120.png"
+   },
+   {
+    "name": "宵煌",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d5276ae63fef44baa73b0b2541e065d920240428.png"
+   },
+   {
+    "name": "沧翊",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/585ee648ab0c4f33b923689b5308639c20240428.png"
+   },
+   {
+    "name": "庭霓",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b46783d0129748dc9ef0f1165f34469720240428.png"
+   },
+   {
+    "name": "霜誓",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3c09300636de4f23877d06fda72724ed20240428.png"
+   },
+   {
+    "name": "刻刻帝",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f62364e249a245e0a02e9849f2c6a53320261002.png"
+   },
+   {
+    "name": "科沃兹",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2e68705598542c1a885f5485d36cf3520250429.png"
+   },
+   {
+    "name": "幻影剑",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e9ecaef41204e78a0b643cf6069331620250429.png"
+   }
+  ],
+  "A": [
+   {
+    "name": "棘钧",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/69145e5e383147cfa3fc7e10644a391520240502.png"
+   },
+   {
+    "name": "沃托",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ff6f283dba494c789a5771028d5dbe3720240502.png"
+   },
+   {
+    "name": "冷观",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/af9b5d3c249842d398c98a451ac99f2d20240501.png"
+   },
+   {
+    "name": "伶崖",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/24930442fe5249999dde5fa9ab9fff2820240430.png"
+   },
+   {
+    "name": "元谒",
+    "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2c02a63f93cd4cf18d26970a314a69ba20240430.png"
+   }
+  ],
+  "exp": [
+   {
+    "name": "支援经验集成·小",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/98/qvtjphb93vsgj7xhw3nzr3zndpmjnub.png"
+   },
+   {
+    "name": "支援经验集成·大",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/21/mi93t964mzyuiu89k0y2mz0xhv8s50c.png"
+   }
+  ],
+  "overClock": [
+   {
+    "name": "支援突破套组·小",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/10/oxzhncx1ba80sgci9fwpza7nojsv9ey.png"
+   },
+   {
+    "name": "支援突破套组·大",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6e/qvmm2gsuoxgig9mqtsze3rfjjlqtu5t.png"
+   }
+  ],
+  "skill": [
+   {
+    "name": "支援技能元件",
+    "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/34/qek91bnd7aql36jwoow9fvjyrw2giwr.png"
+   }
+  ]
+ },
+ "pools": {
+  "char_standard": {
+   "name": "基准研发",
+   "type": "char_standard",
+   "target": "S级角色",
+   "total": 60,
+   "up_a": [
+    "斜奏·裁律"
+   ],
+   "weights": {
+    "S": 0.5,
+    "AB": 13.95,
+    "fragment": 22.11,
+    "memory": 28.39,
+    "overclock": 14.42,
+    "exp": 4.81,
+    "cogs": 14.42
+   },
+   "up_rate_s": 0,
+   "up_rate_a": 80
   },
-  "weapons": {
-    "6": [
-      {
-        "name": "不孤航炬",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d94600e43f244fcc88425782415c4e4b20260908.png"
-      },
-      {
-        "name": "尼弗尔海姆的辰星",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bd736745fc0a48148ebafa42423c006820260802.png"
-      },
-      {
-        "name": "遥听归乡的晚钟",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e72f1ca1ce5645329f7e9b01cb8dcac320260629.png"
-      },
-      {
-        "name": "朗日耀斑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a6804901e5b543368f8d60b28bd6dd7620260406.png"
-      },
-      {
-        "name": "旧日讣告",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/be40fbcb6f6c496e816e5b37068fc29020260303.png"
-      },
-      {
-        "name": "幻象戟·统合",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/048372ec22024c378c46aa03d1314aef20260114.png"
-      },
-      {
-        "name": "霓虹穿梭机",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7164b1d0c71e4d0a9cb18c9acf89ce4b20251121.png"
-      },
-      {
-        "name": "怒霆敕天",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/42ab8f63061146a581e8bccfd896f8a120250904.png"
-      },
-      {
-        "name": "噬铰骨殇",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a14f75ef982142fc8ed20450d7f911b220250725.png"
-      },
-      {
-        "name": "奥罗拉",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c69464a438284b1ebc3460620756430320250612.png"
-      },
-      {
-        "name": "烬劫归墟",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b1e494f96cfb4054abcc4bce6b33f62120250321.png"
-      },
-      {
-        "name": "终局裁决者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a4a1552de3a140efa4b4ad72647e068820250304.png"
-      },
-      {
-        "name": "奥菲厄斯的摇篮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d8a9cf5a5be148c3b1920d243d8eb99d20250109.png"
-      },
-      {
-        "name": "繁宵蜃景之哀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f809c49edd614482b988e99f8431863d20241212.png"
-      },
-      {
-        "name": "伊始与终焉之权",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/eb061394c9604014bb251a8c23cf7af620241104.png"
-      },
-      {
-        "name": "隧星盛耀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1ea59c340ef9464c9813b9601b101bb820240918.png"
-      },
-      {
-        "name": "擎殛明王",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e85fbe8f55784b989deccdc5937c588820240806.png"
-      },
-      {
-        "name": "拂晓炎翎",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/50e32d2b34114215bc0816a89a66d92420240710.png"
-      },
-      {
-        "name": "明瞳续昼",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9763fc63f42d406488cee8d2a52f66f220240516.png"
-      },
-      {
-        "name": "玛纳加尔姆",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e25325606e6e45c187c1f116abdb875a20240518.png"
-      },
-      {
-        "name": "暗寂闪光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41f8c5e00c8f45648bc58d6e36eb24a520240518.png"
-      },
-      {
-        "name": "今古",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d78d32aeb824a75beead55231623b4920240518.png"
-      },
-      {
-        "name": "塞斯特斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2511857f185d4079aaca213ca7fbab4120240518.png"
-      },
-      {
-        "name": "骇客锐音",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/405a2f3fb0c648f687a599c4669d598920240518.png"
-      },
-      {
-        "name": "奥兹玛",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8461a33f836b48aab20dc30bde0626a020240518.png"
-      },
-      {
-        "name": "律条重塑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e40de7d680b84088b95094194a58587b20240518.png"
-      },
-      {
-        "name": "墨提斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5d3867d2a3164319aa4f1513e7b636fe20240518.png"
-      },
-      {
-        "name": "呼噜",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e1ad027635af4ac38c44f27560e460c220240518.png"
-      },
-      {
-        "name": "暗夜猎隼",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a14378568b1e43948b33b0f3e3de5db620240518.png"
-      },
-      {
-        "name": "静谧人形之声",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bd371e791dc247bcabb3fdd39dd4f3f620240518.png"
-      },
-      {
-        "name": "红莲狂士",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e646c478461544859735e4e97e2c6fff20240518.png"
-      },
-      {
-        "name": "红樱",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5abde5129d484d62872a479738f28b9120240518.png"
-      },
-      {
-        "name": "沙利叶",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5e74d1acbdd044b48976a06601f94c3520240518.png"
-      },
-      {
-        "name": "朱桦",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7ea744cec79744dbbb6911580d8c6b0d20240518.png"
-      },
-      {
-        "name": "影打-逆断",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4574961557f4224a72fdd7ced940a9520240518.png"
-      },
-      {
-        "name": "天狼星",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f51d4a85f4654b3c8de4fe65d696bc9820240518.png"
-      },
-      {
-        "name": "黑岩巨炮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7244d57865da49e8a5e57e0ceae3970720240518.png"
-      },
-      {
-        "name": "赫斯提亚",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/32b4fcf3d51040f19f9020e617960e4520240518.png"
-      },
-      {
-        "name": "八极",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/67ead0875bf04b6c93769967d34d57c220240518.png"
-      },
-      {
-        "name": "天平",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f828a52472ab4c729b5299ea46e4e7b220240518.png"
-      },
-      {
-        "name": "冈格尼尔",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c9da9d91d786401b84fbb12c5b9f8ab420240518.png"
-      },
-      {
-        "name": "不死鸟",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d33dcfa147404b3cb2355c93e2148d4b20240518.png"
-      },
-      {
-        "name": "鹏游蝶梦",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6782a6eb5a84bc7ac258f73e3fa0c0420240518.png"
-      },
-      {
-        "name": "伽拉忒亚",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3d8465390d6f4f6cb59c81843bc8abce20240518.png"
-      },
-      {
-        "name": "圣艾尔摩",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7239d932ffa64569a3c488807a3e9fea20240518.png"
-      },
-      {
-        "name": "魏紫",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dd08387b69c44ee3a4ffd973e7b10cea20240518.png"
-      },
-      {
-        "name": "赫卡忒",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6cacda1193e44709acfb04b27ed7dec520240518.png"
-      },
-      {
-        "name": "赤红咆哮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/97352c22fbe14ccfa3e01c258124ffd220240518.png"
-      },
-      {
-        "name": "狂乱融合炮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/07d0697ad3ef4fd0acac775c106110fc20240518.png"
-      },
-      {
-        "name": "核基红龙",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bb095a36374c452096b974f8f0022ace20240518.png"
-      },
-      {
-        "name": "星海漫游者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a5d6c5557ebe416f925b6650038d108520240516.png"
-      },
-      {
-        "name": "雷米尔",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5439232c7b9f4c3cba91bf75b9b2604320240518.png"
-      },
-      {
-        "name": "阿斯特莉亚",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d472ae5180f840b28ec7ef21a140965120240518.png"
-      },
-      {
-        "name": "莱特宁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e7016a02dd9640ffa139832928d22f5a20240518.png"
-      },
-      {
-        "name": "零式",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/75022e48798b45379b07fb2c01ad90c020240518.png"
-      },
-      {
-        "name": "神赐者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/704ec35507ec4fe8a07f76b1662600b920240518.png"
-      },
-      {
-        "name": "天龙之风",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/add958df1b1a4417ad921fd8b96d748820240518.png"
-      },
-      {
-        "name": "时隧之钥-斯托克斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/57caf18dbe7f4b5780b50dd45695bcff20240427.png"
-      },
-      {
-        "name": "夜煌",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/180c7ae566364f1793d9a97f5d12f50420240426.png"
-      },
-      {
-        "name": "镇命者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2113d879e77446b686b21350e3bddc1020240518.png"
-      },
-      {
-        "name": "斩魂者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8f7f523bc6bb408ba050c2672937771720240518.png"
-      },
-      {
-        "name": "林中主人",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bb9bb72a7bd24a79a526b9ddaee9f80420240518.png"
-      },
-      {
-        "name": "普罗米修斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6fd9026fc0ba4f3798f07cb5e39e1cc020240518.png"
-      },
-      {
-        "name": "青赫",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/65111d5337234fcba2262a37dc26da8e20240518.png"
-      },
-      {
-        "name": "杜兰德尔",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4b066e754d9b469a94441c833864865620240518.png"
-      },
-      {
-        "name": "无隅",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a0a3aaee9ef24ab7a354b3fa6649e35620240518.png"
-      },
-      {
-        "name": "塔纳托斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ce28b601ad340d1892b4256e6991efc20240518.png"
-      },
-      {
-        "name": "机韵",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/465879d6730a45f88a2e822ba5d9273220240518.png"
-      },
-      {
-        "name": "奇美拉-逆断",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6f33c087245f483e823e0e308b1e4d0720240518.png"
-      },
-      {
-        "name": "萨拉斯特罗",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a1b84498c55c4514b82139a3e524272320240518.png"
-      },
-      {
-        "name": "漆黑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f88fe3ad25984fe0b6d15be900edd61320240518.png"
-      },
-      {
-        "name": "大神威",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6fb321dd21c349e1b0f58d80a69f047b20240518.png"
-      },
-      {
-        "name": "阿波罗",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/effee6772fd246599e4472431fd5d20520240518.png"
-      },
-      {
-        "name": "聚爆",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1f5bb0098b3a4b1e909da2d7f01bc4e520240518.png"
-      },
-      {
-        "name": "铭钥阙影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/368594a3086e4e759068f5107cd0825c20240518.png"
-      },
-      {
-        "name": "零度定标",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ecc727fdbe8a4d8eb8823f8eb2070cf620240503.png"
-      },
-      {
-        "name": "赛因",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/88bb6fcbdb8e427a8e7060ad675f155320240515.png"
-      },
-      {
-        "name": "噬狼枪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/340226d4b9bb44f3a791313ea21aaf2620240503.png"
-      },
-      {
-        "name": "★黑岩巨炮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8c7b16633ece4a379bf1a13fb44689d320240518.png"
-      },
-      {
-        "name": "时针&分针",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6d28e38cf4dc49f89315efa016d6c4e620260929.png"
-      },
-      {
-        "name": "魔剑但丁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e5bcf2d6034bb892a5d7cc7e932e2920250430.png"
-      },
-      {
-        "name": "阎魔刀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82590637d2ae462a91d8f6a22429ed3820250430.png"
-      }
-    ],
-    "5": [
-      {
-        "name": "渊下锻火",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8d9ec761e8664452897ee0b89c8449bd20260908.png"
-      },
-      {
-        "name": "附浪辉砂",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c7a3613c84564c55a8496f119c1462b620260802.png"
-      },
-      {
-        "name": "片基灰雾",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df14b1f3b9ca43f8ba9c688577d7cdba20260629.png"
-      },
-      {
-        "name": "BX-02M 寒渊",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1d5f3ce02d074440b29f3da32e083bd820260522.png"
-      },
-      {
-        "name": "斩光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c5ae300409774f1c81b418e3f098802220260406.png"
-      },
-      {
-        "name": "黯羽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/eecb88bfc5514cccb4b412026dae6f0820260303.png"
-      },
-      {
-        "name": "幻象型光戟",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/cd222da693c04ab889ba5525ced837af20260114.png"
-      },
-      {
-        "name": "空岛电音",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ade376669e2f4ea9a3f18ab454df587320251121.png"
-      },
-      {
-        "name": "苍染之莲",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7d9c083ea5884359833f63d12254f1f320251017.png"
-      },
-      {
-        "name": "辉穹",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/38d1b38969614163b99f859cfdc81a5c20250904.png"
-      },
-      {
-        "name": "断脊",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8484516cb7fc4c1191f54005c5fb36bd20250725.png"
-      },
-      {
-        "name": "涤光裂夜",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/defb930d025046eea45a11bc256105bf20250612.png"
-      },
-      {
-        "name": "猎魔大剑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ca0259ae706242feaec4d2b295cebc5820250430.png"
-      },
-      {
-        "name": "阎魔刀·影打",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f26c8a6ed9064c7e9d0c26796f6e46b420250430.png"
-      },
-      {
-        "name": "灼夜",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/be824d3a69654518a36a1546a1c2cef320250321.png"
-      },
-      {
-        "name": "翩行潜夜",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/08db9f42747848f5b7a47ecc54699a5d20250304.png"
-      },
-      {
-        "name": "月桂之冠",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/faa4eedb4d304e6e84d1b858b8975e5a20250109.png"
-      },
-      {
-        "name": "璃昼谜魇",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/23012873d2c04dbb99ee9b30c613871a20241212.png"
-      },
-      {
-        "name": "寰映星键",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3b9149cbf3c849fbbce0702743420f9120241104.png"
-      },
-      {
-        "name": "ZL-09改 辉扬",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/109199e585b744d694b4cca45611e86f20240918.png"
-      },
-      {
-        "name": "祓世御雷",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c40daff04d4b4f2a8b271d5937c1a39120240806.png"
-      },
-      {
-        "name": "雾隐冥光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b8acbf0876c349f08e8a643a63b0130920240710.png"
-      },
-      {
-        "name": "故魂永息",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/66429407160b46099f754ca2bf31d8a620240516.png"
-      },
-      {
-        "name": "三重奏",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/819add48d9b340a0a430d600bf947b3420240518.png"
-      },
-      {
-        "name": "绝境破碎者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2f4e3b4ed667454d9441d7b177a2f7af20240518.png"
-      },
-      {
-        "name": "风回",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/73750b0d4b344c36824300d9535d765a20240518.png"
-      },
-      {
-        "name": "冕饵",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/94e5d2cbcb1b423cacaab3cf3d8dcf5420240518.png"
-      },
-      {
-        "name": "逆行交点",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/35818a1da5b441dfa2087218a41f4b6c20240518.png"
-      },
-      {
-        "name": "阿尼姆斯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b2eb746186fd4bc788e67d505165749420240518.png"
-      },
-      {
-        "name": "苍白羽赫",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/155bae0b455e4fa0a504b0a89a0c328720240518.png"
-      },
-      {
-        "name": "彗星之锋",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5cdca24d43734b8c8ecbac2ca4af510920240518.png"
-      },
-      {
-        "name": "九字之定",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/70f6535dee7d4382a38b50bd7f11e83d20240518.png"
-      },
-      {
-        "name": "双极星间",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8c05fc5f66bc422e870e9161368c1a1620240518.png"
-      },
-      {
-        "name": "FA2D-AP",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/87cc4d59c0834fd0a1dc688287c245ed20240518.png"
-      },
-      {
-        "name": "绯煌骑士",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8e8b01a6c34a4cde9e2504849157d0c620240518.png"
-      },
-      {
-        "name": "月上海棠",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6a258a89012b492487e27ed3e3cfbe6420240518.png"
-      },
-      {
-        "name": "褪色",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/56c686d0c2c9450f81a8fe60dd2a6ceb20240518.png"
-      },
-      {
-        "name": "极夜",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f6ffdd35ea3f44b9bedd32069231099e20240518.png"
-      },
-      {
-        "name": "FPT-II改",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ada5f891a77841e4a4cb70496148439020240518.png"
-      },
-      {
-        "name": "熔岩之柱",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/10fb9a016b674c32b56de37ba41f437b20240518.png"
-      },
-      {
-        "name": "二重虹光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5304dddaa5441ba8b36ca1e697c3eed20240518.png"
-      },
-      {
-        "name": "卫士挂载",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/05314ccfbdb94cb6a70f4e712c1fe9c620240518.png"
-      },
-      {
-        "name": "核子熔断·δ",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9d2e32a0d8474df7896f545a40369f3e20240518.png"
-      },
-      {
-        "name": "绯霆",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4f141d3fff05462d8df98d0833d698d220240518.png"
-      },
-      {
-        "name": "石之心",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/03b4ac60a31f4f9093880196a9000b5620240518.png"
-      },
-      {
-        "name": "奥黛特",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5c84c1f0ebb548429227419f78b067a820240518.png"
-      },
-      {
-        "name": "高频粒子刀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/aa5c44a4258b48e29ed8bac02533ddad20240518.png"
-      },
-      {
-        "name": "归云",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/10b23bc377184132b0401386611573ff20240518.png"
-      },
-      {
-        "name": "纷繁玫瑰",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0c80da2eeafd416e9b021ccf4c6d77ff20240518.png"
-      },
-      {
-        "name": "霜尺",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c4a440986f774217aaebaa46d59434a320240518.png"
-      },
-      {
-        "name": "掠影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/527bf2c70b8744d6b1c1654cb3b332d720240518.png"
-      },
-      {
-        "name": "电光石火",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/bc4305a8c8244dba98c8be6ad42ceb6e20240518.png"
-      },
-      {
-        "name": "那不勒斯的独奏",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7317b1ca7ddc4333aaaae99cda8aea5620240518.png"
-      },
-      {
-        "name": "动轮大剑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/046a340bd17d438ea64b27d58cc7823120240518.png"
-      },
-      {
-        "name": "卡拉一型铳刃",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6ecd74bc9fb4763a2e746d71f2e677720240518.png"
-      },
-      {
-        "name": "红移",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e39047d58a5e486aaf3bf2a90d14c4c220240518.png"
-      },
-      {
-        "name": "鸿浩锋羽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c6fb0272c068413695472f3a2273812f20240518.png"
-      },
-      {
-        "name": "暗影紫光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/12d0b31ad46e42f28eb90ba910edd2f420240515.png"
-      }
-    ],
-    "4": [
-      {
-        "name": "铁誓",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/49b8279370a74dc1a9316c06201e21c220260908.png"
-      },
-      {
-        "name": "曦刃尺浪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7527a18f8aac4955b3abe660bd648e2b20260802.png"
-      },
-      {
-        "name": "法兰",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3ba6b8b7803c4e37884afe0208602e3120260629.png"
-      },
-      {
-        "name": "折锋",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8f9028c8fead485aafbd8d8a1f4eb96420260406.png"
-      },
-      {
-        "name": "止殇",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b099b5142c58472fa7353939b016165b20260303.png"
-      },
-      {
-        "name": "余震战戟",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d9efa40684da4d9589e720e8fc53c98520260114.png"
-      },
-      {
-        "name": "月壤踏步",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0aa775987fe94dcf941f67a7fb12648820251121.png"
-      },
-      {
-        "name": "试作型镜轮MW-03",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e2cc1ff299d14c7d9e382dbf115108d120251017.png"
-      },
-      {
-        "name": "刺烬",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2690f49383a46c8b979f7794295e4dd20250904.png"
-      },
-      {
-        "name": "殛罪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a9a9bced3459432da298ed33e379f9bb20250612.png"
-      },
-      {
-        "name": "炽陨",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e3fd4cb0e9f40ca806f6621ba34d63420250321.png"
-      },
-      {
-        "name": "泛用型MK-2",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4e7f6bc72df348d1907c94d729619dd420250304.png"
-      },
-      {
-        "name": "凝诗",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e0a6b51224d24e4cb2543f5f83d231b920250109.png"
-      },
-      {
-        "name": "瑰夜绮影",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/71eaa8e699864dc5acf9cf84e20bba7f20241212.png"
-      },
-      {
-        "name": "未元探钥",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/685460cc5fd2406188b846302b588c2d20241104.png"
-      },
-      {
-        "name": "试作型盾斧 ZL-07",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/21aa3aa423ab49feb745214fe862aa2920240918.png"
-      },
-      {
-        "name": "夜行罗刹",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1d34319f5158431084680e5612f3b18520240806.png"
-      },
-      {
-        "name": "试作型LB-疾光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/82de8da10bd940569438a77c75e8d30820240710.png"
-      },
-      {
-        "name": "落膛之时",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41337d4c13a24ec4b90a98bdb2cacab120240516.png"
-      },
-      {
-        "name": "噬雷",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9e57d7b382e44745afbbe5d23b0f769920240518.png"
-      },
-      {
-        "name": "试作型重破锤",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a099d622ccd941e680bc9a771697a16f20240518.png"
-      },
-      {
-        "name": "雨断",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/accc815ab06b46c5b721d8a4b6af6d0420240518.png"
-      },
-      {
-        "name": "始",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b1bc585d891f4445863f4e37a15c640220240518.png"
-      },
-      {
-        "name": "环礁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7a05ff89557c4fa79093ef3a018b856820240518.png"
-      },
-      {
-        "name": "协作者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/83efe33fbfe541a6a4dc0b5c39be243d20240518.png"
-      },
-      {
-        "name": "漆色渡鸦",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/15b9b85474b441db9f5c784d07b174e720240518.png"
-      },
-      {
-        "name": "无心利刃",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ab4433eedb3f43ea80f0dcb17ef4c01320240518.png"
-      },
-      {
-        "name": "无铭",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/01aba2c05d1c47aca3c393b5c406833220240518.png"
-      },
-      {
-        "name": "天启",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3796e1ef1ffe47399ad002dbe7326b8320240518.png"
-      },
-      {
-        "name": "崩甲 玖式",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9fa95f3bae65473792093f6fb4cc535620240518.png"
-      },
-      {
-        "name": "子弹蚁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ba2b7359914040b388d3c11e5af9193420240518.png"
-      },
-      {
-        "name": "异端开拓者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ab3096adbb524092911ef09a0fdb5b4920240518.png"
-      },
-      {
-        "name": "长旒旗枪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/083dc183c15a49bdb2eb72d1728f2c9d20240518.png"
-      },
-      {
-        "name": "塞上秋",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df10cb620eeb4654808e513840fd1a1f20240518.png"
-      },
-      {
-        "name": "黯淡",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f4da503e45354b9abc033aa566758cb320240518.png"
-      },
-      {
-        "name": "薄暮幻象",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/42e4194296aa41448bb25a265116944620240518.png"
-      },
-      {
-        "name": "黄金之心",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/05d9440de32d4c4baae5a7807ae184fd20240518.png"
-      },
-      {
-        "name": "螺旋炮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6c026778b1ac4cb8b79c4d5a81d6153820240518.png"
-      },
-      {
-        "name": "试作型“画笔”",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6c338fd0d6854f5782e4fc2c44f0824a20240518.png"
-      },
-      {
-        "name": "滑轮复合弓",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/395164b4827845c4994a7794d1a74d6b20240518.png"
-      },
-      {
-        "name": "型鱼挂载",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5ca408112e0247fa9cad560e2859a65120240518.png"
-      },
-      {
-        "name": "试作型复合兵装",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c2c52979c4094b32abfc9700f68bbcee20240518.png"
-      },
-      {
-        "name": "迅羽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a38ed6787d014a22a8d338e41162859f20240518.png"
-      },
-      {
-        "name": "切割猎手",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d246cd8a53b540bc94acd9d46e8d52cd20240518.png"
-      },
-      {
-        "name": "序曲",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e4a1f2eb611049d8beca6a780b18787d20240518.png"
-      },
-      {
-        "name": "全村的希望",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/5e7c4c24de744463a8bc7db1bfbb435020240518.png"
-      },
-      {
-        "name": "黑铁寒星 陆式",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/9b3f15e1d9034cf39038c21dd5c89c7620240518.png"
-      },
-      {
-        "name": "拓荒",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/813874dcc75e43139e5ff0037bf3ff4420240518.png"
-      },
-      {
-        "name": "灰钢",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b98be618e4da4594b275ae20cf92efb820240518.png"
-      },
-      {
-        "name": "噬光",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e4d499fa15da485db6ae8b81a608e31120240518.png"
-      },
-      {
-        "name": "噪音",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41644304ff3b4628a14095492fdd254e20240518.png"
-      },
-      {
-        "name": "基准调式",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/55051f8a68e24a97af20bf3fa2b5f6c820240518.png"
-      },
-      {
-        "name": "压乱者",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/41a87aa436d54ca7bf1500c9e6e7856120240518.png"
-      },
-      {
-        "name": "制式铳刃",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b6ecd74bc9fb4763a2e746d71f2e677720240518.png"
-      },
-      {
-        "name": "怒飙",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/df703ff4339046f88e84fbffdcfa11e320240518.png"
-      },
-      {
-        "name": "翠墨雀凌",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3a84c5983cdb4de7ab4721d8c005779920240518.png"
-      },
-      {
-        "name": "黑星",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/78e56b51c44b4d56870e80e34674760520240515.png"
-      }
-    ],
-    "3": [
-      {
-        "name": "护身刀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/8ec2fd18b2ad46d184a68d2440745f0f20240518.png"
-      },
-      {
-        "name": "制式镰刀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6cd1a53f514843058922c86f55f402d120240518.png"
-      },
-      {
-        "name": "火箭筒",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/02c47b033b9247b69de7c0610bcf8aa720240518.png"
-      },
-      {
-        "name": "练习用复合弓",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3b6d0817ea73417a93ff68c0106ff7f220240518.png"
-      },
-      {
-        "name": "半自律攻击炮",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ad4d95894c68489fa4962869c65cc89620240518.png"
-      },
-      {
-        "name": "双手刀",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/6f32198c929e4632ab6c2f2aaa827df420240518.png"
-      },
-      {
-        "name": "作业用链锯",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1fcb06f3d2934997a255e4c67e04fe6020240518.png"
-      },
-      {
-        "name": "大剑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/72e1902ce4bf41fab1a40d3911bf3f6520240518.png"
-      },
-      {
-        "name": "制式枪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/aac674692cc5435488209abd42c0b9c920240622.png"
-      }
-    ]
+  "char_theme": {
+   "name": "主题研发",
+   "type": "char_theme",
+   "target": "S级角色",
+   "total": 60,
+   "up_s": [
+    "阿德莱德·破渊"
+   ],
+   "up_a": [
+    "斜奏·裁律"
+   ],
+   "weights": {
+    "S": 0.5,
+    "AB": 13.95,
+    "fragment": 22.11,
+    "memory": 28.39,
+    "overclock": 14.42,
+    "exp": 4.81,
+    "cogs": 14.42
+   },
+   "up_rate_s": 70,
+   "up_rate_a": 80
   },
-  "materials": {
-    "memories4": [
-      {
-        "name": "阿基米德",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/4epmrjbkjnyvmzcod8m1a6qjgccf28m.png"
-      },
-      {
-        "name": "爱迪生",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/17/oekf2fgbglgfb5wa8zvqtptvopivqwk.png"
-      },
-      {
-        "name": "爱丽丝",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/f/fd/ka40cpcendl30cxy1pm8nkplrhu42ia.png"
-      },
-      {
-        "name": "坎宁安",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/e/e9/s3si6djhpvp3kz331fjy83z3ng54zdn.png"
-      },
-      {
-        "name": "意识强化素材IV",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/94/cez8mkqnec9b7gn9ynlwdm7e6bcdiul.png"
-      }
-    ],
-    "expPods": [
-      {
-        "name": "经验仓·大",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/a/ad/3hvdbvz59ai3nwznpxp5edemptyz4dy.png"
-      },
-      {
-        "name": "经验仓·特大",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/93/6rpbeawv8s14dlanntyq947l1r03731.png"
-      }
-    ],
-    "overClock": [
-      {
-        "name": "武器突破核心·高",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/4/49/5lhxfv22f65n6xj48vzm2o96crpahkf.png"
-      },
-      {
-        "name": "意识突破回路·高",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/12/pudm5iz3oeeta9egwectnxothunioef.png"
-      },
-      {
-        "name": "突破合金·高",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/7/74/p8rvs1ea92oeuclipi5xnwnq3d46mci.png"
-      },
-      {
-        "name": "武器突破核心·初",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/35/iwpx7onm9s2z0d3z94kdpqrc70q2v7t.png"
-      },
-      {
-        "name": "意识突破回路·初",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6c/dv2mn1tgk9f4s5g3iupypkokiykk4wt.png"
-      },
-      {
-        "name": "突破合金·初",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/bb/6z2yrg3sgn0t3t41j7m4236kqsduxq1.png"
-      }
-    ],
-    "cogs": [
-      {
-        "name": "特大型螺母包",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/b/b7/tot3z76d1lq2ug0r0j5gyy0byevuylu.png"
-      },
-      {
-        "name": "超大型螺母包",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/3a/h97ctq971twwgtc6h0mcmq5jlrowh5y.png"
-      }
-    ]
+  "char_fate": {
+   "name": "命运主题研发",
+   "type": "char_fate",
+   "target": "S级角色",
+   "total": 100,
+   "up_s": [
+    "阿德莱德·破渊"
+   ],
+   "up_a": [
+    "斜奏·裁律"
+   ],
+   "weights": {
+    "S": 1.5,
+    "AB": 13.95,
+    "fragment": 22.11,
+    "memory": 28.39,
+    "overclock": 14.42,
+    "exp": 4.81,
+    "cogs": 14.42
+   },
+   "up_rate_s": 70,
+   "up_rate_a": 80
   },
-  "support": {
-    "S": [
-      {
-        "name": "凯尔派",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/23c430df614c436485342b0d369fd81c20260907.png"
-      },
-      {
-        "name": "派得里",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/0/0b/g0iz609qkgrn2ullkc38uhtupcgwqtk.png",
-        "image": "https://patchwiki.biligame.com/images/zspms/e/ec/bqucemvsbl3zeidtnn9hz4881f20xdn.png",
-        "shardsIcon": "https://patchwiki.biligame.com/images/zspms/d/d8/eh2w7uawfidi8fm8d32fyiqxnhicwki.png"
-      },
-      {
-        "name": "大公",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e309ca7558274893a30263aad7c134d720260629.png"
-      },
-      {
-        "name": "焰燧",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f0cc554409e0412c87dd2d67718dd3ca20260420.png"
-      },
-      {
-        "name": "摩利甘",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/7028a5147b1141b494199f9de8efb86320260227.png"
-      },
-      {
-        "name": "波灵",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/16401fb51e444414a02ebe9ebe027a3220260109.png"
-      },
-      {
-        "name": "吡啵",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/a7165918584a4f62b2fdcfc90ceac30820251221.png"
-      },
-      {
-        "name": "鳞垒",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/67823a5edc59437599683579eef64ebb20250904.png"
-      },
-      {
-        "name": "浊璃",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/66e0fd5b7e6b4ae89d202e906a67015320250612.png"
-      },
-      {
-        "name": "雪歌",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/752f122deae540359d198d5063ac831420250121.png"
-      },
-      {
-        "name": "彼莉",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/4ee212d7e7604321aea00aaca965873c20241212.png"
-      },
-      {
-        "name": "杼菱",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ee68bfdf8b894e5d84e48d95bf77620920241104.png"
-      },
-      {
-        "name": "鮟棘",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/091e37304c8d48f1910aed092675d79420240918.png"
-      },
-      {
-        "name": "熠空",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2849a2315e7e4bc0a109982cd9a5202f20240710.png"
-      },
-      {
-        "name": "瑞雪",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/1cb0057d20364514b18476e50a9cac5b20240516.png"
-      },
-      {
-        "name": "寐寤",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e933b92b05b345daa1c3e560ba55760620240429.png"
-      },
-      {
-        "name": "肃噩",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3749e464eccd483f93f6c2552bacf9dc20240425.png"
-      },
-      {
-        "name": "徽羽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/c0cb1eb522be4f1b986e4b27646c118420240116.png"
-      },
-      {
-        "name": "夜蝠",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/50633988820d4951be84f48087d0c13720240119.png"
-      },
-      {
-        "name": "潜泽",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/579d7c8a4d654df7a6d8065f0d06208d20240116.png"
-      },
-      {
-        "name": "冥牙",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2254fbc24ef34314b49470dcc924291020240128.png"
-      },
-      {
-        "name": "坼霆",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/e55e683959f64330ba689b29fc95211220240130.png"
-      },
-      {
-        "name": "虹霁",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dd8cf19ac4c141efae3355c1bf4b3e8320240124.png"
-      },
-      {
-        "name": "掣矩",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d7a3dfa882524701bffc130d642bfb1e20240426.png"
-      },
-      {
-        "name": "霏粼",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/255e49042a5e436eaea8293be2c7b83120240426.png"
-      },
-      {
-        "name": "昼翼",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/dc4143a1f98a4b97849a968a70f2b45720240429.png"
-      },
-      {
-        "name": "啸钺",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b5e8916bf97f438eabdf4e9b4c0cec5a20240427.png"
-      },
-      {
-        "name": "暝月",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f7492bd8c3ea497b99ed1ecda02dd8cb20240120.png"
-      },
-      {
-        "name": "宵煌",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d5276ae63fef44baa73b0b2541e065d920240428.png"
-      },
-      {
-        "name": "沧翊",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/585ee648ab0c4f33b923689b5308639c20240428.png"
-      },
-      {
-        "name": "庭霓",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/b46783d0129748dc9ef0f1165f34469720240428.png"
-      },
-      {
-        "name": "霜誓",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/3c09300636de4f23877d06fda72724ed20240428.png"
-      },
-      {
-        "name": "刻刻帝",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/f62364e249a245e0a02e9849f2c6a53320261002.png"
-      },
-      {
-        "name": "科沃兹",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/d2e68705598542c1a885f5485d36cf3520250429.png"
-      },
-      {
-        "name": "幻影剑",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/0e9ecaef41204e78a0b643cf6069331620250429.png"
-      }
-    ],
-    "A": [
-      {
-        "name": "棘钧",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/69145e5e383147cfa3fc7e10644a391520240502.png"
-      },
-      {
-        "name": "沃托",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/ff6f283dba494c789a5771028d5dbe3720240502.png"
-      },
-      {
-        "name": "冷观",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/af9b5d3c249842d398c98a451ac99f2d20240501.png"
-      },
-      {
-        "name": "伶崖",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/24930442fe5249999dde5fa9ab9fff2820240430.png"
-      },
-      {
-        "name": "元谒",
-        "mainIcon": "https://prod-alicdn-community.kurobbs.com/forum/2c02a63f93cd4cf18d26970a314a69ba20240430.png"
-      }
-    ],
-    "exp": [
-      {
-        "name": "支援经验集成·小",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/9/98/qvtjphb93vsgj7xhw3nzr3zndpmjnub.png"
-      },
-      {
-        "name": "支援经验集成·大",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/2/21/mi93t964mzyuiu89k0y2mz0xhv8s50c.png"
-      }
-    ],
-    "overClock": [
-      {
-        "name": "支援突破套组·小",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/1/10/oxzhncx1ba80sgci9fwpza7nojsv9ey.png"
-      },
-      {
-        "name": "支援突破套组·大",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/6/6e/qvmm2gsuoxgig9mqtsze3rfjjlqtu5t.png"
-      }
-    ],
-    "skill": [
-      {
-        "name": "支援技能元件",
-        "mainIcon": "https://patchwiki.biligame.com/images/zspms/3/34/qek91bnd7aql36jwoow9fvjyrw2giwr.png"
-      }
-    ]
-  },
-  "pools": {
-    "char_standard": {
-      "name": "基准研发",
-      "type": "char_standard",
-      "target": "S级角色",
-      "total": 60,
-      "up_a": [
-        "斜奏·裁律"
-      ],
-      "weights": {
-        "S": 0.5,
-        "AB": 13.95,
-        "fragment": 22.11,
-        "memory": 28.39,
-        "overclock": 14.42,
-        "exp": 4.81,
-        "cogs": 14.42
-      },
-      "up_rate_s": 0,
-      "up_rate_a": 80
-    },
-    "char_theme": {
-      "name": "主题研发",
-      "type": "char_theme",
-      "target": "S级角色",
-      "total": 60,
-      "up_s": [
-        "阿德莱德·破渊"
-      ],
-      "up_a": [
-        "斜奏·裁律"
-      ],
-      "weights": {
-        "S": 0.5,
-        "AB": 13.95,
-        "fragment": 22.11,
-        "memory": 28.39,
-        "overclock": 14.42,
-        "exp": 4.81,
-        "cogs": 14.42
-      },
-      "up_rate_s": 70,
-      "up_rate_a": 80
-    },
-    "char_fate": {
-      "name": "命运主题研发",
-      "type": "char_fate",
-      "target": "S级角色",
-      "total": 100,
-      "up_s": [
-        "阿德莱德·破渊"
-      ],
-      "up_a": [
-        "斜奏·裁律"
-      ],
-      "weights": {
-        "S": 1.5,
-        "AB": 13.95,
-        "fragment": 22.11,
-        "memory": 28.39,
-        "overclock": 14.42,
-        "exp": 4.81,
-        "cogs": 14.42
-      },
-      "up_rate_s": 70,
-      "up_rate_a": 80
-    },
-    "char_collab": {
-      "name": "联动成员狙击",
-      "type": "char_collab",
-      "target": "S级角色",
-      "total": 60,
-      "up_s": [
-        "时崎狂三",
-        "但丁",
-        "维吉尔",
-        "BRS",
-        "2B",
-        "9S",
-        "A2"
-      ],
-      "up_a": [],
-      "weights": {
-        "S": 0.5,
-        "AB": 13.95,
-        "fragment": 22.11,
-        "memory": 28.39,
-        "overclock": 14.42,
-        "exp": 4.81,
-        "cogs": 14.42
-      },
-      "up_rate_s": 100,
-      "up_rate_a": 80
-    },
-    "weapon": {
-      "name": "武器研发",
-      "type": "weapon",
-      "target": "6星武器",
-      "total": 30,
-      "up_w6": [
-        "不孤航炬",
-        "时针&分针"
-      ],
-      "weights": {
-        "6": 2.5,
-        "5": 15,
-        "4": 33.4,
-        "3": 27.9,
-        "overclock": 9.35,
-        "cogs": 9.35
-      },
-      "up_rate_w6": 80
-    },
-    "weapon_collab": {
-      "name": "联动武器狙击",
-      "type": "weapon_collab",
-      "target": "6星武器",
-      "total": 30,
-      "up_w6": [
-        "黑岩巨炮",
-        "★黑岩巨炮"
-      ],
-      "weights": {
-        "6": 1.2,
-        "5": 15.0,
-        "4": 33.4,
-        "3": 27.9,
-        "overclock": 9.35,
-        "cogs": 9.35
-      },
-      "up_rate_w6": 100
-    },
-    "support_unit": {
-      "name": "辅助机研发",
-      "type": "support_unit",
-      "target": "S级辅助机",
-      "total": 20,
-      "weights": {
-        "S": 5.82,
-        "A": 14.14,
-        "exp": 20.72,
-        "overclock": 11.02,
-        "skill": 16.31,
-        "fragment": 13.42,
-        "cogs": 16.06
-      },
-      "up_s": [
-        "凯尔派",
-        "刻刻帝"
-      ],
-      "up_a": [],
-      "up_rate_s": 80,
-      "up_rate_a": 80
-    }
-  },
-  "standard_s": [
-    "卡列尼娜·烬航",
-    "海伦汀·安魂",
-    "神威·不落日",
-    "涅缇娅·亡歌",
-    "罗塞塔·极锋",
-    "布偶熊·骇影",
-    "维罗妮卡·铮骨",
-    "比安卡·晖暮",
-    "薇拉·灼惘",
-    "赛琳娜·希声",
-    "莉莉丝·谬影",
-    "伊什梅尔·幻日",
-    "七实·芒星之迹",
-    "露西亚·誓焰",
-    "万事·明晰梦",
-    "含英·檀心",
-    "露娜·终焉",
-    "曲·启明",
-    "渡边·尘铭",
-    "拉弥亚·深谣",
-    "亚里莎·回音",
-    "21号·森息",
-    "露西亚·深红囚影",
-    "艾拉·万华",
-    "里·超刻",
-    "比安卡·深痕",
-    "卡列尼娜·辉晓",
-    "七实·遥星之座",
-    "赛琳娜·幻奏",
-    "丽芙·极昼",
-    "薇拉·绯耀",
-    "库洛姆·荣光",
-    "露娜·银冕",
-    "罗塞塔·凛冽",
-    "露西亚·鸦羽",
-    "比安卡·真理",
-    "露西亚·深红之渊",
-    "七实·脉冲",
-    "卡列尼娜·烬燃",
-    "里·乱数",
-    "丽芙·仰光",
-    "神威·暗能",
-    "BRS",
+  "char_collab": {
+   "name": "联动成员狙击",
+   "type": "char_collab",
+   "target": "S级角色",
+   "total": 60,
+   "up_s": [
     "时崎狂三",
     "但丁",
     "维吉尔",
+    "BRS",
     "2B",
     "9S",
-    "A2",
-    "莱亚·祈星",
-    "露西亚·逆冕",
-    "丽芙·霁梦",
-    "诺安·逆旅",
-    "哈卡玛·隐星",
-    "蒲牢·华钟",
-    "罗兰·戏炎",
-    "赛琳娜·岚音",
-    "曲·雀翎",
-    "卡穆·狂犬"
-  ],
-  "versions": [
-    {
-      "name": "V4.8 远信回响·破渊",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
-      "entryId": "1551987946890117120",
-      "roles": [
-        "阿德莱德·破渊"
-      ],
-      "role": "阿德莱德·破渊",
-      "weapon": "不孤航炬",
-      "support": "凯尔派"
-    },
-    {
-      "name": "V4.8 远信回响·狂三",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
-      "entryId": "1551987946890117120",
-      "roles": [
-        "时崎狂三"
-      ],
-      "role": "时崎狂三",
-      "weapon": "时针&分针",
-      "support": "刻刻帝"
-    },
-    {
-      "name": "V4.7 歧海循光",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/00fb50d634df41c18904a8d45778d15920260820.jpeg",
-      "entryId": "1539291460079370240",
-      "roles": [
-        "卡列尼娜·烬航"
-      ],
-      "role": "卡列尼娜·烬航",
-      "weapon": "尼弗尔海姆的辰星",
-      "support": "派得里"
-    },
-    {
-      "name": "V4.6 孑念空行",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/889d42ed08124610bb05a7d66645eeb220260717.jpg",
-      "entryId": "1526989994176704512",
-      "roles": [
-        "海伦汀·安魂"
-      ],
-      "role": "海伦汀·安魂",
-      "weapon": "遥听归乡的晚钟",
-      "support": "大公"
-    },
-    {
-      "name": "V4.5 长路归航",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/cf410ff2e3ed49fbb4eb2e487363e9f820260602.png",
-      "entryId": "1511127520284590080",
-      "roles": [
-        "露西亚·逆冕"
-      ],
-      "role": "露西亚·逆冕"
-    },
-    {
-      "name": "V4.4 烈日将烬",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/c6e26e36f3424fa9afddb3d39406486520260422.jpg",
-      "entryId": "1495792984844808192",
-      "roles": [
-        "神威·不落日"
-      ],
-      "role": "神威·不落日",
-      "weapon": "朗日耀斑",
-      "support": "焰燧"
-    },
-    {
-      "name": "V4.3 更美好的明天",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/645e427bcd99471aac6c00e27e1623fa20260318.jpg",
-      "entryId": "1483058407634788352",
-      "roles": [
-        "涅缇娅·亡歌"
-      ],
-      "role": "涅缇娅·亡歌",
-      "weapon": "旧日讣告",
-      "support": "摩利甘"
-    },
-    {
-      "name": "V4.2 冬冕的凋亡",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/f12c0ae69c1b41958c137be66136f6d620260203.png",
-      "entryId": "1467564233525362688",
-      "roles": [
-        "罗塞塔·极锋"
-      ],
-      "role": "罗塞塔·极锋",
-      "weapon": "幻象戟·统合",
-      "support": "波灵"
-    },
-    {
-      "name": "V4.1 推想视限",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/b051b8c5607b4841b57e20728bf1f82e20251223.png",
-      "entryId": "1452736269223317504",
-      "roles": [
-        "布偶熊·骇影"
-      ],
-      "role": "布偶熊·骇影",
-      "weapon": "霓虹穿梭机",
-      "support": "吡啵"
-    },
-    {
-      "name": "V4.0 眠于厄寐之境",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/fa9acc95d9e94103afb1a111a7eb000320251114.png",
-      "entryId": "1438210440151326720",
-      "roles": [
-        "丽芙·霁梦"
-      ],
-      "role": "丽芙·霁梦"
-    },
-    {
-      "name": "V3.8 理想笼",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/1249381de3d74b9b9d0e4430d1e4936120250926.jpg",
-      "entryId": "1420520565737353216",
-      "roles": [
-        "维罗妮卡·铮骨"
-      ],
-      "role": "维罗妮卡·铮骨",
-      "weapon": "怒霆敕天",
-      "support": "鳞垒"
-    },
-    {
-      "name": "V3.7 织奏序言",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/b9fddbdbf89f44ada60f5f0195aea1c920250822.jpg",
-      "entryId": "1407310684338499584",
-      "roles": [
-        "斜奏·裁律"
-      ],
-      "role": "斜奏·裁律",
-      "weapon": "噬铰骨殇"
-    },
-    {
-      "name": "V3.6 覆海归途",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/3d17dedc3de44df8b1112e64a1fa983120250703.png",
-      "entryId": "1389271858286407680",
-      "roles": [
-        "比安卡·晖暮"
-      ],
-      "role": "比安卡·晖暮",
-      "weapon": "奥罗拉",
-      "support": "浊璃"
-    },
-    {
-      "name": "V3.5 幻寂鸣泣曲·但丁",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
-      "roles": [
-        "但丁"
-      ],
-      "role": "但丁",
-      "weapon": "魔剑但丁",
-      "support": "科沃兹"
-    },
-    {
-      "name": "V3.5 幻寂鸣泣曲·维吉尔",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
-      "roles": [
-        "维吉尔"
-      ],
-      "role": "维吉尔",
-      "weapon": "阎魔刀",
-      "support": "幻影剑"
-    },
-    {
-      "name": "V3.4 末路燎原",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/babc3957dc24460f97360e29a2dfa40620250411.png",
-      "entryId": "1359105999909068800",
-      "roles": [
-        "薇拉·灼惘"
-      ],
-      "role": "薇拉·灼惘",
-      "weapon": "烬劫归墟"
-    },
-    {
-      "name": "V3.3 逐生复始",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/6eec98333203473db523eb8c6955a43b20250306.jpg",
-      "entryId": "1346118572064468992",
-      "roles": [
-        "洁塔薇·破晓"
-      ],
-      "role": "洁塔薇·破晓",
-      "weapon": "终局裁决者"
-    },
-    {
-      "name": "V3.2 梦赴光寥之乡",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/cb1e7166a25a404180456f19ebadbd3720250123.jpg",
-      "entryId": "1331300611414974464",
-      "roles": [
-        "赛琳娜·希声"
-      ],
-      "role": "赛琳娜·希声",
-      "weapon": "奥菲厄斯的摇篮",
-      "support": "雪歌"
-    },
-    {
-      "name": "V3.1 醉狱谲笼",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/6f259df47d7e4bbc8ceca320210bf03420241219.jpg",
-      "entryId": "1316148192552099840",
-      "roles": [
-        "莉莉丝·谬影"
-      ],
-      "role": "莉莉丝·谬影",
-      "weapon": "繁宵蜃景之哀",
-      "support": "彼莉"
-    },
-    {
-      "name": "V3.0 锈夜逐光·幻日",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
-      "entryId": "1303285364902662144",
-      "roles": [
-        "伊什梅尔·幻日"
-      ],
-      "role": "伊什梅尔·幻日",
-      "weapon": "伊始与终焉之权",
-      "support": "杼菱"
-    },
-    {
-      "name": "V3.0 锈夜逐光·终焉",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
-      "entryId": "1303285364902662144",
-      "roles": [
-        "露娜·终焉"
-      ],
-      "role": "露娜·终焉",
-      "weapon": "律条重塑",
-      "support": "肃噩"
-    },
-    {
-      "name": "V2.17 遥行循星·芒星",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
-      "entryId": "1286636518388928512",
-      "roles": [
-        "七实·芒星之迹"
-      ],
-      "role": "七实·芒星之迹",
-      "weapon": "隧星盛耀",
-      "support": "鮟棘"
-    },
-    {
-      "name": "V2.17 遥行循星·森息",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
-      "entryId": "1286636518388928512",
-      "roles": [
-        "21号·森息"
-      ],
-      "role": "21号·森息",
-      "weapon": "玛纳加尔姆",
-      "support": "冥牙"
-    },
-    {
-      "name": "V2.17 遥行循星·深红",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
-      "entryId": "1286636518388928512",
-      "roles": [
-        "露西亚·深红囚影"
-      ],
-      "role": "露西亚·深红囚影",
-      "weapon": "夜煌",
-      "support": "掣矩"
-    },
-    {
-      "name": "V2.16 晨昏庭影·森息",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
-      "entryId": "1272978633494269952",
-      "roles": [
-        "21号·森息"
-      ],
-      "role": "21号·森息",
-      "weapon": "玛纳加尔姆",
-      "support": "冥牙"
-    },
-    {
-      "name": "V2.16 晨昏庭影·绯耀",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
-      "entryId": "1272978633494269952",
-      "roles": [
-        "薇拉·绯耀"
-      ],
-      "role": "薇拉·绯耀",
-      "weapon": "不死鸟",
-      "support": "庭霓"
-    },
-    {
-      "name": "V2.15 剪身成蝶·誓焰",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
-      "entryId": "1260274522416754688",
-      "roles": [
-        "露西亚·誓焰"
-      ],
-      "role": "露西亚·誓焰",
-      "weapon": "拂晓炎翎",
-      "support": "熠空"
-    },
-    {
-      "name": "V2.15 剪身成蝶·尘铭",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
-      "entryId": "1260274522416754688",
-      "roles": [
-        "渡边·尘铭"
-      ],
-      "role": "渡边·尘铭",
-      "weapon": "镇命者",
-      "support": "夜蝠"
-    },
-    {
-      "name": "V2.15 剪身成蝶·深痕",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
-      "entryId": "1260274522416754688",
-      "roles": [
-        "比安卡·深痕"
-      ],
-      "role": "比安卡·深痕",
-      "weapon": "赫斯提亚",
-      "support": "掣矩"
-    },
-    {
-      "name": "V2.14 暮往长离·明晰梦",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
-      "entryId": "1245373336211886080",
-      "roles": [
-        "万事·明晰梦"
-      ],
-      "role": "万事·明晰梦",
-      "weapon": "明瞳续昼",
-      "support": "瑞雪"
-    },
-    {
-      "name": "V2.14 暮往长离·BRS",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
-      "entryId": "1245373336211886080",
-      "roles": [
-        "BRS"
-      ],
-      "role": "BRS",
-      "weapon": "黑岩巨炮"
-    },
-    {
-      "name": "V2.13 云梁觅影·檀心",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
-      "entryId": "1232753868847935488",
-      "roles": [
-        "含英·檀心"
-      ],
-      "role": "含英·檀心",
-      "weapon": "鹏游蝶梦",
-      "support": "寐寤"
-    },
-    {
-      "name": "V2.13 云梁觅影·辉晓",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
-      "entryId": "1232753868847935488",
-      "roles": [
-        "卡列尼娜·辉晓"
-      ],
-      "role": "卡列尼娜·辉晓",
-      "weapon": "聚爆",
-      "support": "暝月"
-    },
-    {
-      "name": "V2.13 云梁觅影·BRS",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
-      "entryId": "1232753868847935488",
-      "roles": [
-        "BRS"
-      ],
-      "role": "BRS",
-      "weapon": "黑岩巨炮"
-    },
-    {
-      "name": "V2.12 幽塔黎光",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/24f7616624b346fcad2b36bc1a76e7a420240521.jpg",
-      "entryId": "1242203801870913536",
-      "roles": [
-        "布丽姬特·耀炎"
-      ],
-      "role": "布丽姬特·耀炎",
-      "weapon": "塞斯特斯"
-    },
-    {
-      "name": "V2.11  镜像星尘",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/1132f0f3e09441d6964a881e02df2bd520240521.jpg",
-      "entryId": "1242435311511162880",
-      "roles": [
-        "露娜·终焉"
-      ],
-      "role": "露娜·终焉",
-      "weapon": "律条重塑",
-      "support": "肃噩"
-    },
-    {
-      "name": "V2.10源解信标",
-      "icon": "https://prod-alicdn-community.kurobbs.com/forum/2bab79e4555f466c952c079bdccd085120240522.jpg",
-      "entryId": "1242520609928417280",
-      "roles": [
-        "丽芙·极昼"
-      ],
-      "role": "丽芙·极昼",
-      "weapon": "赫斯提亚"
-    }
-  ]
+    "A2"
+   ],
+   "up_a": [],
+   "weights": {
+    "S": 0.5,
+    "AB": 13.95,
+    "fragment": 22.11,
+    "memory": 28.39,
+    "overclock": 14.42,
+    "exp": 4.81,
+    "cogs": 14.42
+   },
+   "up_rate_s": 100,
+   "up_rate_a": 80
+  },
+  "weapon": {
+   "name": "武器研发",
+   "type": "weapon",
+   "target": "6星武器",
+   "total": 30,
+   "up_w6": [
+    "不孤航炬",
+    "时针&分针"
+   ],
+   "weights": {
+    "6": 2.5,
+    "5": 15,
+    "4": 33.4,
+    "3": 27.9,
+    "overclock": 9.35,
+    "cogs": 9.35
+   },
+   "up_rate_w6": 80
+  },
+  "weapon_collab": {
+   "name": "联动武器狙击",
+   "type": "weapon_collab",
+   "target": "6星武器",
+   "total": 30,
+   "up_w6": [
+    "黑岩巨炮",
+    "★黑岩巨炮"
+   ],
+   "weights": {
+    "6": 1.2,
+    "5": 15.0,
+    "4": 33.4,
+    "3": 27.9,
+    "overclock": 9.35,
+    "cogs": 9.35
+   },
+   "up_rate_w6": 100
+  },
+  "support_unit": {
+   "name": "辅助机研发",
+   "type": "support_unit",
+   "target": "S级辅助机",
+   "total": 20,
+   "weights": {
+    "S": 5.82,
+    "A": 14.14,
+    "exp": 20.72,
+    "overclock": 11.02,
+    "skill": 16.31,
+    "fragment": 13.42,
+    "cogs": 16.06
+   },
+   "up_s": [
+    "凯尔派",
+    "刻刻帝"
+   ],
+   "up_a": [],
+   "up_rate_s": 80,
+   "up_rate_a": 80
+  }
+ },
+ "standard_s": [
+  "卡列尼娜·烬航",
+  "海伦汀·安魂",
+  "神威·不落日",
+  "涅缇娅·亡歌",
+  "罗塞塔·极锋",
+  "布偶熊·骇影",
+  "维罗妮卡·铮骨",
+  "比安卡·晖暮",
+  "薇拉·灼惘",
+  "赛琳娜·希声",
+  "莉莉丝·谬影",
+  "伊什梅尔·幻日",
+  "七实·芒星之迹",
+  "露西亚·誓焰",
+  "万事·明晰梦",
+  "含英·檀心",
+  "露娜·终焉",
+  "曲·启明",
+  "渡边·尘铭",
+  "拉弥亚·深谣",
+  "亚里莎·回音",
+  "21号·森息",
+  "露西亚·深红囚影",
+  "艾拉·万华",
+  "里·超刻",
+  "比安卡·深痕",
+  "卡列尼娜·辉晓",
+  "七实·遥星之座",
+  "赛琳娜·幻奏",
+  "丽芙·极昼",
+  "薇拉·绯耀",
+  "库洛姆·荣光",
+  "露娜·银冕",
+  "罗塞塔·凛冽",
+  "露西亚·鸦羽",
+  "比安卡·真理",
+  "露西亚·深红之渊",
+  "七实·脉冲",
+  "卡列尼娜·烬燃",
+  "里·乱数",
+  "丽芙·仰光",
+  "神威·暗能",
+  "BRS",
+  "时崎狂三",
+  "但丁",
+  "维吉尔",
+  "2B",
+  "9S",
+  "A2",
+  "莱亚·祈星",
+  "露西亚·逆冕",
+  "丽芙·霁梦",
+  "诺安·逆旅",
+  "哈卡玛·隐星",
+  "蒲牢·华钟",
+  "罗兰·戏炎",
+  "赛琳娜·岚音",
+  "曲·雀翎",
+  "卡穆·狂犬"
+ ],
+ "versions": [
+  {
+   "name": "V4.8 远信回响·破渊",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
+   "entryId": "1551987946890117120",
+   "roles": [
+    "阿德莱德·破渊"
+   ],
+   "role": "阿德莱德·破渊",
+   "weapon": "不孤航炬",
+   "support": "凯尔派"
+  },
+  {
+   "name": "V4.8 远信回响·狂三",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/44db4d61835049c6a5556e96204f885720260928.jpg",
+   "entryId": "1551987946890117120",
+   "roles": [
+    "时崎狂三"
+   ],
+   "role": "时崎狂三",
+   "weapon": "时针&分针",
+   "support": "刻刻帝"
+  },
+  {
+   "name": "V4.7 歧海循光",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/00fb50d634df41c18904a8d45778d15920260820.jpeg",
+   "entryId": "1539291460079370240",
+   "roles": [
+    "卡列尼娜·烬航"
+   ],
+   "role": "卡列尼娜·烬航",
+   "weapon": "尼弗尔海姆的辰星",
+   "support": "派得里"
+  },
+  {
+   "name": "V4.6 孑念空行",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/889d42ed08124610bb05a7d66645eeb220260717.jpg",
+   "entryId": "1526989994176704512",
+   "roles": [
+    "海伦汀·安魂"
+   ],
+   "role": "海伦汀·安魂",
+   "weapon": "遥听归乡的晚钟",
+   "support": "大公"
+  },
+  {
+   "name": "V4.5 长路归航",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/cf410ff2e3ed49fbb4eb2e487363e9f820260602.png",
+   "entryId": "1511127520284590080",
+   "roles": [
+    "露西亚·逆冕"
+   ],
+   "role": "露西亚·逆冕"
+  },
+  {
+   "name": "V4.4 烈日将烬",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/c6e26e36f3424fa9afddb3d39406486520260422.jpg",
+   "entryId": "1495792984844808192",
+   "roles": [
+    "神威·不落日"
+   ],
+   "role": "神威·不落日",
+   "weapon": "朗日耀斑",
+   "support": "焰燧"
+  },
+  {
+   "name": "V4.3 更美好的明天",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/645e427bcd99471aac6c00e27e1623fa20260318.jpg",
+   "entryId": "1483058407634788352",
+   "roles": [
+    "涅缇娅·亡歌"
+   ],
+   "role": "涅缇娅·亡歌",
+   "weapon": "旧日讣告",
+   "support": "摩利甘"
+  },
+  {
+   "name": "V4.2 冬冕的凋亡",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/f12c0ae69c1b41958c137be66136f6d620260203.png",
+   "entryId": "1467564233525362688",
+   "roles": [
+    "罗塞塔·极锋"
+   ],
+   "role": "罗塞塔·极锋",
+   "weapon": "幻象戟·统合",
+   "support": "波灵"
+  },
+  {
+   "name": "V4.1 推想视限",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/b051b8c5607b4841b57e20728bf1f82e20251223.png",
+   "entryId": "1452736269223317504",
+   "roles": [
+    "布偶熊·骇影"
+   ],
+   "role": "布偶熊·骇影",
+   "weapon": "霓虹穿梭机",
+   "support": "吡啵"
+  },
+  {
+   "name": "V4.0 眠于厄寐之境",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/fa9acc95d9e94103afb1a111a7eb000320251114.png",
+   "entryId": "1438210440151326720",
+   "roles": [
+    "丽芙·霁梦"
+   ],
+   "role": "丽芙·霁梦"
+  },
+  {
+   "name": "V3.8 理想笼",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/1249381de3d74b9b9d0e4430d1e4936120250926.jpg",
+   "entryId": "1420520565737353216",
+   "roles": [
+    "维罗妮卡·铮骨"
+   ],
+   "role": "维罗妮卡·铮骨",
+   "weapon": "怒霆敕天",
+   "support": "鳞垒"
+  },
+  {
+   "name": "V3.7 织奏序言",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/b9fddbdbf89f44ada60f5f0195aea1c920250822.jpg",
+   "entryId": "1407310684338499584",
+   "roles": [
+    "斜奏·裁律"
+   ],
+   "role": "斜奏·裁律",
+   "weapon": "噬铰骨殇"
+  },
+  {
+   "name": "V3.6 覆海归途",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/3d17dedc3de44df8b1112e64a1fa983120250703.png",
+   "entryId": "1389271858286407680",
+   "roles": [
+    "比安卡·晖暮"
+   ],
+   "role": "比安卡·晖暮",
+   "weapon": "奥罗拉",
+   "support": "浊璃"
+  },
+  {
+   "name": "V3.5 幻寂鸣泣曲·但丁",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
+   "roles": [
+    "但丁"
+   ],
+   "role": "但丁",
+   "weapon": "魔剑但丁",
+   "support": "科沃兹"
+  },
+  {
+   "name": "V3.5 幻寂鸣泣曲·维吉尔",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/55ab1ffc6d2544d6ace98ee0842d539d20250523.jpg",
+   "roles": [
+    "维吉尔"
+   ],
+   "role": "维吉尔",
+   "weapon": "阎魔刀",
+   "support": "幻影剑"
+  },
+  {
+   "name": "V3.4 末路燎原",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/babc3957dc24460f97360e29a2dfa40620250411.png",
+   "entryId": "1359105999909068800",
+   "roles": [
+    "薇拉·灼惘"
+   ],
+   "role": "薇拉·灼惘",
+   "weapon": "烬劫归墟"
+  },
+  {
+   "name": "V3.3 逐生复始",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/6eec98333203473db523eb8c6955a43b20250306.jpg",
+   "entryId": "1346118572064468992",
+   "roles": [
+    "洁塔薇·破晓"
+   ],
+   "role": "洁塔薇·破晓",
+   "weapon": "终局裁决者"
+  },
+  {
+   "name": "V3.2 梦赴光寥之乡",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/cb1e7166a25a404180456f19ebadbd3720250123.jpg",
+   "entryId": "1331300611414974464",
+   "roles": [
+    "赛琳娜·希声"
+   ],
+   "role": "赛琳娜·希声",
+   "weapon": "奥菲厄斯的摇篮",
+   "support": "雪歌"
+  },
+  {
+   "name": "V3.1 醉狱谲笼",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/6f259df47d7e4bbc8ceca320210bf03420241219.jpg",
+   "entryId": "1316148192552099840",
+   "roles": [
+    "莉莉丝·谬影"
+   ],
+   "role": "莉莉丝·谬影",
+   "weapon": "繁宵蜃景之哀",
+   "support": "彼莉"
+  },
+  {
+   "name": "V3.0 锈夜逐光·幻日",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
+   "entryId": "1303285364902662144",
+   "roles": [
+    "伊什梅尔·幻日"
+   ],
+   "role": "伊什梅尔·幻日",
+   "weapon": "伊始与终焉之权",
+   "support": "杼菱"
+  },
+  {
+   "name": "V3.0 锈夜逐光·终焉",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
+   "entryId": "1303285364902662144",
+   "roles": [
+    "露娜·终焉"
+   ],
+   "role": "露娜·终焉",
+   "weapon": "律条重塑",
+   "support": "肃噩"
+  },
+  {
+   "name": "V2.17 遥行循星·芒星",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
+   "entryId": "1286636518388928512",
+   "roles": [
+    "七实·芒星之迹"
+   ],
+   "role": "七实·芒星之迹",
+   "weapon": "隧星盛耀",
+   "support": "鮟棘"
+  },
+  {
+   "name": "V2.17 遥行循星·森息",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
+   "entryId": "1286636518388928512",
+   "roles": [
+    "21号·森息"
+   ],
+   "role": "21号·森息",
+   "weapon": "玛纳加尔姆",
+   "support": "冥牙"
+  },
+  {
+   "name": "V2.17 遥行循星·深红",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
+   "entryId": "1286636518388928512",
+   "roles": [
+    "露西亚·深红囚影"
+   ],
+   "role": "露西亚·深红囚影",
+   "weapon": "夜煌",
+   "support": "掣矩"
+  },
+  {
+   "name": "V2.16 晨昏庭影·森息",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
+   "entryId": "1272978633494269952",
+   "roles": [
+    "21号·森息"
+   ],
+   "role": "21号·森息",
+   "weapon": "玛纳加尔姆",
+   "support": "冥牙"
+  },
+  {
+   "name": "V2.16 晨昏庭影·绯耀",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
+   "entryId": "1272978633494269952",
+   "roles": [
+    "薇拉·绯耀"
+   ],
+   "role": "薇拉·绯耀",
+   "weapon": "不死鸟",
+   "support": "庭霓"
+  },
+  {
+   "name": "V2.15 剪身成蝶·誓焰",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
+   "entryId": "1260274522416754688",
+   "roles": [
+    "露西亚·誓焰"
+   ],
+   "role": "露西亚·誓焰",
+   "weapon": "拂晓炎翎",
+   "support": "熠空"
+  },
+  {
+   "name": "V2.15 剪身成蝶·尘铭",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
+   "entryId": "1260274522416754688",
+   "roles": [
+    "渡边·尘铭"
+   ],
+   "role": "渡边·尘铭",
+   "weapon": "镇命者",
+   "support": "夜蝠"
+  },
+  {
+   "name": "V2.15 剪身成蝶·深痕",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
+   "entryId": "1260274522416754688",
+   "roles": [
+    "比安卡·深痕"
+   ],
+   "role": "比安卡·深痕",
+   "weapon": "赫斯提亚",
+   "support": "掣矩"
+  },
+  {
+   "name": "V2.14 暮往长离·明晰梦",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
+   "entryId": "1245373336211886080",
+   "roles": [
+    "万事·明晰梦"
+   ],
+   "role": "万事·明晰梦",
+   "weapon": "明瞳续昼",
+   "support": "瑞雪"
+  },
+  {
+   "name": "V2.14 暮往长离·BRS",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
+   "entryId": "1245373336211886080",
+   "roles": [
+    "BRS"
+   ],
+   "role": "BRS",
+   "weapon": "黑岩巨炮"
+  },
+  {
+   "name": "V2.13 云梁觅影·檀心",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
+   "entryId": "1232753868847935488",
+   "roles": [
+    "含英·檀心"
+   ],
+   "role": "含英·檀心",
+   "weapon": "鹏游蝶梦",
+   "support": "寐寤"
+  },
+  {
+   "name": "V2.13 云梁觅影·辉晓",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
+   "entryId": "1232753868847935488",
+   "roles": [
+    "卡列尼娜·辉晓"
+   ],
+   "role": "卡列尼娜·辉晓",
+   "weapon": "聚爆",
+   "support": "暝月"
+  },
+  {
+   "name": "V2.13 云梁觅影·BRS",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
+   "entryId": "1232753868847935488",
+   "roles": [
+    "BRS"
+   ],
+   "role": "BRS",
+   "weapon": "黑岩巨炮"
+  },
+  {
+   "name": "V2.12 幽塔黎光",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/24f7616624b346fcad2b36bc1a76e7a420240521.jpg",
+   "entryId": "1242203801870913536",
+   "roles": [
+    "布丽姬特·耀炎"
+   ],
+   "role": "布丽姬特·耀炎",
+   "weapon": "塞斯特斯"
+  },
+  {
+   "name": "V2.11  镜像星尘",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/1132f0f3e09441d6964a881e02df2bd520240521.jpg",
+   "entryId": "1242435311511162880",
+   "roles": [
+    "露娜·终焉"
+   ],
+   "role": "露娜·终焉",
+   "weapon": "律条重塑",
+   "support": "肃噩"
+  },
+  {
+   "name": "V2.10源解信标",
+   "icon": "https://prod-alicdn-community.kurobbs.com/forum/2bab79e4555f466c952c079bdccd085120240522.jpg",
+   "entryId": "1242520609928417280",
+   "roles": [
+    "丽芙·极昼"
+   ],
+   "role": "丽芙·极昼",
+   "weapon": "赫斯提亚"
+  }
+ ]
 }

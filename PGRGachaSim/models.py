@@ -185,6 +185,22 @@ class PGRGachaRecord(BaseIDModel, table=True):
 
     @classmethod
     @with_read_session
+    async def get_owned_names(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+    ) -> set[str]:
+        """用户已获得过的角色名集合（用于重复转碎片判定）"""
+        stmt = (
+            select(col(cls.name))
+            .where(col(cls.user_id) == user_id, col(cls.item_type) == "character")
+            .distinct()
+        )
+        result = await session.execute(stmt)
+        return {str(row[0]) for row in result.all()}
+
+    @classmethod
+    @with_read_session
     async def count_ups_by_user(
         cls,
         session: AsyncSession,

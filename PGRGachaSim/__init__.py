@@ -177,6 +177,8 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
         await data_manager.save_pity_data(uid, pool_type, pity)
         await data_manager.add_daily_count(uid, pool_type, count)
 
+        # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
+        owned_names = await data_manager.get_owned_names(uid)
         for result in results:
             if result["level"] >= 5:
                 await data_manager.add_record(uid, ev.bot_id, pool_type, result)
@@ -188,7 +190,13 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
 
         pool_name = pool["name"] if "name" in pool else "活动研发"
         image = await render_gacha_result(
-            results, pool_name, signature_code, count, avatar_path=avatar, daily_count=daily_count
+            results,
+            pool_name,
+            signature_code,
+            count,
+            avatar_path=avatar,
+            daily_count=daily_count,
+            owned_names=owned_names,
         )
         if image is not None:
             await bot.send(MessageSegment.image(image))
@@ -302,6 +310,8 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
             all_results.append(gacha_service.perform_draw(pool, pool_manager.get_data(), pity, 10))
         await data_manager.save_pity_data(uid, pool_type, pity)
         await data_manager.add_daily_count(uid, pool_type, 100)
+        # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
+        owned_names = await data_manager.get_owned_names(uid)
         for results in all_results:
             for result in results:
                 if result["level"] >= 5:
@@ -318,7 +328,7 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
             {
                 "pool_name": pool_name,
                 "draw_type": 10,
-                "items": _build_items(res),
+                "items": _build_items(res, owned_names),
                 "signature_code": signature_code,
                 "avatar": avatar_b64,
                 "daily_count": daily_count,

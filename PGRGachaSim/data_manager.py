@@ -83,6 +83,11 @@ class DataManager:
         await PGRGachaPool.set_selected(user_id, "version", version_name)
 
     @staticmethod
+    async def get_owned_names(user_id: str) -> set[str]:
+        """用户已获得过的角色名集合（重复转碎片判定用）"""
+        return await PGRGachaRecord.get_owned_names(user_id)
+
+    @staticmethod
     async def add_record(user_id: str, bot_id: str, pool_type: str, result: GachaResult) -> None:
         await PGRGachaRecord.add_record(
             user_id,

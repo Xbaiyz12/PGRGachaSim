@@ -21,6 +21,7 @@ class GachaResult(TypedDict):
     amount: int
     is_up: bool
     pity_count: int
+    shards_icon: str
 
 
 class PityData(TypedDict):
@@ -118,6 +119,7 @@ class GachaService:
                 amount=amount,
                 is_up=is_up,
                 pity_count=pity_count,
+                shards_icon="",
             )
         name = _item_str(item, "name") or "未知"
         shards_icon = _item_str(item, "shardsIcon")
@@ -139,6 +141,7 @@ class GachaService:
             amount=amount,
             is_up=is_up,
             pity_count=pity_count,
+            shards_icon=shards_icon,
         )
 
     def _pick_up(

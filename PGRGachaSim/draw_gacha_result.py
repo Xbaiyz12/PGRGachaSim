@@ -2,6 +2,7 @@
 
 import time
 import base64
+import random
 import asyncio
 from typing import TypedDict
 from pathlib import Path
@@ -72,11 +73,24 @@ def _icon_data_url(url: str) -> str:
     return _image_to_base64(path)
 
 
-def _build_items(results: list[GachaResult]) -> list[dict[str, object]]:
+def _build_items(
+    results: list[GachaResult],
+    owned_names: set[str] | None = None,
+) -> list[dict[str, object]]:
+    owned = owned_names or set()
     items: list[dict[str, object]] = []
     for result in results:
         is_fragment = result["category"] == "fragment"
         figure_url = "" if is_fragment else result["figure"]
+        # 已拥有角色再抽到 → 转碎片展示（立绘变暗 + 顶部标签 + 底部碎片小卡）
+        duplicate = (
+            bool(owned)
+            and result["category"] == "character"
+            and result["level"] >= 5
+            and result["name"] in owned
+        )
+        # 意识（带立绘的材料）随机分配 1-6 号位置：1&4 左 / 2&5 中 / 3&6 右
+        position = random.randint(1, 6) if (result["category"] == "material" and figure_url) else 0
         items.append(
             {
                 "name": result["name"],
@@ -87,6 +101,9 @@ def _build_items(results: list[GachaResult]) -> list[dict[str, object]]:
                 "pillar_level": result["pillar_level"],
                 "is_up": result["is_up"],
                 "category": result["category"],
+                "duplicate": duplicate,
+                "shard_icon": _icon_data_url(result.get("shards_icon", "")) if duplicate else "",
+                "position": position,
             }
         )
     return items
@@ -142,12 +159,13 @@ async def render_gacha_result(
     draw_type: int = 10,
     avatar_path: Path | None = None,
     daily_count: int = 0,
+    owned_names: set[str] | None = None,
 ) -> bytes | None:
     """渲染抽卡结果图片，渲染不可用时返回 None"""
     context = {
         "pool_name": pool_name,
         "draw_type": draw_type,
-        "items": _build_items(results),
+        "items": _build_items(results, owned_names),
         "signature_code": signature_code,
         "avatar": _image_to_base64(avatar_path) if avatar_path is not None else "",
         "daily_count": daily_count,
