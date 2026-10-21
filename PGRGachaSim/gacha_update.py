@@ -62,8 +62,10 @@ def _extract_names(text: str) -> list[str]:
     return names
 
 
-async def fetch_current_up() -> list[str]:
-    """拉取最新研发公告，返回当期 UP 角色名（可能为空）"""
+async def fetch_current_up(valid_names: set[str] | None = None) -> list[str]:
+    """拉取最新研发公告，返回当期 UP 角色名（可能为空）。
+    传入 valid_names 时会跳过名字不在集合中的候选公告，避免被无关公告截胡。
+    """
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
             resp = await client.post(
@@ -110,8 +112,11 @@ async def fetch_current_up() -> list[str]:
                     continue
                 text = _content_text(post["postContent"])
                 names = _extract_names(text)
-                if names:
-                    return names
+                if not names:
+                    continue
+                if valid_names is not None and not any(name in valid_names for name in names):
+                    continue
+                return names
     except (httpx.HTTPError, OSError, json.JSONDecodeError) as error:
         logger.warning(f"[战双·模拟抽卡] 拉取公告失败: {error}")
     return []
@@ -146,7 +151,7 @@ async def update_current_pools() -> list[str]:
             if name_val:
                 s_names.append(name_val)
 
-    up_names = await fetch_current_up()
+    up_names = await fetch_current_up(set(s_names))
     matched: list[str] = []
     for name in up_names:
         if name in s_names and name not in matched:

@@ -64,7 +64,12 @@ class PGRGachaPity(BaseIDModel, table=True):
         conds = [col(cls.user_id) == user_id]
         if pool_type:
             conds.append(col(cls.pool_type) == pool_type)
-        stmt = update(cls).where(*conds).values(current_count=0, sub_count=0, guaranteed_up=False)
+        stmt = update(cls).where(*conds).values(
+            current_count=0,
+            sub_count=0,
+            guaranteed_up=False,
+            total_count=0,
+        )
         result = await session.execute(stmt)
         return result.rowcount if isinstance(result, CursorResult) else 0
 
@@ -156,9 +161,31 @@ class PGRGachaRecord(BaseIDModel, table=True):
     async def add_records_batch(
         cls,
         session: AsyncSession,
-        records: list["PGRGachaRecord"],
+        user_id: str,
+        bot_id: str,
+        pool_type: str,
+        rows: list[tuple[str, str, str, bool, int]],
     ) -> None:
-        session.add_all(records)
+        """批量插入出货记录。rows 元素为 (name, rarity, item_type, is_up, pity_count)"""
+        if not rows:
+            return
+        now = int(time.time())
+        session.add_all(
+            [
+                cls(
+                    user_id=user_id,
+                    bot_id=bot_id,
+                    pool_type=pool_type,
+                    name=name,
+                    rarity=rarity,
+                    item_type=item_type,
+                    is_up=is_up,
+                    pity_count=pity_count,
+                    created_at=now,
+                )
+                for name, rarity, item_type, is_up, pity_count in rows
+            ]
+        )
 
     @classmethod
     @with_read_session

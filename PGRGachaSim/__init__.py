@@ -116,8 +116,11 @@ def _apply_version_up(pool: dict, pool_type: str, version_data: dict) -> dict:
 
     weapon_names: list[str] = []
     support_names: list[str] = []
+    if not patch:
+        # 版本名为空时无法确定 patch 前缀，跳过聚合避免误合并全部版本
+        return updated
     for entry in versions:
-        if patch and not entry.get("name", "").startswith(patch):
+        if not entry.get("name", "").startswith(patch):
             continue
         w = entry.get("weapon")
         if isinstance(w, str) and w and w not in weapon_names:
@@ -180,12 +183,16 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
         # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
         owned_names = await data_manager.get_owned_names(uid)
         for result in results:
-            if result["level"] >= 5:
+            if result["level"] >= 4:
                 await data_manager.add_record(uid, ev.bot_id, pool_type, result)
 
         signature_code = await data_manager.get_signature(uid)
         if not signature_code:
-            signature_code = await data_manager.generate_signature(uid)
+            try:
+                signature_code = await data_manager.generate_signature(uid)
+            except ValueError as error:
+                logger.warning(f"[战双·模拟抽卡] 生成特征码失败: {error}")
+                signature_code = ""
         daily_count = await data_manager.get_daily_count(uid, pool_type)
 
         pool_name = pool["name"] if "name" in pool else "活动研发"
@@ -312,14 +319,21 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         await data_manager.add_daily_count(uid, pool_type, 100)
         # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
         owned_names = await data_manager.get_owned_names(uid)
-        for results in all_results:
-            for result in results:
-                if result["level"] >= 5:
-                    await data_manager.add_record(uid, ev.bot_id, pool_type, result)
+        high_results = [
+            result
+            for results in all_results
+            for result in results
+            if result["level"] >= 4
+        ]
+        await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high_results)
 
         signature_code = await data_manager.get_signature(uid)
         if not signature_code:
-            signature_code = await data_manager.generate_signature(uid)
+            try:
+                signature_code = await data_manager.generate_signature(uid)
+            except ValueError as error:
+                logger.warning(f"[战双·模拟抽卡] 生成特征码失败: {error}")
+                signature_code = ""
         daily_count = await data_manager.get_daily_count(uid, pool_type)
 
         bg_base64 = _get_bg_base64()
@@ -463,10 +477,16 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         if 1 <= index <= len(options):
             selected_id = options[index - 1][0]
     else:
+        # 精确匹配优先，避免子串误命中（如 "主题" 命中首个含"主题"的项）
         for option_id, label in options:
-            if text in label:
+            if text == label:
                 selected_id = option_id
                 break
+        if not selected_id:
+            for option_id, label in options:
+                if text in label:
+                    selected_id = option_id
+                    break
 
     if not selected_id:
         await bot.send(f"未找到匹配 '{text}' 的卡池，请检查后重试~", at_sender)
@@ -535,7 +555,7 @@ async def update_pools(bot: Bot, ev: Event) -> None:
     await bot.send("正在从官方公告更新当期卡池...", at_sender)
     try:
         names = await update_current_pools()
-    except (HTTPError, ValueError, KeyError) as error:
+    except (HTTPError, OSError, ValueError, KeyError) as error:
         logger.error(f"[战双·模拟抽卡] 更新卡池失败: {error}")
         await bot.send(f"更新卡池失败: {error}", at_sender)
         return
@@ -616,6 +636,8 @@ async def query_pity(bot: Bot, ev: Event) -> None:
         "char_standard": "基准角色研发",
         "weapon": "狙击武器研发",
         "support_unit": "辅助机研发",
+        "char_collab": "联动成员狙击",
+        "weapon_collab": "联动武器狙击",
     }
     lines = ["【指挥官·研发保底进度】"]
     for p in pities:

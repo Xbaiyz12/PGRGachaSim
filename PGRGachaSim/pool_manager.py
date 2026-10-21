@@ -31,7 +31,7 @@ def _parse_items(raw: object) -> list[GachaItem]:
         if not isinstance(name, str) or not name:
             continue
         item = GachaItem(name=name)
-        for key in ("mainIcon", "shardsIcon", "image", "figure"):
+        for key in ("mainIcon", "shardsIcon", "figure"):
             value = entry.get(key)
             if not isinstance(value, str) or not value:
                 continue
@@ -39,8 +39,6 @@ def _parse_items(raw: object) -> list[GachaItem]:
                 item["mainIcon"] = value
             elif key == "shardsIcon":
                 item["shardsIcon"] = value
-            elif key == "image":
-                item["image"] = value
             else:
                 item["figure"] = value
         items.append(item)
@@ -100,9 +98,6 @@ def _parse_versions(raw: object) -> list[VersionData]:
         support = entry.get("support")
         if isinstance(support, str) and support:
             version["support"] = support
-        roles = _parse_str_list(entry.get("roles"))
-        if roles:
-            version["roles"] = roles
         result.append(version)
     return result
 

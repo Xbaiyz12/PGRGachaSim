@@ -1,12 +1,14 @@
 """战双模拟抽卡 - 数据管理层"""
 
 import random
+import time as time_module
 from typing import Literal, TypedDict
 from pathlib import Path
 from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import httpx
+from sqlalchemy.exc import IntegrityError
 
 from gsuid_core.logger import logger
 
@@ -15,6 +17,10 @@ from .gacha_config import GACHA_SIM_MAIN_PATH
 from .gacha_service import PityData, GachaResult, empty_pity
 
 _BEIJING = ZoneInfo("Asia/Shanghai")
+
+# 头像下载失败的内存负缓存（user_id -> 失败时间戳），避免每次抽卡都重试远程
+_AVATAR_FAIL_CACHE: dict[str, float] = {}
+_AVATAR_FAIL_TTL = 300.0  # 5 分钟内不重试
 
 
 class RankEntry(TypedDict):
@@ -101,19 +107,39 @@ class DataManager:
         )
 
     @staticmethod
+    async def add_records_batch(user_id: str, bot_id: str, pool_type: str, results: list[GachaResult]) -> None:
+        """百连场景批量插入，避免逐条 await 带来的 session 开销"""
+        if not results:
+            return
+        await PGRGachaRecord.add_records_batch(
+            user_id,
+            bot_id,
+            pool_type,
+            [
+                (
+                    result["name"],
+                    str(result["level"]),
+                    result["category"],
+                    result["is_up"],
+                    result["pity_count"],
+                )
+                for result in results
+            ],
+        )
+
+    @staticmethod
     async def get_history(user_id: str, limit: int = 50) -> list[dict[str, object]]:
         records = await PGRGachaRecord.get_history(user_id, limit)
+        # DB 中存有 4★ 记录（用于跨会话重复转碎片判定），但"抽卡记录"仅展示 5★/6★
         return [
             {
                 "name": record.name,
                 "rarity": record.rarity,
-                "item_type": record.item_type,
                 "is_up": record.is_up,
                 "pity_count": record.pity_count,
-                "pool_type": record.pool_type,
-                "created_at": record.created_at,
             }
             for record in records
+            if record.rarity in ("5", "6")
         ]
 
     @staticmethod
@@ -154,10 +180,15 @@ class DataManager:
     async def generate_signature(user_id: str) -> str:
         for _ in range(100):
             code = str(random.randint(100000000, 999999999))
-            if not await PGRGachaSignature.check_code_exists(code):
+            if await PGRGachaSignature.check_code_exists(code):
+                continue
+            try:
                 await PGRGachaSignature.set_signature(user_id, code)
-                logger.info(f"[战双·模拟抽卡] 用户 {user_id} 生成特征码: {code}")
-                return code
+            except IntegrityError:
+                # 并发下撞 unique 约束（code 或 user_id），换一个新 code 重试
+                continue
+            logger.info(f"[战双·模拟抽卡] 用户 {user_id} 生成特征码: {code}")
+            return code
         raise ValueError("无法生成唯一的特征码")
 
     @staticmethod
@@ -187,6 +218,10 @@ class DataManager:
     async def get_avatar(user_id: str) -> Path | None:
         if not user_id.isdigit():
             return None
+        # 失败负缓存：TTL 内不再发起远程请求
+        fail_ts = _AVATAR_FAIL_CACHE.get(user_id, 0.0)
+        if fail_ts and time_module.time() - fail_ts < _AVATAR_FAIL_TTL:
+            return None
         avatar_dir = GACHA_SIM_MAIN_PATH / "avatars"
         try:
             avatar_dir.mkdir(parents=True, exist_ok=True)
@@ -206,15 +241,18 @@ class DataManager:
                 resp = await client.get(url)
         except httpx.HTTPError as error:
             logger.warning(f"[战双·模拟抽卡] 头像下载失败: {error}")
+            _AVATAR_FAIL_CACHE[user_id] = time_module.time()
             return None
         content_type = resp.headers.get("content-type", "").lower()
         if resp.status_code != 200 or not resp.content or not content_type.startswith("image/"):
+            _AVATAR_FAIL_CACHE[user_id] = time_module.time()
             return None
         try:
             dest.write_bytes(resp.content)
         except OSError as error:
             logger.warning(f"[战双·模拟抽卡] 头像写入失败: {error}")
             return None
+        _AVATAR_FAIL_CACHE.pop(user_id, None)
         return dest
 
 

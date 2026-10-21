@@ -407,7 +407,7 @@
                     <div class="ph">{{ item.name[:1] or "?" }}</div>
                     {% endif %}
                 </div>
-                {% if item.duplicate %}<div class="convert-tag">转为碎片 <span class="shard-num">x{{ item.shard_amount or {6: 30, 5: 18, 4: 6}.get(item.level, 6) }}</span></div>{% endif %}
+                {% if item.duplicate %}<div class="convert-tag">转为碎片 <span class="shard-num">x{{ item.shard_amount }}</span></div>{% endif %}
                 <div class="glow"></div>
                 <div class="glow-top"></div>
                 {% if item.duplicate or item.position %}

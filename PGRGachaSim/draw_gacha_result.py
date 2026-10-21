@@ -30,7 +30,7 @@ except ImportError:
 
 _LEVEL_LABELS = {6: "红", 5: "橙", 4: "紫", 3: "蓝"}
 # 重复角色返还碎片数：S(6★)=30 / A(5★)=18 / B(4★)=6（泛用机体口径）
-_DUP_SHARDS = {6: 30, 5: 18, 4: 6, 3: 6}
+_DUP_SHARDS = {6: 30, 5: 18, 4: 6}
 _BG_BASE64_CACHE: str = ""
 
 
@@ -39,7 +39,6 @@ class PoolSelectCard(TypedDict, total=False):
     figure: str
     theme_no: int | str
     fate_no: int | str
-    single_no: int | str
 
 
 def _get_bg_base64() -> str:
@@ -85,12 +84,11 @@ def _build_items(
         is_fragment = result["category"] == "fragment"
         figure_url = "" if is_fragment else result["figure"]
         # 已拥有角色再抽到 → 转碎片展示（顶部标签 + 底部碎片小卡，立绘保持原亮度）
-        duplicate = (
-            bool(owned)
-            and result["category"] == "character"
-            and result["level"] >= 5
-            and result["name"] in owned
-        )
+        # 覆盖 6/5/4★ 角色，对应 x30 / x18 / x6；同批次后续同角色也判为重复
+        is_char = result["category"] == "character" and result["level"] >= 4
+        duplicate = bool(is_char and result["name"] in owned)
+        if is_char:
+            owned.add(result["name"])
         # 重复返还碎片数：S(6★)=30 / A(5★)=18 / B(4★)=6
         shard_amount = _DUP_SHARDS.get(result["level"], 6) if duplicate else 0
         # 意识（带立绘的材料）随机分配 1-6 号位置：1&4 左 / 2&5 中 / 3&6 右
@@ -102,7 +100,6 @@ def _build_items(
                 "figure": _icon_data_url(figure_url) if figure_url else "",
                 "amount": result["amount"],
                 "level": result["level"],
-                "pillar_level": result["pillar_level"],
                 "is_up": result["is_up"],
                 "category": result["category"],
                 "duplicate": duplicate,
@@ -127,7 +124,7 @@ async def _render_remote(html: str) -> bytes | None:
             return None
         logger.info(f"[战双·模拟抽卡] 外置渲染成功，耗时 {time.time() - start:.2f}s")
         return response.content
-    except (httpx.HTTPError, httpx.TimeoutException) as error:
+    except httpx.HTTPError as error:
         logger.warning(f"[战双·模拟抽卡] 外置渲染异常: {error}")
         return None
 
@@ -242,14 +239,12 @@ async def render_pool_select(cards: list[PoolSelectCard], prefix: str = "pgr", t
         name = card["name"] if "name" in card else ""
         theme_no = card["theme_no"] if "theme_no" in card else None
         fate_no = card["fate_no"] if "fate_no" in card else None
-        single_no = card["single_no"] if "single_no" in card else None
         rendered.append(
             {
                 "name": name,
                 "figure": _icon_data_url(figure) if figure else "",
                 "theme_no": theme_no,
                 "fate_no": fate_no,
-                "single_no": single_no,
             }
         )
     context = {"cards": rendered, "prefix": prefix, "title": title}

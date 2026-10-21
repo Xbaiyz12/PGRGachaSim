@@ -14,7 +14,6 @@ class GachaItem(TypedDict, total=False):
 class GachaResult(TypedDict):
     name: str
     level: int
-    pillar_level: int
     category: str
     icon: str
     figure: str
@@ -49,7 +48,6 @@ class PoolData(TypedDict, total=False):
 class VersionData(TypedDict, total=False):
     name: str
     icon: str
-    roles: list[str]
     role: str
     weapon: str
     support: str
@@ -73,7 +71,8 @@ def _weighted_choice(weights: list[tuple[str, float]]) -> str:
         return ""
     total = sum(weight for _, weight in weights)
     if total <= 0:
-        return weights[0][0]
+        # 权重配置异常（全 0 或负值）时返回空串，让调用方走兜底分支而不是误中首个档
+        return ""
     roll = random.random() * total
     upto = 0.0
     for name, weight in weights:
@@ -106,13 +105,11 @@ class GachaService:
         pity_count: int,
         use_shards: bool = False,
         amount: int = 1,
-        pillar_level: int = 0,
     ) -> GachaResult:
         if item is None:
             return GachaResult(
                 name="未知",
                 level=level,
-                pillar_level=pillar_level if pillar_level > 0 else level,
                 category=category,
                 icon="",
                 figure="",
@@ -134,7 +131,6 @@ class GachaService:
         return GachaResult(
             name=name,
             level=level,
-            pillar_level=pillar_level if pillar_level > 0 else level,
             category=category,
             icon=icon,
             figure=figure,
@@ -245,7 +241,7 @@ class GachaService:
                     is_up = False
                 else:
                     item, is_up, guaranteed_up = self._pick_up(up_items, standard_items, up_rate_s, guaranteed_up)
-                results.append(self._make_result(item, 6, "character", is_up, current, pillar_level=6))
+                results.append(self._make_result(item, 6, "character", is_up, current))
                 current = 0
                 sub = 0
                 continue
@@ -259,7 +255,7 @@ class GachaService:
                     is_up = False
                 else:
                     item, is_up, guaranteed_up = self._pick_up(up_items, standard_items, up_rate_s, guaranteed_up)
-                results.append(self._make_result(item, 6, "character", is_up, current, pillar_level=6))
+                results.append(self._make_result(item, 6, "character", is_up, current))
                 current = 0
                 sub = 0
                 continue
@@ -267,13 +263,13 @@ class GachaService:
             # 未出S时检查 A 级次级保底
             if sub >= pity_a or prize_type == "A":
                 item, is_up, _ = self._pick_up(a_up_items, a_list, up_rate_a, False)
-                results.append(self._make_result(item, 5, "character", is_up, sub, pillar_level=5))
+                results.append(self._make_result(item, 5, "character", is_up, sub))
                 sub = 0
                 continue
 
             if prize_type == "B":
                 item = self._pick(b_list)
-                results.append(self._make_result(item, 4, "character", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "character", False, 0))
                 # B 级角色不重置 A 级保底 sub 计数
             elif prize_type == "fragment":
                 s_shards = [it for it in s_list if _item_str(it, "shardsIcon")]
@@ -286,27 +282,27 @@ class GachaService:
                     item = self._pick(a_shards)
                 else:
                     item = self._pick(b_shards or a_shards or s_list)
-                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=4)
+                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
                 res["figure"] = ""
                 res["name"] = f"{res['name']}碎片×2"
                 results.append(res)
             elif prize_type == "memory":
                 mem_list = materials["memories4"] if "memories4" in materials else []
                 item = self._pick(mem_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
             elif prize_type == "overclock":
                 oc_list = materials["overClock"] if "overClock" in materials else []
                 item = self._pick(oc_list)
                 lvl = 3 if item is not None and "初" in _item_str(item, "name") else 4
-                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
+                results.append(self._make_result(item, lvl, "material", False, 0))
             elif prize_type == "exp":
                 exp_list = materials["expPods"] if "expPods" in materials else []
                 item = self._pick(exp_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
             else:
                 cogs_list = materials["cogs"] if "cogs" in materials else []
                 item = self._pick(cogs_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
 
         pity["current_count"] = current
         pity["sub_count"] = sub
@@ -339,6 +335,9 @@ class GachaService:
         ]
         pity_s = pool["total"] if "total" in pool else 20
         pity_a = 10
+        # UP 率从卡池配置读取，缺省时回退到 80
+        up_rate_s = pool["up_rate_s"] if "up_rate_s" in pool else 80.0
+        up_rate_a = pool["up_rate_a"] if "up_rate_a" in pool else 80.0
         s_items = support["S"] if "S" in support else []
         a_items = support["A"] if "A" in support else []
         up_s = pool["up_s"] if "up_s" in pool else []
@@ -352,8 +351,8 @@ class GachaService:
 
             # S级保底判定
             if current >= pity_s:
-                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, 80.0, guaranteed_up)
-                results.append(self._make_result(item, 6, "support", is_up, current, pillar_level=6))
+                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, up_rate_s, guaranteed_up)
+                results.append(self._make_result(item, 6, "support", is_up, current))
                 current = 0
                 sub = 0
                 continue
@@ -362,16 +361,16 @@ class GachaService:
 
             # 自然出 S 级
             if prize_type == "S":
-                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, 80.0, guaranteed_up)
-                results.append(self._make_result(item, 6, "support", is_up, current, pillar_level=6))
+                item, is_up, guaranteed_up = self._pick_up(up_s_items, s_items, up_rate_s, guaranteed_up)
+                results.append(self._make_result(item, 6, "support", is_up, current))
                 current = 0
                 sub = 0
                 continue
 
             # 次级 A 级保底或自然出 A
             if sub >= pity_a or prize_type == "A":
-                item, is_up, _ = self._pick_up(up_a_items, a_items, 80.0, False)
-                results.append(self._make_result(item, 5, "support", is_up, sub, pillar_level=5))
+                item, is_up, _ = self._pick_up(up_a_items, a_items, up_rate_a, False)
+                results.append(self._make_result(item, 5, "support", is_up, sub))
                 sub = 0
                 continue
 
@@ -379,16 +378,16 @@ class GachaService:
                 exp_list = support["exp"] if "exp" in support else []
                 item = self._pick(exp_list)
                 lvl = 3 if item is not None and "小" in _item_str(item, "name") else 4
-                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
+                results.append(self._make_result(item, lvl, "material", False, 0))
             elif prize_type == "overclock":
                 oc_list = support["overClock"] if "overClock" in support else []
                 item = self._pick(oc_list)
                 lvl = 3 if item is not None and "小" in _item_str(item, "name") else 4
-                results.append(self._make_result(item, lvl, "material", False, 0, pillar_level=lvl))
+                results.append(self._make_result(item, lvl, "material", False, 0))
             elif prize_type == "skill":
                 skill_list = support["skill"] if "skill" in support else []
                 item = self._pick(skill_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
             elif prize_type == "fragment":
                 s_shards = [it for it in s_items if _item_str(it, "shardsIcon")]
                 a_shards = [it for it in a_items if _item_str(it, "shardsIcon")]
@@ -396,14 +395,14 @@ class GachaService:
                     item = self._pick(s_shards)
                 else:
                     item = self._pick(a_shards or s_items)
-                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2, pillar_level=4)
+                res = self._make_result(item, 4, "fragment", False, 0, use_shards=True, amount=2)
                 res["figure"] = ""
                 res["name"] = f"支援架构零件-{res['name']}"
                 results.append(res)
             else:
                 cogs_list = materials["cogs"] if "cogs" in materials else []
                 item = self._pick(cogs_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
 
         pity["current_count"] = current
         pity["sub_count"] = sub
@@ -450,7 +449,7 @@ class GachaService:
             # 6星保底检查
             if current >= pity_6:
                 item, is_up, guaranteed_up = self._pick_up(w6_up_items, w6_items, up_rate_w6, guaranteed_up)
-                results.append(self._make_result(item, 6, "weapon", is_up, current, pillar_level=6))
+                results.append(self._make_result(item, 6, "weapon", is_up, current))
                 current = 0
                 sub = 0
                 continue
@@ -460,7 +459,7 @@ class GachaService:
             # 自然抽中 6星
             if prize_type == "6":
                 item, is_up, guaranteed_up = self._pick_up(w6_up_items, w6_items, up_rate_w6, guaranteed_up)
-                results.append(self._make_result(item, 6, "weapon", is_up, current, pillar_level=6))
+                results.append(self._make_result(item, 6, "weapon", is_up, current))
                 current = 0
                 sub = 0
                 continue
@@ -468,24 +467,24 @@ class GachaService:
             # 5星次级保底检查或自然抽中 5星
             if sub >= pity_5 or prize_type == "5":
                 item = self._pick(w5_items)
-                results.append(self._make_result(item, 5, "weapon", False, sub, pillar_level=5))
+                results.append(self._make_result(item, 5, "weapon", False, sub))
                 sub = 0
                 continue
 
             if prize_type == "4":
                 item = self._pick(w4_items)
-                results.append(self._make_result(item, 4, "weapon", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "weapon", False, 0))
             elif prize_type == "3":
                 item = self._pick(w3_items)
-                results.append(self._make_result(item, 3, "weapon", False, 0, pillar_level=3))
+                results.append(self._make_result(item, 3, "weapon", False, 0))
             elif prize_type == "overclock":
                 oc_list = materials["overClock"] if "overClock" in materials else []
                 item = self._pick(oc_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
             else:
                 cogs_list = materials["cogs"] if "cogs" in materials else []
                 item = self._pick(cogs_list)
-                results.append(self._make_result(item, 4, "material", False, 0, pillar_level=4))
+                results.append(self._make_result(item, 4, "material", False, 0))
 
         pity["current_count"] = current
         pity["sub_count"] = sub
