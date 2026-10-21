@@ -184,18 +184,18 @@
 
     .name {
         position: absolute;
-        left: 0; right: 0; top: 0;
-        height: 44px;
-        line-height: 44px;
-        padding: 0 40px 0 10px;
+        left: 0; right: 0; bottom: 0;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 8px;
         text-align: center;
-        font-size: 12px;
-        font-weight: 700;
-        color: rgba(240, 244, 250, 0.95);
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(240, 244, 250, 0.92);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        background: linear-gradient(180deg, rgba(5, 7, 10, 0.92) 0%, rgba(5, 7, 10, 0.70) 60%, rgba(5, 7, 10, 0) 100%);
+        background: linear-gradient(180deg, rgba(5, 7, 10, 0) 0%, rgba(5, 7, 10, 0.82) 45%, rgba(5, 7, 10, 0.95) 100%);
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
         z-index: 6;
     }
@@ -271,7 +271,7 @@
     .mini-card {
         position: absolute;
         left: 50%;
-        bottom: 24px;
+        bottom: 56px;
         transform: translateX(-50%);
         width: 74px;
         height: 74px;
@@ -347,7 +347,7 @@
                 {% endif %}
                 {% if item.is_up and not item.duplicate %}<div class="up">UP</div>{% endif %}
                 {% if item.category != 'fragment' and item.amount > 1 %}<div class="count">x{{ item.amount }}</div>{% endif %}
-                <div class="name">{{ item.name }}{% if item.duplicate %}碎片{% endif %}</div>
+                <div class="name">{{ item.name }}{% if item.duplicate %}碎片{% elif item.position %}·{{ {1: '左', 2: '中', 3: '右', 4: '左', 5: '中', 6: '右'}[item.position] }}{% endif %}</div>
             </div>
             {% endfor %}
         </div>
