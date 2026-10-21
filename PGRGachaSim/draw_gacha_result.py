@@ -29,6 +29,8 @@ except ImportError:
 
 
 _LEVEL_LABELS = {6: "红", 5: "橙", 4: "紫", 3: "蓝"}
+# 重复角色返还碎片数：S(6★)=30 / A(5★)=18 / B(4★)=6（泛用机体口径）
+_DUP_SHARDS = {6: 30, 5: 18, 4: 6, 3: 6}
 _BG_BASE64_CACHE: str = ""
 
 
@@ -82,13 +84,15 @@ def _build_items(
     for result in results:
         is_fragment = result["category"] == "fragment"
         figure_url = "" if is_fragment else result["figure"]
-        # 已拥有角色再抽到 → 转碎片展示（立绘变暗 + 顶部标签 + 底部碎片小卡）
+        # 已拥有角色再抽到 → 转碎片展示（顶部标签 + 底部碎片小卡，立绘保持原亮度）
         duplicate = (
             bool(owned)
             and result["category"] == "character"
             and result["level"] >= 5
             and result["name"] in owned
         )
+        # 重复返还碎片数：S(6★)=30 / A(5★)=18 / B(4★)=6
+        shard_amount = _DUP_SHARDS.get(result["level"], 6) if duplicate else 0
         # 意识（带立绘的材料）随机分配 1-6 号位置：1&4 左 / 2&5 中 / 3&6 右
         position = random.randint(1, 6) if (result["category"] == "material" and figure_url) else 0
         items.append(
@@ -102,6 +106,7 @@ def _build_items(
                 "is_up": result["is_up"],
                 "category": result["category"],
                 "duplicate": duplicate,
+                "shard_amount": shard_amount,
                 "shard_icon": _icon_data_url(result.get("shards_icon", "")) if duplicate else "",
                 "position": position,
             }
