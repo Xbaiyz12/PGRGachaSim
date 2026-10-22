@@ -213,18 +213,115 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
             await bot.send("图片渲染失败", bool(ev.group_id))
 
 
-@sv_gacha.on_fullmatch(("抽卡", "战双抽卡"), block=True)
-async def draw_selected(bot: Bot, ev: Event) -> None:
+async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
+    """展示当前版本 UP 池供用户选择主题/命运主题池。
+
+    返回 pool_id（如 char_theme:破渊）；无 UP 池数据返回 None（走默认流程）；
+    用户超时/取消返回空字符串（调用方直接结束）。
+    """
+    at_sender = bool(ev.group_id)
+    data = pool_manager.get_data()
+    versions = data["versions"] if "versions" in data else []
+    if not versions:
+        return None
+    latest_name = versions[0]["name"] if "name" in versions[0] else ""
+    if not latest_name:
+        return None
+    # 同一大版本可能有多个 UP 角色，name 带角色后缀（如 V4.8 远信回响·破渊），
+    # 按 "·" 前缀归组收集全部 UP 角色
+    latest_key = latest_name.split("·")[0].strip()
+    roles: list[str] = []
+    for entry in versions:
+        e_name = entry["name"] if "name" in entry else ""
+        if e_name.split("·")[0].strip() == latest_key:
+            role = entry["role"] if "role" in entry else ""
+            if role and role not in roles:
+                roles.append(role)
+    if not roles:
+        return None
+
+    options: list[tuple[str, str]] = []
+    for role in roles:
+        options.append((f"char_theme:{role}", f"{role} · 主题池"))
+        options.append((f"char_fate:{role}", f"{role} · 命运主题池"))
+
+    lines = [f"当前版本 UP：{latest_key}"]
+    for index, (_, label) in enumerate(options, 1):
+        lines.append(f"{index}. {label}")
+    lines.append("60 秒内回复编号选择卡池后开始抽卡~")
+
+    try:
+        resp = await bot.receive_resp(
+            "\n".join(lines),
+            [label for _, label in options],
+            unsuported_platform=True,
+            timeout=60,
+            command_tips="回复编号或名称选择：",
+            at_sender=at_sender,
+        )
+    except Exception as error:
+        logger.warning(f"[战双·模拟抽卡] 等待选池回复异常: {error}")
+        return ""
+
+    if resp is None:
+        await bot.send("超时未选择，已取消本次抽卡~", at_sender)
+        return ""
+
+    text = resp.text.strip() if resp.text else ""
+    if text.isdigit():
+        index = int(text)
+        if 1 <= index <= len(options):
+            return options[index - 1][0]
+    # 精确匹配优先，其次子串匹配
+    for pool_id, label in options:
+        if text == label:
+            return pool_id
+    for pool_id, label in options:
+        if text in label:
+            return pool_id
+    await bot.send(f"未识别选择 '{text}'，已取消本次抽卡~", at_sender)
+    return ""
+
+
+async def _resolve_draw_pool(bot: Bot, ev: Event) -> tuple[str, str] | None:
+    """抽卡前置：先让用户选择当前版本 UP 的主题/命运主题池。
+
+    返回 (pool_id, version_name)；用户取消返回 None。
+    """
+    picked = await _ask_up_pool_choice(bot, ev)
+    if picked == "":
+        return None
+    if picked:
+        role = picked.split(":", 1)[1] if ":" in picked else ""
+        version_name = ""
+        data = pool_manager.get_data()
+        versions = data["versions"] if "versions" in data else []
+        for entry in versions:
+            if "role" in entry and entry["role"] == role:
+                version_name = entry["name"] if "name" in entry else ""
+                break
+        await data_manager.set_selected_pool(ev.user_id, "gacha", picked)
+        await data_manager.set_selected_version(ev.user_id, version_name)
+        return picked, version_name
     selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
     version = await data_manager.get_selected_version(ev.user_id)
-    await _do_draw(bot, ev, selected, 10, version)
+    return selected, version
+
+
+@sv_gacha.on_fullmatch(("抽卡", "战双抽卡"), block=True)
+async def draw_selected(bot: Bot, ev: Event) -> None:
+    resolved = await _resolve_draw_pool(bot, ev)
+    if resolved is None:
+        return
+    await _do_draw(bot, ev, resolved[0], 10, resolved[1])
 
 
 @sv_gacha.on_fullmatch(("单抽", "战双单抽"), block=True)
 async def draw_selected_single(bot: Bot, ev: Event) -> None:
-    selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    version = await data_manager.get_selected_version(ev.user_id)
-    await _do_draw(bot, ev, selected, 1, version)
+    resolved = await _resolve_draw_pool(bot, ev)
+    if resolved is None:
+        return
+    await _do_draw(bot, ev, resolved[0], 1, resolved[1])
 
 
 @sv_gacha.on_fullmatch(("抽卡基准", "战双抽卡基准"), block=True)
@@ -381,9 +478,10 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
 
 @sv_gacha.on_fullmatch(("抽卡百连", "战双抽卡百连"), block=True)
 async def draw_bailian(bot: Bot, ev: Event) -> None:
-    selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    version = await data_manager.get_selected_version(ev.user_id)
-    await _do_bailian(bot, ev, selected, version)
+    resolved = await _resolve_draw_pool(bot, ev)
+    if resolved is None:
+        return
+    await _do_bailian(bot, ev, resolved[0], resolved[1])
 
 
 @sv_gacha.on_fullmatch(("抽卡百连武器", "战双抽卡百连武器"), block=True)
@@ -421,6 +519,7 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
     ):
         options.append((option_id, label))
 
+    # 按版本合并：同版本多个 UP 角色共用一张卡片，卡内逐行列出角色与编号
     version_cards: list[dict[str, object]] = []
     for version in versions:
         role = version["role"] if "role" in version else ""
@@ -434,16 +533,16 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
             elif option_id == f"char_fate:{role}":
                 fate_no = index
         v_name = version["name"] if "name" in version else ""
-        label = f"{v_name} · {role}"
+        # 同版本多 UP 角色 name 带角色后缀（V4.8 远信回响·破渊），按 "·" 前缀合并到一张卡
+        group_key = v_name.split("·")[0].strip()
         icon_url = version["icon"] if "icon" in version else ""
-        version_cards.append(
-            {
-                "name": label,
-                "figure": icon_url,
-                "theme_no": theme_no,
-                "fate_no": fate_no,
-            }
-        )
+        existing = next((c for c in version_cards if c["name"] == group_key), None)
+        if existing is None:
+            existing = {"name": group_key, "figure": icon_url, "roles": []}
+            version_cards.append(existing)
+        roles_list = existing["roles"]
+        if isinstance(roles_list, list):
+            roles_list.append({"name": role, "theme_no": theme_no, "fate_no": fate_no})
 
     current = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
     text = ev.text.strip() if ev.text else ""

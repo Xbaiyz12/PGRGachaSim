@@ -279,19 +279,17 @@ async def render_gacha_results_batch(
 
 
 async def render_pool_select(cards: list[PoolSelectCard], prefix: str = "pgr", title: str = "切换卡池") -> bytes | None:
-    """渲染卡池选择图：每格显示图片 + 名称 + 编号"""
+    """渲染卡池选择图：每版本一张卡，卡内逐行列出各 UP 角色及其主题/命运编号"""
     rendered: list[dict[str, object]] = []
     for card in cards:
         figure = card["figure"] if "figure" in card else ""
         name = card["name"] if "name" in card else ""
-        theme_no = card["theme_no"] if "theme_no" in card else None
-        fate_no = card["fate_no"] if "fate_no" in card else None
+        roles = card["roles"] if "roles" in card else []
         rendered.append(
             {
                 "name": name,
                 "figure": _icon_data_url(figure) if figure else "",
-                "theme_no": theme_no,
-                "fate_no": fate_no,
+                "roles": roles,
             }
         )
     context = {"cards": rendered, "prefix": prefix, "title": title}
@@ -302,11 +300,10 @@ async def render_pool_select(cards: list[PoolSelectCard], prefix: str = "pgr", t
         if remote is not None:
             return remote
 
-    # pool_select 模板使用 display:grid，pytakumi 子元素渲染有缺陷，强制走 Playwright
+    # 模板为 absolute 布局，pytakumi 可正常渲染
     return await _render_html_local(
         gacha_templates.get_template("pool_select.html"),
         context,
-        force_playwright=True,
     )
 
 

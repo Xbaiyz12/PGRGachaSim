@@ -20,7 +20,9 @@
     }
 
     .container {
+        position: relative;
         width: 1200px;
+        margin: 0 auto;
         padding: 28px 32px 20px;
         background:
             radial-gradient(ellipse at 50% -10%, rgba(90, 140, 220, 0.22), transparent 55%),
@@ -44,15 +46,13 @@
     }
 
     .grid {
-        display: grid;
-        grid-template-columns: repeat(6, 176px);
-        gap: 14px;
-        justify-content: center;
+        position: relative;
         margin-top: 20px;
     }
 
     .card {
-        position: relative;
+        position: absolute;
+        width: 176px;
         border-radius: 8px;
         overflow: hidden;
         background: linear-gradient(180deg, rgba(28, 42, 70, 0.85), rgba(10, 16, 30, 0.95));
@@ -70,11 +70,10 @@
     .placeholder {
         width: 100%;
         height: 110px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         font-size: 40px;
         color: rgba(230, 240, 255, 0.3);
+        text-align: center;
+        line-height: 110px;
     }
 
     .name {
@@ -88,41 +87,55 @@
         text-overflow: ellipsis;
     }
 
-    .nos {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 8px 8px;
-        color: var(--gold);
+    .role-name {
+        padding: 3px 8px 0;
         font-size: 12px;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .role-no {
+        padding: 0 8px 3px;
+        font-size: 11px;
+        color: var(--gold);
         font-weight: 700;
+        white-space: nowrap;
     }
 
     .footer {
         text-align: center;
         color: var(--dim);
         font-size: 14px;
-        margin-top: 18px;
+        margin-top: 14px;
         letter-spacing: 1px;
     }
 </style>
 </head>
 <body>
-    <div class="container">
+{% set max_roles = [cards | map(attribute='roles') | map('length') | max, 1] | max %}
+{% set card_h = 142 + max_roles * 34 %}
+{% set step_y = card_h + 14 %}
+{% set rows = (cards|length + 5) // 6 %}
+{% set grid_h = rows * step_y - 14 %}
+    <div class="container" style="height: {{ grid_h + 165 }}px;">
         <div class="title">{{ title }}</div>
         <div class="sub">回复 {{ prefix }}切换卡池 编号 选择 · 每格下方为编号</div>
 
-        <div class="grid">
+        <div class="grid" style="height: {{ grid_h }}px;">
             {% for card in cards %}
-            <div class="card">
+            <div class="card" style="left: {{ (loop.index0 % 6) * 190 }}px; top: {{ (loop.index0 // 6) * step_y }}px; height: {{ card_h }}px;">
                 {% if card.figure %}
                 <img class="figure" src="{{ card.figure }}" alt="{{ card.name }}" onerror="this.style.display='none'">
                 {% else %}
                 <div class="placeholder">⚙</div>
                 {% endif %}
                 <div class="name">{{ card.name }}</div>
-                {% if card.theme_no %}
-                <div class="nos"><span>主题 {{ card.theme_no }}</span><span>命运 {{ card.fate_no }}</span></div>
-                {% endif %}
+                {% for role in card.roles %}
+                <div class="role-name">{{ role.name }}</div>
+                <div class="role-no">主题{{ role.theme_no }} · 命运{{ role.fate_no }}</div>
+                {% endfor %}
             </div>
             {% endfor %}
         </div>
