@@ -11,6 +11,7 @@ import httpx
 from jinja2 import Template, Environment, FileSystemLoader
 
 from gsuid_core.logger import logger
+from gsuid_core.utils.html_render import render_html_to_bytes
 
 from .gacha_config import GachaSimConfig
 from .pool_manager import pool_manager
@@ -129,12 +130,47 @@ async def _render_remote(html: str) -> bytes | None:
         return None
 
 
-async def _render_html_local(template: Template, context: dict[str, object]) -> bytes | None:
-    """本地 Playwright 渲染，视口与画布对齐并安全释放浏览器"""
-    if _async_playwright is None:
-        logger.warning("[战双·模拟抽卡] Playwright 未安装，跳过图片渲染")
+async def _render_html_pytakumi(html: str) -> bytes | None:
+    """pytakumi 无浏览器渲染，速度比 Playwright 快约 3-5 倍，内存占用低"""
+    try:
+        start = time.time()
+        image = await render_html_to_bytes(
+            html,
+            max_width=2000,
+            allow_refit=True,
+            image_format="jpeg",
+            jpeg_quality=90,
+            root_max_width=2000,
+        )
+        logger.info(f"[战双·模拟抽卡] pytakumi 渲染成功，耗时 {time.time() - start:.2f}s")
+        return image
+    except (RuntimeError, OSError, ValueError) as error:
+        logger.warning(f"[战双·模拟抽卡] pytakumi 渲染失败: {error}")
         return None
+
+
+async def _render_html_local(
+    template: Template,
+    context: dict[str, object],
+    force_playwright: bool = False,
+) -> bytes | None:
+    """本地渲染：pytakumi 优先，失败时回退 Playwright。
+
+    pytakumi 对 display:flex/grid 容器有子元素渲染缺陷，调用方若模板
+    依赖这两种布局（如 pool_select），应传 force_playwright=True。
+    """
     html = template.render(**context)
+
+    # 优先使用 pytakumi（无浏览器、低内存、快速）
+    if not force_playwright:
+        pytakumi_image = await _render_html_pytakumi(html)
+        if pytakumi_image is not None:
+            return pytakumi_image
+
+    # 兜底 Playwright
+    if _async_playwright is None:
+        logger.warning("[战双·模拟抽卡] pytakumi 不可用且 Playwright 未安装，跳过图片渲染")
+        return None
     try:
         async with _async_playwright() as playwright:
             browser = await playwright.chromium.launch()
@@ -202,13 +238,24 @@ async def render_gacha_results_batch(
         if len(valid_results) == len(batches):
             return valid_results
 
-    if _async_playwright is None:
-        logger.warning("[战双·模拟抽卡] Playwright 未安装，跳过图片渲染")
-        return []
-
     template = gacha_templates.get_template("gacha_result.html")
-    rendered_images: list[bytes] = []
 
+    # 优先 pytakumi 并发渲染（无浏览器进程开销，速度优势明显）
+    pytakumi_tasks = [_render_html_pytakumi(template.render(**ctx)) for ctx in batches]
+    pytakumi_results = await asyncio.gather(*pytakumi_tasks)
+    pytakumi_valid = [img for img in pytakumi_results if img is not None]
+    if len(pytakumi_valid) == len(batches):
+        return pytakumi_valid
+    if pytakumi_valid:
+        logger.warning(
+            f"[战双·模拟抽卡] pytakumi 批量渲染部分失败 {len(pytakumi_valid)}/{len(batches)}，回退 Playwright"
+        )
+
+    # 兜底 Playwright：复用单浏览器进程
+    if _async_playwright is None:
+        logger.warning("[战双·模拟抽卡] pytakumi 失败且 Playwright 未安装")
+        return pytakumi_valid
+    rendered_images: list[bytes] = []
     try:
         async with _async_playwright() as playwright:
             browser = await playwright.chromium.launch()
@@ -255,7 +302,12 @@ async def render_pool_select(cards: list[PoolSelectCard], prefix: str = "pgr", t
         if remote is not None:
             return remote
 
-    return await _render_html_local(gacha_templates.get_template("pool_select.html"), context)
+    # pool_select 模板使用 display:grid，pytakumi 子元素渲染有缺陷，强制走 Playwright
+    return await _render_html_local(
+        gacha_templates.get_template("pool_select.html"),
+        context,
+        force_playwright=True,
+    )
 
 
 def format_text_result(
