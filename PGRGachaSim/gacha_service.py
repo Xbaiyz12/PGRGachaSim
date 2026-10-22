@@ -51,6 +51,7 @@ class VersionData(TypedDict, total=False):
     role: str
     weapon: str
     support: str
+    rerun: bool
 
 
 class GachaData(TypedDict):

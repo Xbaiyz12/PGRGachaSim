@@ -17,7 +17,7 @@ from .data_manager import data_manager
 from .gacha_config import GachaSimConfig
 from .gacha_update import update_current_pools
 from .pool_manager import pool_manager
-from .gacha_service import GachaResult, gacha_service
+from .gacha_service import GachaResult, VersionData, gacha_service
 from .draw_gacha_result import (
     _build_items,
     _get_bg_base64,
@@ -101,6 +101,11 @@ async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) ->
     return False
 
 
+def _up_versions(versions: list[VersionData]) -> list[VersionData]:
+    """过滤掉标记为复刻（rerun）的版本条目，只保留当期 UP。"""
+    return [entry for entry in versions if not entry.get("rerun")]
+
+
 def _apply_version_up(pool: dict, pool_type: str, version_data: dict) -> dict:
     """把版本数据里的联动 UP 覆盖到 pool 上，返回新 dict。
     同一大版本（如 V4.8）可能有多个角色，它们共享同一批武器/辅助机 UP，
@@ -120,6 +125,8 @@ def _apply_version_up(pool: dict, pool_type: str, version_data: dict) -> dict:
         # 版本名为空时无法确定 patch 前缀，跳过聚合避免误合并全部版本
         return updated
     for entry in versions:
+        if entry.get("rerun"):
+            continue
         if not entry.get("name", "").startswith(patch):
             continue
         w = entry.get("weapon")
@@ -160,8 +167,10 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
     all_data = pool_manager.get_data()
     versions = all_data["versions"] if "versions" in all_data else []
     effective_name = version_name
-    if not effective_name and versions:
-        effective_name = versions[0]["name"] if "name" in versions[0] else ""
+    if not effective_name:
+        up_versions = _up_versions(versions)
+        if up_versions:
+            effective_name = up_versions[0]["name"] if "name" in up_versions[0] else ""
     if effective_name and versions:
         version_data = next(
             (entry for entry in versions if "name" in entry and entry["name"] == effective_name),
@@ -221,14 +230,14 @@ async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
     """
     at_sender = bool(ev.group_id)
     data = pool_manager.get_data()
-    versions = data["versions"] if "versions" in data else []
+    versions = _up_versions(data["versions"] if "versions" in data else [])
     if not versions:
         return None
     latest_name = versions[0]["name"] if "name" in versions[0] else ""
     if not latest_name:
         return None
     # 同一大版本可能有多个 UP 角色，name 带角色后缀（如 V4.8 远信回响·破渊），
-    # 按 "·" 前缀归组收集全部 UP 角色
+    # 按 "·" 前缀归组收集全部 UP 角色（复刻条目已在 _up_versions 中剔除）
     latest_key = latest_name.split("·")[0].strip()
     roles: list[str] = []
     for entry in versions:
@@ -295,7 +304,7 @@ async def _resolve_draw_pool(bot: Bot, ev: Event) -> tuple[str, str] | None:
         role = picked.split(":", 1)[1] if ":" in picked else ""
         version_name = ""
         data = pool_manager.get_data()
-        versions = data["versions"] if "versions" in data else []
+        versions = _up_versions(data["versions"] if "versions" in data else [])
         for entry in versions:
             if "role" in entry and entry["role"] == role:
                 version_name = entry["name"] if "name" in entry else ""
@@ -389,8 +398,10 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
     all_data = pool_manager.get_data()
     versions = all_data["versions"] if "versions" in all_data else []
     effective_name = version_name
-    if not effective_name and versions:
-        effective_name = versions[0]["name"] if "name" in versions[0] else ""
+    if not effective_name:
+        up_versions = _up_versions(versions)
+        if up_versions:
+            effective_name = up_versions[0]["name"] if "name" in up_versions[0] else ""
     if effective_name and versions:
         version_data = next(
             (entry for entry in versions if "name" in entry and entry["name"] == effective_name),
@@ -501,7 +512,7 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
     options: list[tuple[str, str]] = []
 
     version_roles: list[str] = []
-    versions = data["versions"] if "versions" in data else []
+    versions = _up_versions(data["versions"] if "versions" in data else [])
     for version in versions:
         role = version["role"] if "role" in version else ""
         if role and role not in version_roles:

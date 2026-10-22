@@ -98,6 +98,8 @@ def _parse_versions(raw: object) -> list[VersionData]:
         support = entry.get("support")
         if isinstance(support, str) and support:
             version["support"] = support
+        if entry.get("rerun") is True:
+            version["rerun"] = True
         result.append(version)
     return result
 

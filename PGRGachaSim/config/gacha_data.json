@@ -2081,6 +2081,7 @@
   },
   {
    "name": "V3.0 锈夜逐光·终焉",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/dd56dbce85d34c5a92b3d1347b0a0e8820241107.jpg",
    "entryId": "1303285364902662144",
    "roles": [
@@ -2103,6 +2104,7 @@
   },
   {
    "name": "V2.17 遥行循星·森息",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
    "entryId": "1286636518388928512",
    "roles": [
@@ -2114,6 +2116,7 @@
   },
   {
    "name": "V2.17 遥行循星·深红",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/4ab4aaf5632e4369bf96c7787804577920240926.jpg",
    "entryId": "1286636518388928512",
    "roles": [
@@ -2125,6 +2128,7 @@
   },
   {
    "name": "V2.16 晨昏庭影·森息",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
    "entryId": "1272978633494269952",
    "roles": [
@@ -2136,6 +2140,7 @@
   },
   {
    "name": "V2.16 晨昏庭影·绯耀",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/0595ca04cfa248f99dbf2513980d9dad20240815.jpg",
    "entryId": "1272978633494269952",
    "roles": [
@@ -2158,6 +2163,7 @@
   },
   {
    "name": "V2.15 剪身成蝶·尘铭",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
    "entryId": "1260274522416754688",
    "roles": [
@@ -2169,6 +2175,7 @@
   },
   {
    "name": "V2.15 剪身成蝶·深痕",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/bcde574d2ab14aa3be15771cba3270bd20240710.jpg",
    "entryId": "1260274522416754688",
    "roles": [
@@ -2191,6 +2198,7 @@
   },
   {
    "name": "V2.14 暮往长离·BRS",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/543e34177b12409cb3e65d2929188b6a20240529.jpg",
    "entryId": "1245373336211886080",
    "roles": [
@@ -2212,6 +2220,7 @@
   },
   {
    "name": "V2.13 云梁觅影·辉晓",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
    "entryId": "1232753868847935488",
    "roles": [
@@ -2223,6 +2232,7 @@
   },
   {
    "name": "V2.13 云梁觅影·BRS",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/8d3f76426de64311a6d5beb66ae6d91d20240518.png",
    "entryId": "1232753868847935488",
    "roles": [
@@ -2254,6 +2264,7 @@
   },
   {
    "name": "V2.10源解信标",
+   "rerun": true,
    "icon": "https://prod-alicdn-community.kurobbs.com/forum/2bab79e4555f466c952c079bdccd085120240522.jpg",
    "entryId": "1242520609928417280",
    "roles": [
