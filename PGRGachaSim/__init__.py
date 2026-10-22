@@ -293,10 +293,15 @@ async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
 
 
 async def _resolve_draw_pool(bot: Bot, ev: Event) -> tuple[str, str] | None:
-    """抽卡前置：先让用户选择当前版本 UP 的主题/命运主题池。
+    """抽卡前置：优先使用用户已选定的卡池；仅从未选过时展示当前版本 UP 池供选择。
 
     返回 (pool_id, version_name)；用户取消返回 None。
     """
+    # 已通过 切换卡池 或上次抽卡选定过卡池时直接使用，不再重复询问
+    selected = await data_manager.get_selected_pool(ev.user_id, "gacha")
+    if selected:
+        version = await data_manager.get_selected_version(ev.user_id)
+        return selected, version
     picked = await _ask_up_pool_choice(bot, ev)
     if picked == "":
         return None
