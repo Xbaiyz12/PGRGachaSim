@@ -21,9 +21,8 @@
 
     .container {
         position: relative;
-        width: 1200px;
-        margin: 0 auto;
-        padding: 28px 32px 20px;
+        width: 2000px;
+        padding: 40px 64px 28px;
         background:
             radial-gradient(ellipse at 50% -10%, rgba(90, 140, 220, 0.22), transparent 55%),
             linear-gradient(160deg, #070b14 0%, #0d1526 52%, #070b14 100%);
@@ -32,28 +31,28 @@
     .title {
         text-align: center;
         color: var(--text);
-        font-size: 30px;
+        font-size: 46px;
         font-weight: 700;
-        letter-spacing: 4px;
+        letter-spacing: 8px;
     }
 
     .sub {
         text-align: center;
         color: var(--dim);
-        font-size: 15px;
-        margin-top: 8px;
-        letter-spacing: 2px;
+        font-size: 23px;
+        margin-top: 12px;
+        letter-spacing: 3px;
     }
 
     .grid {
         position: relative;
-        margin-top: 20px;
+        margin-top: 28px;
     }
 
     .card {
         position: absolute;
-        width: 176px;
-        border-radius: 8px;
+        width: 450px;
+        border-radius: 12px;
         overflow: hidden;
         background: linear-gradient(180deg, rgba(28, 42, 70, 0.85), rgba(10, 16, 30, 0.95));
         border: 1px solid var(--line);
@@ -61,7 +60,7 @@
 
     .figure {
         width: 100%;
-        height: 110px;
+        height: 300px;
         object-fit: cover;
         object-position: center;
         display: block;
@@ -69,27 +68,29 @@
 
     .placeholder {
         width: 100%;
-        height: 110px;
-        font-size: 40px;
+        height: 300px;
+        font-size: 96px;
         color: rgba(230, 240, 255, 0.3);
         text-align: center;
-        line-height: 110px;
+        line-height: 300px;
     }
 
     .name {
-        padding: 6px 6px 0;
+        padding: 10px 12px 4px;
         text-align: center;
         color: var(--text);
-        font-size: 13px;
-        font-weight: 600;
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 34px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
     .role-name {
-        padding: 3px 8px 0;
-        font-size: 12px;
+        padding: 6px 14px 0;
+        font-size: 23px;
+        line-height: 30px;
         color: var(--text);
         white-space: nowrap;
         overflow: hidden;
@@ -97,8 +98,9 @@
     }
 
     .role-no {
-        padding: 0 8px 3px;
-        font-size: 11px;
+        padding: 0 14px 6px;
+        font-size: 21px;
+        line-height: 27px;
         color: var(--gold);
         font-weight: 700;
         white-space: nowrap;
@@ -107,25 +109,25 @@
     .footer {
         text-align: center;
         color: var(--dim);
-        font-size: 14px;
-        margin-top: 14px;
-        letter-spacing: 1px;
+        font-size: 20px;
+        margin-top: 20px;
+        letter-spacing: 2px;
     }
 </style>
 </head>
 <body>
 {% set max_roles = [cards | map(attribute='roles') | map('length') | max, 1] | max %}
-{% set card_h = 142 + max_roles * 34 %}
-{% set step_y = card_h + 14 %}
-{% set rows = (cards|length + 5) // 6 %}
-{% set grid_h = rows * step_y - 14 %}
-    <div class="container" style="height: {{ grid_h + 165 }}px;">
+{% set card_h = 366 + max_roles * 69 %}
+{% set step_y = card_h + 24 %}
+{% set rows = (cards|length + 3) // 4 %}
+{% set grid_h = rows * step_y - 24 %}
+    <div class="container" style="height: {{ grid_h + 250 }}px;">
         <div class="title">{{ title }}</div>
         <div class="sub">回复 {{ prefix }}切换卡池 编号 选择 · 每格下方为编号</div>
 
         <div class="grid" style="height: {{ grid_h }}px;">
             {% for card in cards %}
-            <div class="card" style="left: {{ (loop.index0 % 6) * 190 }}px; top: {{ (loop.index0 // 6) * step_y }}px; height: {{ card_h }}px;">
+            <div class="card" style="left: {{ (loop.index0 % 4) * 474 }}px; top: {{ (loop.index0 // 4) * step_y }}px; height: {{ card_h }}px;">
                 {% if card.figure %}
                 <img class="figure" src="{{ card.figure }}" alt="{{ card.name }}" onerror="this.style.display='none'">
                 {% else %}
