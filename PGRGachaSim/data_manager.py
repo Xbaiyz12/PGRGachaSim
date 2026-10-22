@@ -33,16 +33,16 @@ class DataManager:
     """数据管理器 - 封装数据库操作"""
 
     @staticmethod
-    async def get_all_pity(user_id: str) -> list[PGRGachaPity]:
-        return await PGRGachaPity.get_all_pity(user_id)
+    async def get_all_pity(user_id: str, bot_id: str) -> list[PGRGachaPity]:
+        return await PGRGachaPity.get_all_pity(user_id, bot_id)
 
     @staticmethod
-    async def reset_pity(user_id: str, pool_type: str | None = None) -> int:
-        return await PGRGachaPity.reset_pity(user_id, pool_type)
+    async def reset_pity(user_id: str, bot_id: str, pool_type: str | None = None) -> int:
+        return await PGRGachaPity.reset_pity(user_id, bot_id, pool_type)
 
     @staticmethod
-    async def get_pity_data(user_id: str, pool_type: str) -> PityData:
-        pity = await PGRGachaPity.get_pity(user_id, pool_type)
+    async def get_pity_data(user_id: str, bot_id: str, pool_type: str) -> PityData:
+        pity = await PGRGachaPity.get_pity(user_id, bot_id, pool_type)
         if pity is None:
             return empty_pity()
         return PityData(
@@ -53,9 +53,10 @@ class DataManager:
         )
 
     @staticmethod
-    async def save_pity_data(user_id: str, pool_type: str, pity: PityData) -> None:
+    async def save_pity_data(user_id: str, bot_id: str, pool_type: str, pity: PityData) -> None:
         await PGRGachaPity.save_pity(
             user_id,
+            bot_id,
             pool_type,
             pity["current_count"],
             pity["sub_count"],
@@ -64,34 +65,34 @@ class DataManager:
         )
 
     @staticmethod
-    async def get_daily_count(user_id: str, pool_type: str) -> int:
-        return await PGRGachaDaily.get_daily_count(user_id, pool_type)
+    async def get_daily_count(user_id: str, bot_id: str, pool_type: str) -> int:
+        return await PGRGachaDaily.get_daily_count(user_id, bot_id, pool_type)
 
     @staticmethod
-    async def add_daily_count(user_id: str, pool_type: str, count: int) -> None:
-        await PGRGachaDaily.add_daily_count(user_id, pool_type, count)
+    async def add_daily_count(user_id: str, bot_id: str, pool_type: str, count: int) -> None:
+        await PGRGachaDaily.add_daily_count(user_id, bot_id, pool_type, count)
 
     @staticmethod
-    async def get_selected_pool(user_id: str, pool_type: str) -> str | None:
-        return await PGRGachaPool.get_selected(user_id, pool_type)
+    async def get_selected_pool(user_id: str, bot_id: str, pool_type: str) -> str | None:
+        return await PGRGachaPool.get_selected(user_id, bot_id, pool_type)
 
     @staticmethod
-    async def set_selected_pool(user_id: str, pool_type: str, pool_id: str) -> None:
-        await PGRGachaPool.set_selected(user_id, pool_type, pool_id)
+    async def set_selected_pool(user_id: str, bot_id: str, pool_type: str, pool_id: str) -> None:
+        await PGRGachaPool.set_selected(user_id, bot_id, pool_type, pool_id)
 
     @staticmethod
-    async def get_selected_version(user_id: str) -> str:
-        value = await PGRGachaPool.get_selected(user_id, "version")
+    async def get_selected_version(user_id: str, bot_id: str) -> str:
+        value = await PGRGachaPool.get_selected(user_id, bot_id, "version")
         return value or ""
 
     @staticmethod
-    async def set_selected_version(user_id: str, version_name: str) -> None:
-        await PGRGachaPool.set_selected(user_id, "version", version_name)
+    async def set_selected_version(user_id: str, bot_id: str, version_name: str) -> None:
+        await PGRGachaPool.set_selected(user_id, bot_id, "version", version_name)
 
     @staticmethod
-    async def get_owned_names(user_id: str) -> set[str]:
+    async def get_owned_names(user_id: str, bot_id: str) -> set[str]:
         """用户已获得过的角色名集合（重复转碎片判定用）"""
-        return await PGRGachaRecord.get_owned_names(user_id)
+        return await PGRGachaRecord.get_owned_names(user_id, bot_id)
 
     @staticmethod
     async def add_record(user_id: str, bot_id: str, pool_type: str, result: GachaResult) -> None:
@@ -128,8 +129,8 @@ class DataManager:
         )
 
     @staticmethod
-    async def get_history(user_id: str, limit: int = 50) -> list[dict[str, object]]:
-        records = await PGRGachaRecord.get_history(user_id, limit)
+    async def get_history(user_id: str, bot_id: str, limit: int = 50) -> list[dict[str, object]]:
+        records = await PGRGachaRecord.get_history(user_id, bot_id, limit)
         # DB 中存有 4★ 记录（用于跨会话重复转碎片判定），但"抽卡记录"仅展示 5★/6★
         return [
             {
@@ -143,10 +144,10 @@ class DataManager:
         ]
 
     @staticmethod
-    async def get_user_stats(user_id: str) -> dict[str, object]:
+    async def get_user_stats(user_id: str, bot_id: str) -> dict[str, object]:
         """统计用户的抽卡出货和欧气情况"""
-        pities = await PGRGachaPity.get_all_pity(user_id)
-        records = await PGRGachaRecord.get_user_records(user_id)
+        pities = await PGRGachaPity.get_all_pity(user_id, bot_id)
+        records = await PGRGachaRecord.get_user_records(user_id, bot_id)
         total_pulls = sum(p.total_count for p in pities)
         s_count = sum(1 for r in records if r.rarity == "6")
         a_count = sum(1 for r in records if r.rarity == "5")
@@ -165,34 +166,34 @@ class DataManager:
         }
 
     @staticmethod
-    async def get_signature(user_id: str) -> str | None:
-        return await PGRGachaSignature.get_signature(user_id)
+    async def get_signature(user_id: str, bot_id: str) -> str | None:
+        return await PGRGachaSignature.get_signature(user_id, bot_id)
 
     @staticmethod
-    async def set_signature(user_id: str, code: str) -> None:
-        await PGRGachaSignature.set_signature(user_id, code)
+    async def set_signature(user_id: str, bot_id: str, code: str) -> None:
+        await PGRGachaSignature.set_signature(user_id, bot_id, code)
 
     @staticmethod
     async def check_code_exists(code: str) -> bool:
         return await PGRGachaSignature.check_code_exists(code)
 
     @staticmethod
-    async def generate_signature(user_id: str) -> str:
+    async def generate_signature(user_id: str, bot_id: str) -> str:
         for _ in range(100):
             code = str(random.randint(100000000, 999999999))
             if await PGRGachaSignature.check_code_exists(code):
                 continue
             try:
-                await PGRGachaSignature.set_signature(user_id, code)
+                await PGRGachaSignature.set_signature(user_id, bot_id, code)
             except IntegrityError:
-                # 并发下撞 unique 约束（code 或 user_id），换一个新 code 重试
+                # 并发下撞 unique 约束（code 或 user_id+bot_id），换一个新 code 重试
                 continue
-            logger.info(f"[战双·模拟抽卡] 用户 {user_id} 生成特征码: {code}")
+            logger.info(f"[战双·模拟抽卡] 用户 {user_id}({bot_id}) 生成特征码: {code}")
             return code
         raise ValueError("无法生成唯一的特征码")
 
     @staticmethod
-    async def get_rank(period: Literal["day", "week", "month"] = "day", limit: int = 10) -> list[RankEntry]:
+    async def get_rank(bot_id: str, period: Literal["day", "week", "month"] = "day", limit: int = 10) -> list[RankEntry]:
         today = datetime.now(_BEIJING).date()
         if period == "week":
             start = today - timedelta(days=today.weekday())
@@ -202,8 +203,8 @@ class DataManager:
             start = today
         start_ts = int(datetime.combine(start, time.min, tzinfo=_BEIJING).timestamp())
         end_ts = int(datetime.combine(today, time.max, tzinfo=_BEIJING).timestamp())
-        draws = dict(await PGRGachaDaily.sum_draws_by_user(start.strftime("%Y-%m-%d")))
-        ups = dict(await PGRGachaRecord.count_ups_by_user(start_ts, end_ts))
+        draws = dict(await PGRGachaDaily.sum_draws_by_user(start.strftime("%Y-%m-%d"), bot_id))
+        ups = dict(await PGRGachaRecord.count_ups_by_user(start_ts, end_ts, bot_id))
         entries: list[RankEntry] = []
         for user_id in set(draws) | set(ups):
             draw_count = draws[user_id] if user_id in draws else 0

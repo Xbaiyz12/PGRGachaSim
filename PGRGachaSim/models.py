@@ -9,8 +9,11 @@ from sqlalchemy import Index, UniqueConstraint, func
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from gsuid_core.server import on_core_start
 from gsuid_core.webconsole.mount_app import PageSchema, GsAdminModel, site
 from gsuid_core.utils.database.base_models import BaseIDModel, with_session, with_read_session
+
+from .auto_migrate import auto_add_missing_columns
 
 _BEIJING = ZoneInfo("Asia/Shanghai")
 
@@ -19,11 +22,12 @@ class PGRGachaPity(BaseIDModel, table=True):
     """保底数据表"""
 
     __table_args__ = (
-        UniqueConstraint("user_id", "pool_type", name="uq_pgr_pity_user_pool"),
+        UniqueConstraint("user_id", "bot_id", "pool_type", name="uq_pgr_pity_bot_user_pool"),
         {"extend_existing": True},
     )
 
     user_id: str = Field(title="用户ID", index=True)
+    bot_id: str = Field(default="", title="平台")
     pool_type: str = Field(title="卡池类型", index=True)
     current_count: int = Field(default=0, title="最高稀有度计数")
     sub_count: int = Field(default=0, title="次级保底计数")
@@ -36,9 +40,18 @@ class PGRGachaPity(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
     ) -> "PGRGachaPity | None":
-        stmt = select(cls).where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
+        stmt = (
+            select(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+                col(cls.pool_type) == pool_type,
+            )
+            .order_by(col(cls.bot_id).desc())
+        )
         result = await session.execute(stmt)
         return result.scalars().first()
 
@@ -48,8 +61,9 @@ class PGRGachaPity(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
     ) -> list["PGRGachaPity"]:
-        stmt = select(cls).where(col(cls.user_id) == user_id)
+        stmt = select(cls).where(col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""]))
         result = await session.execute(stmt)
         return list(result.scalars().all())
 
@@ -59,9 +73,10 @@ class PGRGachaPity(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str | None = None,
     ) -> int:
-        conds = [col(cls.user_id) == user_id]
+        conds = [col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""])]
         if pool_type:
             conds.append(col(cls.pool_type) == pool_type)
         stmt = update(cls).where(*conds).values(
@@ -79,34 +94,55 @@ class PGRGachaPity(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
         current_count: int,
         sub_count: int,
         guaranteed_up: bool,
         total_count: int,
     ) -> None:
+        values = {
+            "current_count": current_count,
+            "sub_count": sub_count,
+            "guaranteed_up": guaranteed_up,
+            "total_count": total_count,
+        }
         stmt = (
             update(cls)
-            .where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
-            .values(
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == bot_id,
+                col(cls.pool_type) == pool_type,
+            )
+            .values(**values)
+        )
+        result = await session.execute(stmt)
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        # 收养升级前遗留的 bot_id='' 行，避免老数据变成不可见孤儿
+        adopt = (
+            update(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == "",
+                col(cls.pool_type) == pool_type,
+            )
+            .values(bot_id=bot_id, **values)
+        )
+        result = await session.execute(adopt)
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        session.add(
+            cls(
+                user_id=user_id,
+                bot_id=bot_id,
+                pool_type=pool_type,
                 current_count=current_count,
                 sub_count=sub_count,
                 guaranteed_up=guaranteed_up,
                 total_count=total_count,
             )
         )
-        result = await session.execute(stmt)
-        if (result.rowcount if isinstance(result, CursorResult) else 0) == 0:
-            session.add(
-                cls(
-                    user_id=user_id,
-                    pool_type=pool_type,
-                    current_count=current_count,
-                    sub_count=sub_count,
-                    guaranteed_up=guaranteed_up,
-                    total_count=total_count,
-                )
-            )
 
 
 class PGRGachaRecord(BaseIDModel, table=True):
@@ -193,9 +229,15 @@ class PGRGachaRecord(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         limit: int = 50,
     ) -> list["PGRGachaRecord"]:
-        stmt = select(cls).where(col(cls.user_id) == user_id).order_by(col(cls.created_at).desc()).limit(limit)
+        stmt = (
+            select(cls)
+            .where(col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""]))
+            .order_by(col(cls.created_at).desc())
+            .limit(limit)
+        )
         result = await session.execute(stmt)
         return list(result.scalars().all())
 
@@ -205,8 +247,13 @@ class PGRGachaRecord(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
     ) -> list["PGRGachaRecord"]:
-        stmt = select(cls).where(col(cls.user_id) == user_id).order_by(col(cls.created_at).asc())
+        stmt = (
+            select(cls)
+            .where(col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""]))
+            .order_by(col(cls.created_at).asc())
+        )
         result = await session.execute(stmt)
         return list(result.scalars().all())
 
@@ -216,11 +263,16 @@ class PGRGachaRecord(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
     ) -> set[str]:
         """用户已获得过的角色名集合（用于重复转碎片判定）"""
         stmt = (
             select(col(cls.name))
-            .where(col(cls.user_id) == user_id, col(cls.item_type) == "character")
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+                col(cls.item_type) == "character",
+            )
             .distinct()
         )
         result = await session.execute(stmt)
@@ -233,6 +285,7 @@ class PGRGachaRecord(BaseIDModel, table=True):
         session: AsyncSession,
         start_ts: int,
         end_ts: int,
+        bot_id: str,
     ) -> list[tuple[str, int]]:
         stmt = (
             select(col(cls.user_id), func.count())
@@ -242,6 +295,7 @@ class PGRGachaRecord(BaseIDModel, table=True):
                 col(cls.rarity).in_(["6", "S"]),
                 col(cls.created_at) >= start_ts,
                 col(cls.created_at) <= end_ts,
+                col(cls.bot_id).in_([bot_id, ""]),
             )
             .group_by(col(cls.user_id))
         )
@@ -253,11 +307,12 @@ class PGRGachaPool(BaseIDModel, table=True):
     """卡池选择表"""
 
     __table_args__ = (
-        UniqueConstraint("user_id", "pool_type", name="uq_pgr_pool_user_pool"),
+        UniqueConstraint("user_id", "bot_id", "pool_type", name="uq_pgr_pool_bot_user_pool"),
         {"extend_existing": True},
     )
 
     user_id: str = Field(title="用户ID", index=True)
+    bot_id: str = Field(default="", title="平台")
     pool_type: str = Field(title="卡池类型", index=True)
     selected_pool_id: str = Field(default="", title="选中的卡池ID")
 
@@ -267,9 +322,18 @@ class PGRGachaPool(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
     ) -> str | None:
-        stmt = select(cls).where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
+        stmt = (
+            select(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+                col(cls.pool_type) == pool_type,
+            )
+            .order_by(col(cls.bot_id).desc())
+        )
         result = await session.execute(stmt)
         record = result.scalars().first()
         return record.selected_pool_id if record else None
@@ -280,35 +344,56 @@ class PGRGachaPool(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
         pool_id: str,
     ) -> None:
         stmt = (
             update(cls)
-            .where(col(cls.user_id) == user_id, col(cls.pool_type) == pool_type)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == bot_id,
+                col(cls.pool_type) == pool_type,
+            )
             .values(selected_pool_id=pool_id)
         )
         result = await session.execute(stmt)
-        if (result.rowcount if isinstance(result, CursorResult) else 0) == 0:
-            session.add(
-                cls(
-                    user_id=user_id,
-                    pool_type=pool_type,
-                    selected_pool_id=pool_id,
-                )
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        # 收养升级前遗留的 bot_id='' 行
+        adopt = (
+            update(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == "",
+                col(cls.pool_type) == pool_type,
             )
+            .values(bot_id=bot_id, selected_pool_id=pool_id)
+        )
+        result = await session.execute(adopt)
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        session.add(
+            cls(
+                user_id=user_id,
+                bot_id=bot_id,
+                pool_type=pool_type,
+                selected_pool_id=pool_id,
+            )
+        )
 
 
 class PGRGachaDaily(BaseIDModel, table=True):
     """每日计数表"""
 
     __table_args__ = (
-        UniqueConstraint("user_id", "pool_type", "date", name="uq_pgr_daily_user_pool_date"),
+        UniqueConstraint("user_id", "bot_id", "pool_type", "date", name="uq_pgr_daily_bot_user_pool_date"),
         Index("ix_pgr_daily_date_user", "date", "user_id"),
         {"extend_existing": True},
     )
 
     user_id: str = Field(title="用户ID", index=True)
+    bot_id: str = Field(default="", title="平台")
     pool_type: str = Field(title="卡池类型", index=True)
     date: str = Field(title="日期", index=True)
     count: int = Field(default=0, title="抽卡次数")
@@ -323,16 +408,17 @@ class PGRGachaDaily(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
     ) -> int:
-        stmt = select(cls).where(
+        stmt = select(func.coalesce(func.sum(col(cls.count)), 0)).where(
             col(cls.user_id) == user_id,
+            col(cls.bot_id).in_([bot_id, ""]),
             col(cls.pool_type) == pool_type,
             col(cls.date) == cls._today(),
         )
         result = await session.execute(stmt)
-        record = result.scalars().first()
-        return record.count if record else 0
+        return int(result.scalar() or 0)
 
     @classmethod
     @with_session
@@ -340,6 +426,7 @@ class PGRGachaDaily(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         pool_type: str,
         count: int,
     ) -> None:
@@ -348,14 +435,30 @@ class PGRGachaDaily(BaseIDModel, table=True):
             update(cls)
             .where(
                 col(cls.user_id) == user_id,
+                col(cls.bot_id) == bot_id,
                 col(cls.pool_type) == pool_type,
                 col(cls.date) == today,
             )
             .values(count=cls.count + count)
         )
         result = await session.execute(stmt)
-        if (result.rowcount if isinstance(result, CursorResult) else 0) == 0:
-            session.add(cls(user_id=user_id, pool_type=pool_type, date=today, count=count))
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        # 收养升级前遗留的 bot_id='' 行
+        adopt = (
+            update(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == "",
+                col(cls.pool_type) == pool_type,
+                col(cls.date) == today,
+            )
+            .values(bot_id=bot_id, count=cls.count + count)
+        )
+        result = await session.execute(adopt)
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        session.add(cls(user_id=user_id, bot_id=bot_id, pool_type=pool_type, date=today, count=count))
 
     @classmethod
     @with_read_session
@@ -363,10 +466,15 @@ class PGRGachaDaily(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         since: str,
+        bot_id: str,
     ) -> list[tuple[str, int]]:
         stmt = (
             select(col(cls.user_id), func.sum(col(cls.count)))
-            .where(col(cls.date) >= since, col(cls.date) <= cls._today())
+            .where(
+                col(cls.date) >= since,
+                col(cls.date) <= cls._today(),
+                col(cls.bot_id).in_([bot_id, ""]),
+            )
             .group_by(col(cls.user_id))
         )
         result = await session.execute(stmt)
@@ -374,14 +482,20 @@ class PGRGachaDaily(BaseIDModel, table=True):
 
 
 class PGRGachaSignature(BaseIDModel, table=True):
-    """用户特征码表"""
+    """用户特征码表
+
+    user_id + bot_id 唯一（同一 QQ 号在不同 Bot 上可各绑一个特征码）
+    signature_code 全局唯一（9 位码全库查重，跨 Bot 也不可重复）
+    """
 
     __table_args__ = (
+        UniqueConstraint("user_id", "bot_id", name="uq_pgr_sig_bot_user"),
         UniqueConstraint("signature_code", name="uq_pgr_sig_code"),
         {"extend_existing": True},
     )
 
-    user_id: str = Field(title="用户ID", unique=True, index=True)
+    user_id: str = Field(title="用户ID", index=True)
+    bot_id: str = Field(default="", title="平台")
     signature_code: str = Field(title="9位数字特征码", index=True)
 
     @classmethod
@@ -390,8 +504,16 @@ class PGRGachaSignature(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
     ) -> str | None:
-        stmt = select(cls).where(col(cls.user_id) == user_id)
+        stmt = (
+            select(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+            )
+            .order_by(col(cls.bot_id).desc())
+        )
         result = await session.execute(stmt)
         record = result.scalars().first()
         return record.signature_code if record else None
@@ -402,12 +524,33 @@ class PGRGachaSignature(BaseIDModel, table=True):
         cls,
         session: AsyncSession,
         user_id: str,
+        bot_id: str,
         code: str,
     ) -> None:
-        stmt = update(cls).where(col(cls.user_id) == user_id).values(signature_code=code)
+        stmt = (
+            update(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == bot_id,
+            )
+            .values(signature_code=code)
+        )
         result = await session.execute(stmt)
-        if (result.rowcount if isinstance(result, CursorResult) else 0) == 0:
-            session.add(cls(user_id=user_id, signature_code=code))
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        # 收养升级前遗留的 bot_id='' 行
+        adopt = (
+            update(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id) == "",
+            )
+            .values(bot_id=bot_id, signature_code=code)
+        )
+        result = await session.execute(adopt)
+        if (result.rowcount if isinstance(result, CursorResult) else 0) > 0:
+            return
+        session.add(cls(user_id=user_id, bot_id=bot_id, signature_code=code))
 
     @classmethod
     @with_read_session
@@ -454,3 +597,8 @@ class PGRGachaSignatureAdmin(GsAdminModel):
     pk_name = "id"
     page_schema = PageSchema(label="战双模拟抽卡-特征码", icon="fa fa-qrcode")
     model = PGRGachaSignature
+
+
+@on_core_start
+async def _pgr_gacha_auto_migrate():
+    await auto_add_missing_columns(__name__, log_prefix="[战双抽卡·补列]")

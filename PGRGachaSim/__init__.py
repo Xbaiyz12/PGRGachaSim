@@ -7,6 +7,7 @@ from typing import Literal
 from httpx import HTTPError
 
 from gsuid_core.sv import SV, Plugins, get_plugin_available_prefix
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
@@ -76,6 +77,22 @@ def _format_rarity(rarity: str) -> str:
     return mapping[rarity] if rarity in mapping else rarity
 
 
+def _ai_return_draw_results(results: list[GachaResult], pool_name: str) -> None:
+    """提取本次抽卡结果摘要，通过 ai_return 返回给 AI（用户直接触发时静默）"""
+    try:
+        lines = [f"【{pool_name} 模拟抽卡结果】共 {len(results)} 抽"]
+        for result in results:
+            if result["level"] >= 4:
+                up_tag = " [UP]" if result["is_up"] else ""
+                rarity_text = _format_rarity(str(result["level"]))
+                lines.append(f"{rarity_text} {result['name']}{up_tag} - 第{result['pity_count']}抽")
+        if len(lines) == 1:
+            lines.append("未出 4★ 及以上稀有度物品")
+        ai_return("\n".join(lines))
+    except Exception as error:
+        logger.warning(f"[战双·模拟抽卡] ai_return 抽卡结果提取失败: {error}")
+
+
 async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) -> bool:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -89,7 +106,7 @@ async def _check_daily_limit(bot: Bot, ev: Event, pool_type: str, count: int) ->
     if master_unlimited and ev.user_pm == 0:
         return True
 
-    daily_count = await data_manager.get_daily_count(ev.user_id, pool_type)
+    daily_count = await data_manager.get_daily_count(ev.user_id, ev.bot_id, pool_type)
     if daily_count + count <= daily_limit:
         return True
 
@@ -184,27 +201,28 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
     async with _UserLock(uid):
         if not await _check_daily_limit(bot, ev, pool_type, count):
             return
-        pity = await data_manager.get_pity_data(uid, pool_type)
+        pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
         results = gacha_service.perform_draw(pool, pool_manager.get_data(), pity, count)
-        await data_manager.save_pity_data(uid, pool_type, pity)
-        await data_manager.add_daily_count(uid, pool_type, count)
+        await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
+        await data_manager.add_daily_count(uid, ev.bot_id, pool_type, count)
 
         # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
-        owned_names = await data_manager.get_owned_names(uid)
+        owned_names = await data_manager.get_owned_names(uid, ev.bot_id)
         for result in results:
             if result["level"] >= 4:
                 await data_manager.add_record(uid, ev.bot_id, pool_type, result)
 
-        signature_code = await data_manager.get_signature(uid)
+        signature_code = await data_manager.get_signature(uid, ev.bot_id)
         if not signature_code:
             try:
-                signature_code = await data_manager.generate_signature(uid)
+                signature_code = await data_manager.generate_signature(uid, ev.bot_id)
             except ValueError as error:
                 logger.warning(f"[战双·模拟抽卡] 生成特征码失败: {error}")
                 signature_code = ""
-        daily_count = await data_manager.get_daily_count(uid, pool_type)
+        daily_count = await data_manager.get_daily_count(uid, ev.bot_id, pool_type)
 
         pool_name = pool["name"] if "name" in pool else "活动研发"
+        _ai_return_draw_results(results, pool_name)
         image = await render_gacha_result(
             results,
             pool_name,
@@ -298,9 +316,9 @@ async def _resolve_draw_pool(bot: Bot, ev: Event) -> tuple[str, str] | None:
     返回 (pool_id, version_name)；用户取消返回 None。
     """
     # 已通过 切换卡池 或上次抽卡选定过卡池时直接使用，不再重复询问
-    selected = await data_manager.get_selected_pool(ev.user_id, "gacha")
+    selected = await data_manager.get_selected_pool(ev.user_id, ev.bot_id, "gacha")
     if selected:
-        version = await data_manager.get_selected_version(ev.user_id)
+        version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
         return selected, version
     picked = await _ask_up_pool_choice(bot, ev)
     if picked == "":
@@ -314,15 +332,28 @@ async def _resolve_draw_pool(bot: Bot, ev: Event) -> tuple[str, str] | None:
             if "role" in entry and entry["role"] == role:
                 version_name = entry["name"] if "name" in entry else ""
                 break
-        await data_manager.set_selected_pool(ev.user_id, "gacha", picked)
-        await data_manager.set_selected_version(ev.user_id, version_name)
+        await data_manager.set_selected_pool(ev.user_id, ev.bot_id, "gacha", picked)
+        await data_manager.set_selected_version(ev.user_id, ev.bot_id, version_name)
         return picked, version_name
-    selected = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
-    version = await data_manager.get_selected_version(ev.user_id)
+    selected = await data_manager.get_selected_pool(ev.user_id, ev.bot_id, "gacha") or "char_theme"
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     return selected, version
 
 
-@sv_gacha.on_fullmatch(("抽卡", "战双抽卡"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡", "战双抽卡"),
+    block=True,
+    to_ai="""战双模拟抽卡十连
+
+    当用户想进行战双帕弥什模拟抽卡、十连抽、研发角色时调用。
+    使用用户当前选定的卡池；若返回提示需先选择卡池，请先调用「切换战双抽卡卡池」工具选定后再抽。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["抽卡", "十连", "模拟抽卡", "研发", "战双抽卡"],
+    aliases=["战双·模拟抽卡十连"],
+)
 async def draw_selected(bot: Bot, ev: Event) -> None:
     resolved = await _resolve_draw_pool(bot, ev)
     if resolved is None:
@@ -330,7 +361,20 @@ async def draw_selected(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, resolved[0], 10, resolved[1])
 
 
-@sv_gacha.on_fullmatch(("单抽", "战双单抽"), block=True)
+@sv_gacha.on_fullmatch(
+    ("单抽", "战双单抽"),
+    block=True,
+    to_ai="""战双模拟抽卡单抽
+
+    当用户想进行战双帕弥什单抽、只抽一次卡时调用。
+    使用用户当前选定的卡池；若返回提示需先选择卡池，请先调用「切换战双抽卡卡池」工具选定后再抽。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["单抽", "抽一次", "战双单抽"],
+    aliases=["战双·模拟抽卡单抽"],
+)
 async def draw_selected_single(bot: Bot, ev: Event) -> None:
     resolved = await _resolve_draw_pool(bot, ev)
     if resolved is None:
@@ -338,43 +382,115 @@ async def draw_selected_single(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, resolved[0], 1, resolved[1])
 
 
-@sv_gacha.on_fullmatch(("抽卡基准", "战双抽卡基准"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡基准", "战双抽卡基准"),
+    block=True,
+    to_ai="""战双基准池十连抽卡
+
+    当用户想在战双帕弥什基准角色研发池进行十连抽卡时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["基准池", "基准抽卡", "常驻池", "抽卡基准"],
+    aliases=["战双·基准池十连"],
+)
 async def draw_standard(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, "char_standard", 10)
 
 
-@sv_gacha.on_fullmatch(("单抽基准", "战双单抽基准"), block=True)
+@sv_gacha.on_fullmatch(
+    ("单抽基准", "战双单抽基准"),
+    block=True,
+    to_ai="""战双基准池单抽
+
+    当用户想在战双帕弥什基准角色研发池单抽一次时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["基准池单抽", "单抽基准", "常驻单抽"],
+    aliases=["战双·基准池单抽"],
+)
 async def draw_standard_single(bot: Bot, ev: Event) -> None:
     await _do_draw(bot, ev, "char_standard", 1)
 
 
-@sv_gacha.on_fullmatch(("抽卡武器", "战双抽卡武器"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡武器", "战双抽卡武器"),
+    block=True,
+    to_ai="""战双武器池十连抽卡
+
+    当用户想在战双帕弥什狙击武器研发池进行十连抽卡、抽武器时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["武器池", "抽武器", "武器研发", "抽卡武器"],
+    aliases=["战双·武器池十连"],
+)
 async def draw_weapon(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_draw(bot, ev, "weapon", 10, version)
 
 
-@sv_gacha.on_fullmatch(("单抽武器", "战双单抽武器"), block=True)
+@sv_gacha.on_fullmatch(
+    ("单抽武器", "战双单抽武器"),
+    block=True,
+    to_ai="""战双武器池单抽
+
+    当用户想在战双帕弥什狙击武器研发池单抽一次武器时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["单抽武器", "武器单抽", "武器池单抽"],
+    aliases=["战双·武器池单抽"],
+)
 async def draw_weapon_single(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_draw(bot, ev, "weapon", 1, version)
 
 
-@sv_gacha.on_fullmatch(("抽卡辅助机", "战双抽卡辅助机"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡辅助机", "战双抽卡辅助机"),
+    block=True,
+    to_ai="""战双辅助机池十连抽卡
+
+    当用户想在战双帕弥什辅助机研发池进行十连抽卡、抽辅助机时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["辅助机", "抽辅助机", "辅助机研发", "抽卡辅助机"],
+    aliases=["战双·辅助机池十连"],
+)
 async def draw_support(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_draw(bot, ev, "support_unit", 10, version)
 
 
-@sv_gacha.on_fullmatch(("单抽辅助机", "战双单抽辅助机"), block=True)
+@sv_gacha.on_fullmatch(
+    ("单抽辅助机", "战双单抽辅助机"),
+    block=True,
+    to_ai="""战双辅助机池单抽
+
+    当用户想在战双帕弥什辅助机研发池单抽一次辅助机时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["单抽辅助机", "辅助机单抽"],
+    aliases=["战双·辅助机池单抽"],
+)
 async def draw_support_single(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_draw(bot, ev, "support_unit", 1, version)
 
 
 @sv_gacha.on_fullmatch(("抽卡百连辅助机", "战双抽卡百连辅助机"), block=True)
 async def draw_bailian_support(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_bailian(bot, ev, "support_unit", version)
 
 
@@ -424,14 +540,14 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
             return
         # 次数校验通过后再发提示，避免超限时先收到「开始」再收到拒绝
         await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
-        pity = await data_manager.get_pity_data(uid, pool_type)
+        pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
         all_results: list[list[GachaResult]] = []
         for _ in range(10):
             all_results.append(gacha_service.perform_draw(pool, pool_manager.get_data(), pity, 10))
-        await data_manager.save_pity_data(uid, pool_type, pity)
-        await data_manager.add_daily_count(uid, pool_type, 100)
+        await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
+        await data_manager.add_daily_count(uid, ev.bot_id, pool_type, 100)
         # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
-        owned_names = await data_manager.get_owned_names(uid)
+        owned_names = await data_manager.get_owned_names(uid, ev.bot_id)
         high_results = [
             result
             for results in all_results
@@ -440,14 +556,14 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         ]
         await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high_results)
 
-        signature_code = await data_manager.get_signature(uid)
+        signature_code = await data_manager.get_signature(uid, ev.bot_id)
         if not signature_code:
             try:
-                signature_code = await data_manager.generate_signature(uid)
+                signature_code = await data_manager.generate_signature(uid, ev.bot_id)
             except ValueError as error:
                 logger.warning(f"[战双·模拟抽卡] 生成特征码失败: {error}")
                 signature_code = ""
-        daily_count = await data_manager.get_daily_count(uid, pool_type)
+        daily_count = await data_manager.get_daily_count(uid, ev.bot_id, pool_type)
 
         bg_base64 = _get_bg_base64()
         avatar_b64 = _image_to_base64(avatar) if avatar is not None else ""
@@ -502,7 +618,7 @@ async def draw_bailian(bot: Bot, ev: Event) -> None:
 
 @sv_gacha.on_fullmatch(("抽卡百连武器", "战双抽卡百连武器"), block=True)
 async def draw_bailian_weapon(bot: Bot, ev: Event) -> None:
-    version = await data_manager.get_selected_version(ev.user_id)
+    version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     await _do_bailian(bot, ev, "weapon", version)
 
 
@@ -560,7 +676,7 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         if isinstance(roles_list, list):
             roles_list.append({"name": role, "theme_no": theme_no, "fate_no": fate_no})
 
-    current = await data_manager.get_selected_pool(ev.user_id, "gacha") or "char_theme"
+    current = await data_manager.get_selected_pool(ev.user_id, ev.bot_id, "gacha") or "char_theme"
     text = ev.text.strip() if ev.text else ""
     if not text:
         image = await render_pool_select(version_cards, prefix, "版本卡池") if version_cards else None
@@ -609,7 +725,7 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
 
     label = next(label for option_id, label in options if option_id == selected_id)
 
-    old_version = await data_manager.get_selected_version(ev.user_id)
+    old_version = await data_manager.get_selected_version(ev.user_id, ev.bot_id)
     version_name = ""
     if selected_id.startswith(("char_theme:", "char_fate:")):
         role = selected_id.split(":", 1)[1]
@@ -621,20 +737,46 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
         # 选非角色池时不清空已有版本，武器/辅助机需要它联动 UP
         version_name = old_version
 
-    await data_manager.set_selected_pool(ev.user_id, "gacha", selected_id)
-    await data_manager.set_selected_version(ev.user_id, version_name or old_version)
+    await data_manager.set_selected_pool(ev.user_id, ev.bot_id, "gacha", selected_id)
+    await data_manager.set_selected_version(ev.user_id, ev.bot_id, version_name or old_version)
     await bot.send(
         f"已切换到 {label}，之后 {prefix}抽卡 / {prefix}抽卡武器 / {prefix}抽卡辅助机 使用该版本 UP~",
         at_sender,
     )
 
 
-@sv_gacha.on_command(("切换卡池", "战双切换卡池"), block=True)
+@sv_gacha.on_command(
+    ("切换卡池", "战双切换卡池"),
+    block=True,
+    to_ai="""切换战双抽卡卡池
+
+    当用户想更换模拟抽卡使用的卡池、查看当前可选卡池列表时调用。
+
+    Args:
+        text: 卡池编号或卡池名称；留空则展示全部可选卡池列表。
+              例如 "1"、"3"、"基准研发"、"破渊-主题研发"
+    """,
+    covers=["切换卡池", "换卡池", "卡池列表", "选卡池"],
+    aliases=["战双·切换抽卡卡池"],
+)
 async def switch_pool(bot: Bot, ev: Event) -> None:
     await _switch_pool(bot, ev)
 
 
-@sv_gacha.on_command(("抽卡排名", "战双抽卡排名"), block=True)
+@sv_gacha.on_command(
+    ("抽卡排名", "战双抽卡排名"),
+    block=True,
+    to_ai="""查看战双抽卡欧气排名
+
+    当用户想看模拟抽卡排行榜、谁最欧、抽卡排名时调用。
+
+    Args:
+        text: 统计周期，可填 "周" 或 "月"；留空默认按天统计。
+              例如 "周"、"月"、""
+    """,
+    covers=["抽卡排名", "排行榜", "欧气排名", "谁最欧"],
+    aliases=["战双·抽卡排名"],
+)
 async def draw_rank(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -645,7 +787,7 @@ async def draw_rank(bot: Bot, ev: Event) -> None:
         period = "week"
     elif "月" in text:
         period = "month"
-    rows = await data_manager.get_rank(period, 10)
+    rows = await data_manager.get_rank(ev.bot_id, period, 10)
     if not rows:
         await bot.send("暂无排名数据，先抽几发再来吧~", bool(ev.group_id))
         return
@@ -680,13 +822,25 @@ async def update_pools(bot: Bot, ev: Event) -> None:
     await bot.send(f"卡池已更新，当期 UP: {'、'.join(names)}", at_sender)
 
 
-@sv_gacha.on_fullmatch(("抽卡记录", "战双抽卡记录"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡记录", "战双抽卡记录"),
+    block=True,
+    to_ai="""查看战双抽卡出货记录
+
+    当用户想查看自己的高稀有度出货记录、模拟抽卡历史时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["抽卡记录", "出货记录", "抽卡历史"],
+    aliases=["战双·抽卡记录"],
+)
 async def draw_record(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
         return
 
-    records = await data_manager.get_history(ev.user_id, limit=100)
+    records = await data_manager.get_history(ev.user_id, ev.bot_id, limit=100)
     at_sender = bool(ev.group_id)
     if not records:
         await bot.send("暂无抽卡记录，快去抽卡吧~\n使用「模拟抽卡帮助」查看命令！", at_sender)
@@ -702,14 +856,27 @@ async def draw_record(bot: Bot, ev: Event) -> None:
     await bot.send("\n".join(lines), at_sender)
 
 
-@sv_gacha.on_command(("模拟绑定", "战双模拟绑定"), block=True)
+@sv_gacha.on_command(
+    ("模拟绑定", "战双模拟绑定"),
+    block=True,
+    to_ai="""绑定战双抽卡特征码
+
+    当用户想绑定或查询自己的模拟抽卡特征码（9位数字，展示在抽卡结果图上）时调用。
+
+    Args:
+        text: 9位数字特征码；留空则查询当前已绑定的特征码。
+              例如 "123456789"
+    """,
+    covers=["模拟绑定", "特征码", "绑定特征码"],
+    aliases=["战双·绑定抽卡特征码"],
+)
 async def bind_signature(bot: Bot, ev: Event) -> None:
     uid = ev.user_id
     user_input = ev.text.strip() if ev.text else ""
     at_sender = bool(ev.group_id)
 
     if not user_input:
-        current = await data_manager.get_signature(uid)
+        current = await data_manager.get_signature(uid, ev.bot_id)
         if current:
             await bot.send(f"你的当前特征码: {current}\n\n如需更换，请回复 模拟绑定123456789", at_sender)
         else:
@@ -721,18 +888,30 @@ async def bind_signature(bot: Bot, ev: Event) -> None:
         return
 
     if await data_manager.check_code_exists(user_input):
-        current = await data_manager.get_signature(uid)
+        current = await data_manager.get_signature(uid, ev.bot_id)
         if current == user_input:
             await bot.send(f"这个特征码已经是你的了，当前特征码: {user_input}", at_sender)
         else:
             await bot.send("该特征码已被其他用户绑定，请更换一个~", at_sender)
         return
 
-    await data_manager.set_signature(uid, user_input)
+    await data_manager.set_signature(uid, ev.bot_id, user_input)
     await bot.send(f"特征码绑定成功！\n你的特征码: {user_input}", at_sender)
 
 
-@sv_gacha.on_fullmatch(("保底", "战双保底", "垫抽", "战双垫抽"), block=True)
+@sv_gacha.on_fullmatch(
+    ("保底", "战双保底", "垫抽", "战双垫抽"),
+    block=True,
+    to_ai="""查看战双抽卡保底进度
+
+    当用户想查询各卡池垫抽次数、保底进度、大保底是否就绪时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["保底", "垫抽", "保底进度", "大保底"],
+    aliases=["战双·抽卡保底进度"],
+)
 async def query_pity(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -740,7 +919,7 @@ async def query_pity(bot: Bot, ev: Event) -> None:
 
     uid = ev.user_id
     at_sender = bool(ev.group_id)
-    pities = await data_manager.get_all_pity(uid)
+    pities = await data_manager.get_all_pity(uid, ev.bot_id)
     if not pities:
         await bot.send("你还没有任何抽卡保底记录，快去抽卡试试吧！", at_sender)
         return
@@ -773,11 +952,23 @@ async def reset_user_pity(bot: Bot, ev: Event) -> None:
 
     uid = ev.user_id
     at_sender = bool(ev.group_id)
-    count = await data_manager.reset_pity(uid)
+    count = await data_manager.reset_pity(uid, ev.bot_id)
     await bot.send(f"已成功为你重置了 {count} 个卡池的垫抽与保底计数！", at_sender)
 
 
-@sv_gacha.on_fullmatch(("抽卡统计", "战双抽卡统计", "欧气分析", "战双欧气分析"), block=True)
+@sv_gacha.on_fullmatch(
+    ("抽卡统计", "战双抽卡统计", "欧气分析", "战双欧气分析"),
+    block=True,
+    to_ai="""查看战双抽卡欧气统计
+
+    当用户想看自己的累计抽数、S级出率、平均出货抽数、最近出货等欧气分析时调用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+    covers=["抽卡统计", "欧气分析", "出率", "平均抽数"],
+    aliases=["战双·抽卡欧气统计"],
+)
 async def query_stats(bot: Bot, ev: Event) -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -785,7 +976,7 @@ async def query_stats(bot: Bot, ev: Event) -> None:
 
     uid = ev.user_id
     at_sender = bool(ev.group_id)
-    stats = await data_manager.get_user_stats(uid)
+    stats = await data_manager.get_user_stats(uid, ev.bot_id)
     total_pulls = stats["total_pulls"] if "total_pulls" in stats else 0
     if not total_pulls:
         await bot.send("暂无抽卡统计数据，先去抽几发吧！", at_sender)
