@@ -5,7 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Dict
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_new_plugin_help import get_new_help
@@ -27,6 +27,21 @@ def get_help_data() -> Dict[str, PluginHelp]:
     """读取 help.json"""
     with open(HELP_DATA, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+def _to_circle_icon(icon: Image.Image, scale: int = 4) -> Image.Image:
+    """把方形图标裁成圆形（放大后画蒙版再缩回，保证边缘平滑）"""
+    width, height = icon.size
+    size = min(width, height)
+    left = (width - size) // 2
+    top = (height - size) // 2
+    icon = icon.crop((left, top, left + size, top + size)).convert("RGBA")
+    icon = icon.resize((size * scale, size * scale), Image.Resampling.LANCZOS)
+    mask = Image.new("L", (size * scale, size * scale), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, size * scale - 1, size * scale - 1), fill=255)
+    result = Image.new("RGBA", icon.size, (0, 0, 0, 0))
+    result.paste(icon, (0, 0), mask)
+    return result.resize((size, size), Image.Resampling.LANCZOS)
 
 
 async def get_help(pm: int = 6):
@@ -51,9 +66,9 @@ async def get_help(pm: int = 6):
     }
 
     if ICON.exists():
-        plugin_icon = Image.open(ICON).convert("RGBA")
+        plugin_icon = _to_circle_icon(Image.open(ICON))
     else:
-        plugin_icon = Image.new("RGBA", (100, 100), (70, 130, 180, 255))
+        plugin_icon = _to_circle_icon(Image.new("RGBA", (100, 100), (70, 130, 180, 255)))
 
     kwargs = dict(
         plugin_name="PGRGachaSim",
