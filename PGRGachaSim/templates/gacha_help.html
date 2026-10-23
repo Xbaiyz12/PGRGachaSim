@@ -2,12 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>模拟研发终端 · 指令帮助</title>
+<title>战双帕弥什 · 模拟抽卡帮助</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-        background: #0a0c10;
+        background: #0d1020;
         font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
     }
 
@@ -16,212 +16,170 @@
         width: 1400px;
         height: {{ total_height }}px;
         overflow: hidden;
-        {% if background %}
-        background-image: linear-gradient(180deg, rgba(6, 10, 18, 0.80), rgba(6, 10, 18, 0.88)), url('{{ background }}');
-        background-size: cover;
-        background-position: center;
-        {% else %}
-        background: radial-gradient(ellipse at 50% 20%, #101c34 0%, #080b12 72%);
-        {% endif %}
+        background: linear-gradient(160deg, #1c2240 0%, #10142a 55%, #171a33 100%);
+    }
+    .glow-a {
+        position: absolute;
+        left: -180px; top: -220px;
+        width: 640px; height: 640px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(110, 130, 255, 0.30), rgba(110, 130, 255, 0) 70%);
+    }
+    .glow-b {
+        position: absolute;
+        right: -200px; bottom: -260px;
+        width: 720px; height: 720px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 110, 180, 0.20), rgba(255, 110, 180, 0) 70%);
     }
 
     /* ---------- 顶栏 ---------- */
-    .topbar {
+    .icon {
         position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 110px;
-        background: linear-gradient(180deg, rgba(8, 12, 22, 0.85), rgba(8, 12, 22, 0));
+        left: 48px; top: 30px;
+        width: 76px; height: 76px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
     }
     .title {
         position: absolute;
-        left: 48px;
-        top: 26px;
-        color: #eef2f8;
-        font-size: 36px;
+        left: 144px; top: 38px;
+        color: #f4f6ff;
+        font-size: 30px;
         font-weight: 700;
-        letter-spacing: 6px;
-        padding-left: 18px;
-        border-left: 6px solid #57e8ff;
-        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+        letter-spacing: 2px;
     }
     .subtitle {
         position: absolute;
-        left: 72px;
-        top: 74px;
-        color: rgba(87, 232, 255, 0.75);
-        font-size: 15px;
-        letter-spacing: 5px;
+        left: 146px; top: 82px;
+        color: rgba(190, 200, 235, 0.55);
+        font-size: 14px;
+        letter-spacing: 4px;
     }
     .version-badge {
         position: absolute;
-        right: 48px;
-        top: 38px;
-        color: #d8b988;
-        font-size: 16px;
-        letter-spacing: 2px;
+        right: 48px; top: 48px;
+        color: #cfd8ff;
+        font-size: 14px;
+        letter-spacing: 1px;
         padding: 8px 18px;
-        border: 1px solid rgba(216, 185, 136, 0.45);
-        background: rgba(20, 16, 8, 0.45);
-    }
-    .topline {
-        position: absolute;
-        left: 48px; right: 48px;
-        top: 108px;
-        height: 2px;
-        background: linear-gradient(90deg, #57e8ff 0%, rgba(87, 232, 255, 0.05) 100%);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.14);
     }
 
-    /* ---------- 分组 ---------- */
-    .group-title {
+    /* ---------- 分组卡片 ---------- */
+    .group-card {
         position: absolute;
-        height: 40px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid rgba(255, 255, 255, 0.10);
     }
-    .group-sq {
+    .group-dot {
         position: absolute;
-        left: 0;
-        top: 8px;
-        width: 10px;
-        height: 22px;
-        background: #57e8ff;
-        box-shadow: 0 0 10px rgba(87, 232, 255, 0.7);
+        left: 22px; top: 26px;
+        width: 12px; height: 12px;
+        border-radius: 50%;
     }
     .group-name {
         position: absolute;
-        left: 22px;
-        top: 4px;
-        color: #f2f6fc;
-        font-size: 24px;
+        left: 44px; top: 18px;
+        color: #f2f4ff;
+        font-size: 20px;
         font-weight: 700;
-        letter-spacing: 3px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        letter-spacing: 2px;
     }
     .group-desc {
         position: absolute;
-        left: 22px;
-        top: 34px;
-        color: rgba(200, 214, 232, 0.5);
-        font-size: 13px;
+        left: 44px; top: 46px;
+        color: rgba(190, 200, 235, 0.45);
+        font-size: 12px;
         letter-spacing: 1px;
     }
-    .group-line {
-        position: absolute;
-        left: 0; right: 0;
-        top: 52px;
-        height: 1px;
-        background: linear-gradient(90deg, rgba(87, 232, 255, 0.4), rgba(87, 232, 255, 0.03));
-    }
 
-    /* ---------- 指令卡 ---------- */
+    /* ---------- 指令行 ---------- */
     .cmd {
         position: absolute;
-        height: 64px;
-        background: rgba(12, 22, 42, 0.72);
-        border: 1px solid rgba(87, 232, 255, 0.16);
-    }
-    .cmd-bar {
-        position: absolute;
-        left: 0; top: 0;
-        width: 4px;
-        height: 64px;
-        background: #57e8ff;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .cmd-name {
         position: absolute;
-        left: 20px;
-        top: 9px;
-        color: #57e8ff;
-        font-size: 20px;
+        top: 10px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 999px;
+        color: #ffffff;
+        font-size: 15px;
         font-weight: 700;
         letter-spacing: 1px;
-    }
-    .cmd-admin {
-        position: absolute;
-        color: #d8b988;
-        font-size: 13px;
-        letter-spacing: 1px;
-        border: 1px solid rgba(216, 185, 136, 0.5);
-        padding: 2px 8px;
-        top: 12px;
-    }
-    .cmd-eg {
-        position: absolute;
-        right: 14px;
-        top: 11px;
-        color: rgba(216, 185, 136, 0.9);
-        font-size: 15px;
-        letter-spacing: 1px;
-        background: rgba(216, 185, 136, 0.08);
-        border: 1px solid rgba(216, 185, 136, 0.2);
-        padding: 4px 10px;
+        text-align: center;
     }
     .cmd-desc {
         position: absolute;
-        left: 20px;
-        right: 14px;
-        top: 38px;
-        color: rgba(226, 234, 245, 0.72);
+        top: 15px;
+        color: rgba(228, 232, 250, 0.72);
         font-size: 14px;
         letter-spacing: 0.5px;
         overflow: hidden;
         white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .cmd-eg {
+        position: absolute;
+        top: 11px;
+        height: 26px;
+        line-height: 26px;
+        border-radius: 999px;
+        color: rgba(207, 216, 255, 0.85);
+        font-size: 13px;
+        letter-spacing: 1px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.10);
     }
 
     /* ---------- 底栏 ---------- */
-    .bottomline {
+    .foot {
         position: absolute;
         left: 48px; right: 48px;
-        height: 1px;
-        background: linear-gradient(90deg, rgba(87, 232, 255, 0.35), rgba(87, 232, 255, 0.02));
-    }
-    .foot-left {
-        position: absolute;
-        left: 48px;
-        color: rgba(200, 214, 232, 0.55);
-        font-size: 15px;
+        color: rgba(190, 200, 235, 0.45);
+        font-size: 13px;
         letter-spacing: 1px;
-    }
-    .foot-right {
-        position: absolute;
-        right: 48px;
-        color: rgba(87, 232, 255, 0.45);
-        font-size: 14px;
-        letter-spacing: 3px;
+        text-align: center;
     }
 </style>
 </head>
 <body>
 <div class="container">
-    <div class="topbar"></div>
-    <div class="title">模拟研发终端</div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+
+    {% if icon %}<img class="icon" src="{{ icon }}">{% endif %}
+    <div class="title">战双帕弥什 · 模拟抽卡</div>
     <div class="subtitle">PGR GACHA SIMULATOR · COMMAND LIST</div>
     <div class="version-badge">v{{ version }}</div>
-    <div class="topline"></div>
 
     {% for col in columns %}
         {% for group in col.groups %}
-        <div class="group-title" style="left: {{ col.left }}px; top: {{ group.top }}px; width: 632px;">
-            <div class="group-sq"></div>
+        <div class="group-card" style="left: {{ col.left }}px; top: {{ group.top }}px; width: 632px; height: {{ group.height }}px;">
+            <div class="group-dot" style="background: {{ group.color }};"></div>
             <div class="group-name">{{ group.title }}</div>
             <div class="group-desc">{{ group.desc }}</div>
-            <div class="group-line"></div>
-        </div>
             {% for item in group.cmds %}
-        <div class="cmd" style="left: {{ col.left }}px; top: {{ item.top }}px; width: 632px;">
-            <div class="cmd-bar"></div>
-            <div class="cmd-name">{{ prefix }}{{ item.name }}</div>
-            {% if item.admin %}
-            <div class="cmd-admin" style="left: {{ item.admin_left }}px;">管理员</div>
-            {% endif %}
-            <div class="cmd-eg">{{ prefix }}{{ item.eg }}</div>
-            <div class="cmd-desc">{{ item.desc }}</div>
-        </div>
+            <div class="cmd" style="left: 16px; top: {{ item.top }}px; width: 600px;">
+                <div class="cmd-name" style="left: 12px; width: {{ item.name_w }}px; background: {{ item.color }};">{{ prefix }}{{ item.name }}</div>
+                <div class="cmd-desc" style="left: {{ item.desc_left }}px; width: {{ item.desc_w }}px;">{{ item.desc }}</div>
+                <div class="cmd-eg" style="left: {{ item.eg_left }}px; width: {{ item.eg_w }}px;">{{ prefix }}{{ item.eg }}</div>
+            </div>
             {% endfor %}
+        </div>
         {% endfor %}
     {% endfor %}
 
-    <div class="bottomline" style="top: {{ foot_top }}px;"></div>
-    <div class="foot-left" style="top: {{ foot_top + 12 }}px;">指令前缀：{{ prefix }}（如 {{ prefix }}抽卡）· 百连功能需管理员在 WebConsole 开启</div>
-    <div class="foot-right" style="top: {{ foot_top + 12 }}px;">战双帕弥什 · 模拟抽卡</div>
+    <div class="foot" style="top: {{ foot_top }}px;">指令前缀：{{ prefix }}（如 {{ prefix }}抽卡）· 金色胶囊为管理员专属 · 百连需管理员在 WebConsole 开启</div>
 </div>
 </body>
 </html>
