@@ -138,6 +138,10 @@ playwright install chromium
 
 本插件是独立模拟器，不读取游戏数据、不逆向客户端；材料与概率来自 BWIKI 公开的官方模拟器页面，卡池图 / 角色资料来自库街区 wiki，与真实服务器随机结果不存在对应关系，仅供娱乐。
 
+## 许可
+
+本项目基于 [GPL-3.0](LICENSE) 开源。
+
 ## 作者
 
 PGRGachaSim by Xbaiyz12

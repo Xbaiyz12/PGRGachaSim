@@ -2,6 +2,7 @@
 name = "PGRGachaSim"
 version = "0.1.0"
 description = "战双帕弥什模拟抽卡插件"
+license = { text = "GPL-3.0" }
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
