@@ -3,17 +3,22 @@
 import types
 import asyncio
 from typing import Literal
+from collections.abc import Callable, Awaitable
 
 from httpx import HTTPError
+from sqlalchemy.exc import IntegrityError
 
 from gsuid_core.sv import SV, Plugins, get_plugin_available_prefix
-from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
+from gsuid_core.ai_core.trigger_bridge import ai_return
+from gsuid_core.utils.database.write_gate import WriteGateTimeout
+from gsuid_core.utils.database.base_models import DatabaseWriteTimeout, TransientTransactionError
 
+from .models import gacha_write_transaction
 from .data_manager import data_manager
 from .gacha_config import GachaSimConfig
 from .gacha_update import update_current_pools
@@ -26,6 +31,7 @@ from .draw_gacha_result import (
     format_text_result,
     render_pool_select,
     render_gacha_result,
+    render_bailian_summary,
     render_gacha_results_batch,
 )
 from .gacha_help.get_help import get_help
@@ -34,34 +40,63 @@ Plugins(name="PGRGachaSim", force_prefix=["pgr", "zs"], allow_empty_prefix=False
 
 sv_gacha = SV("战双模拟抽卡", priority=1)
 
-_USER_LOCKS: dict[str, asyncio.BoundedSemaphore] = {}
-_MAX_CACHED_LOCKS = 1024
+# uid -> (引用计数, 锁)；计数归零即删除，字典只随并发用户数临时增长
+_USER_LOCKS: dict[str, tuple[int, asyncio.Lock]] = {}
+# 瞬时写竞争的重试次数（事务已整体回滚，重入安全）
+_WRITE_TX_ATTEMPTS = 3
 
 
-def _get_user_lock(uid: str) -> asyncio.BoundedSemaphore:
-    if uid in _USER_LOCKS:
-        return _USER_LOCKS[uid]
-    if len(_USER_LOCKS) >= _MAX_CACHED_LOCKS:
-        # 全量清理闲置锁，防止长期运行内存泄漏
-        for key in [k for k, v in _USER_LOCKS.items() if not v.locked()]:
-            _USER_LOCKS.pop(key)
-    if len(_USER_LOCKS) >= _MAX_CACHED_LOCKS:
-        # 1024 锁全部在用的极端情况下用临时锁兜底，保证字典不突破上限
-        return asyncio.BoundedSemaphore(1)
-    lock = asyncio.BoundedSemaphore(1)
-    _USER_LOCKS[uid] = lock
+def _get_user_lock(uid: str) -> asyncio.Lock:
+    """取（必要时创建）用户锁；引用计数保证同一 uid 永远拿到同一把锁"""
+    entry = _USER_LOCKS.get(uid)
+    if entry is not None:
+        _USER_LOCKS[uid] = (entry[0] + 1, entry[1])
+        return entry[1]
+    lock = asyncio.Lock()
+    _USER_LOCKS[uid] = (1, lock)
     return lock
+
+
+def _release_user_lock(uid: str) -> None:
+    # 计数归零即删除，所以字典里只会有「正在用/排队」的条目，不会无限增长
+    entry = _USER_LOCKS.get(uid)
+    if entry is None:
+        return
+    if entry[0] <= 1:
+        del _USER_LOCKS[uid]
+    else:
+        _USER_LOCKS[uid] = (entry[0] - 1, entry[1])
+
+
+async def _run_write_transaction(action: Callable[[], Awaitable[list[GachaResult]]]) -> list[GachaResult]:
+    """整段重跑瞬时写竞争：事务已回滚，重入安全，退避后重试至多 3 次"""
+    for attempt in range(_WRITE_TX_ATTEMPTS):
+        try:
+            return await action()
+        except TransientTransactionError:
+            if attempt >= _WRITE_TX_ATTEMPTS - 1:
+                raise
+            logger.warning(f"[战双·模拟抽卡] 写事务撞到瞬时竞争，第 {attempt + 1} 次重试")
+            await asyncio.sleep(0.5 * (2**attempt))
+    raise TransientTransactionError("写事务重试耗尽")
 
 
 class _UserLock:
     """同一用户同一时间只允许一个抽卡协程"""
 
     def __init__(self, uid: str) -> None:
-        self._lock = _get_user_lock(uid)
+        self._uid = uid
+        self._lock: asyncio.Lock | None = None
 
-    async def __aenter__(self) -> asyncio.BoundedSemaphore:
-        await self._lock.acquire()
-        return self._lock
+    async def __aenter__(self) -> None:
+        lock = _get_user_lock(self._uid)
+        try:
+            await lock.acquire()
+        except BaseException:
+            # 取消/异常时没拿到锁，必须还掉引用计数，否则条目永不释放
+            _release_user_lock(self._uid)
+            raise
+        self._lock = lock
 
     async def __aexit__(
         self,
@@ -69,7 +104,13 @@ class _UserLock:
         exc_val: BaseException | None,
         exc_tb: types.TracebackType | None,
     ) -> None:
-        self._lock.release()
+        lock = self._lock
+        self._lock = None
+        if lock is None:
+            return
+        if lock.locked():
+            lock.release()
+        _release_user_lock(self._uid)
 
 
 def _format_rarity(rarity: str) -> str:
@@ -83,7 +124,7 @@ def _ai_return_draw_results(results: list[GachaResult], pool_name: str) -> None:
         lines = [f"【{pool_name} 模拟抽卡结果】共 {len(results)} 抽"]
         for result in results:
             if result["level"] >= 4:
-                up_tag = " [UP]" if result["is_up"] else ""
+                up_tag = " [UP]" if result["is_up"] and result["level"] >= 6 else ""
                 rarity_text = _format_rarity(str(result["level"]))
                 lines.append(f"{rarity_text} {result['name']}{up_tag} - 第{result['pity_count']}抽")
         if len(lines) == 1:
@@ -157,11 +198,6 @@ def _apply_version_up(pool: dict, pool_type: str, version_data: dict) -> dict:
         updated["up_w6"] = weapon_names
     elif pool_type == "support_unit" and support_names:
         updated["up_s"] = support_names
-    elif pool_type in ("char_theme", "char_fate"):
-        # 角色池：版本数据里有 up_a 字段就覆盖 A 级 UP
-        up_a = version_data.get("up_a") if isinstance(version_data, dict) else None
-        if up_a:
-            updated["up_a"] = list(up_a)
     return updated
 
 
@@ -198,19 +234,31 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
 
     uid = ev.user_id
     avatar = await data_manager.get_avatar(uid)
+    # 锁只覆盖「读保底 → 算结果 → 落库」，渲染与发送在锁外做，避免单用户串行等待出图
     async with _UserLock(uid):
         if not await _check_daily_limit(bot, ev, pool_type, count):
             return
-        pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
-        results = gacha_service.perform_draw(pool, pool_manager.get_data(), pity, count)
-        await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
-        await data_manager.add_daily_count(uid, ev.bot_id, pool_type, count)
 
-        # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
+        async def _draw_once() -> list[GachaResult]:
+            async with gacha_write_transaction():
+                pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
+                drawn = gacha_service.perform_draw(pool, pool_manager.get_data(), pity, count)
+                await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
+                await data_manager.add_daily_count(uid, ev.bot_id, pool_type, count)
+                for result in drawn:
+                    if result["level"] >= 4:
+                        await data_manager.add_record(uid, ev.bot_id, pool_type, result)
+                return drawn
+
+        try:
+            results = await _run_write_transaction(_draw_once)
+        except (WriteGateTimeout, DatabaseWriteTimeout, TransientTransactionError, IntegrityError) as error:
+            logger.warning(f"[战双·模拟抽卡] 抽卡写库失败，已回滚: {error}")
+            await bot.send("数据库繁忙，本次抽卡未生效，请稍后重试", bool(ev.group_id))
+            return
+        # 事务内变量在闭包里，出事务后再取一次，避免依赖作用域副作用
         owned_names = await data_manager.get_owned_names(uid, ev.bot_id)
-        for result in results:
-            if result["level"] >= 4:
-                await data_manager.add_record(uid, ev.bot_id, pool_type, result)
+        pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
 
         signature_code = await data_manager.get_signature(uid, ev.bot_id)
         if not signature_code:
@@ -221,23 +269,25 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
                 signature_code = ""
         daily_count = await data_manager.get_daily_count(uid, ev.bot_id, pool_type)
 
-        pool_name = pool["name"] if "name" in pool else "活动研发"
-        _ai_return_draw_results(results, pool_name)
-        image = await render_gacha_result(
-            results,
-            pool_name,
-            signature_code,
-            count,
-            avatar_path=avatar,
-            daily_count=daily_count,
-            owned_names=owned_names,
-        )
-        if image is not None:
-            await bot.send(MessageSegment.image(image))
-        elif GachaSimConfig.get_config("PGRGachaTextFallback").data:
-            await bot.send(format_text_result(results, pool_name, signature_code), bool(ev.group_id))
-        else:
-            await bot.send("图片渲染失败", bool(ev.group_id))
+    pool_name = pool["name"] if "name" in pool else "活动研发"
+    _ai_return_draw_results(results, pool_name)
+    image = await render_gacha_result(
+        results,
+        pool_name,
+        signature_code,
+        count,
+        avatar_path=avatar,
+        daily_count=daily_count,
+        owned_names=owned_names,
+        up_count=pity["up_count"],
+        since_up=pity["since_up"],
+    )
+    if image is not None:
+        await bot.send(MessageSegment.image(image))
+    elif GachaSimConfig.get_config("PGRGachaTextFallback").data:
+        await bot.send(format_text_result(results, pool_name, signature_code), bool(ev.group_id))
+    else:
+        await bot.send("图片渲染失败", bool(ev.group_id))
 
 
 async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
@@ -277,6 +327,9 @@ async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
         lines.append(f"{index}. {label}")
     lines.append("60 秒内回复编号选择卡池后开始抽卡~")
 
+    # 清掉上一次交互超时残留的回复，否则会被本次 receive_resp 立刻吃掉
+    bot.resp.clear()
+    resp = None
     try:
         resp = await bot.receive_resp(
             "\n".join(lines),
@@ -286,11 +339,19 @@ async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
             command_tips="回复编号或名称选择：",
             at_sender=at_sender,
         )
+    except asyncio.CancelledError:
+        # 取消也会留下未消费的回复，不清掉下次抽卡会误吃
+        bot.resp.clear()
+        raise
     except Exception as error:
         logger.warning(f"[战双·模拟抽卡] 等待选池回复异常: {error}")
         return ""
+    finally:
+        if resp is not None:
+            bot.resp.clear()
 
     if resp is None:
+        bot.resp.clear()
         await bot.send("超时未选择，已取消本次抽卡~", at_sender)
         return ""
 
@@ -303,10 +364,16 @@ async def _ask_up_pool_choice(bot: Bot, ev: Event) -> str | None:
     for pool_id, label in options:
         if text == label:
             return pool_id
-    for pool_id, label in options:
-        if text in label:
-            return pool_id
-    await bot.send(f"未识别选择 '{text}'，已取消本次抽卡~", at_sender)
+    candidates = [label for _, label in options if text and text in label]
+    if len(candidates) == 1:
+        return next(pool_id for pool_id, label in options if label == candidates[0])
+    if candidates:
+        # 交互已结束不会再等二次输入，所以提示必须给出可直接复述的完整名称
+        tips = "\n".join(f"· {label}" for label in candidates)
+        await bot.send(f"'{text}' 可能指多个卡池，请回复完整卡池名称重试：\n{tips}", at_sender)
+        return ""
+    reply = f"未识别选择 '{text}'，已取消本次抽卡~" if text else "未收到有效选择，已取消本次抽卡~"
+    await bot.send(reply, at_sender)
     return ""
 
 
@@ -494,10 +561,6 @@ async def draw_bailian_support(bot: Bot, ev: Event) -> None:
     await _do_bailian(bot, ev, "support_unit", version)
 
 
-def _is_official_bot(ev: Event) -> bool:
-    return "official" in ev.bot_id.lower()
-
-
 async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "") -> None:
     if not GachaSimConfig.get_config("PGRGachaEnabled").data:
         await bot.send("模拟抽卡功能已关闭", bool(ev.group_id))
@@ -533,28 +596,31 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
     uid = ev.user_id
     at_sender = bool(ev.group_id)
     pool_name = pool["name"] if "name" in pool else "活动研发"
-    avatar = await data_manager.get_avatar(uid)
 
     async with _UserLock(uid):
         if not await _check_daily_limit(bot, ev, pool_type, 100):
             return
         # 次数校验通过后再发提示，避免超限时先收到「开始」再收到拒绝
         await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
-        pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
-        all_results: list[list[GachaResult]] = []
-        for _ in range(10):
-            all_results.append(gacha_service.perform_draw(pool, pool_manager.get_data(), pity, 10))
-        await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
-        await data_manager.add_daily_count(uid, ev.bot_id, pool_type, 100)
-        # 在写入本次记录前查询已拥有角色（用于重复转碎片判定）
-        owned_names = await data_manager.get_owned_names(uid, ev.bot_id)
-        high_results = [
-            result
-            for results in all_results
-            for result in results
-            if result["level"] >= 4
-        ]
-        await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high_results)
+
+        async def _bailian_once() -> list[GachaResult]:
+            async with gacha_write_transaction():
+                draw_pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
+                batched: list[list[GachaResult]] = []
+                for _ in range(10):
+                    batched.append(gacha_service.perform_draw(pool, pool_manager.get_data(), draw_pity, 10))
+                await data_manager.save_pity_data(uid, ev.bot_id, pool_type, draw_pity)
+                await data_manager.add_daily_count(uid, ev.bot_id, pool_type, 100)
+                high = [result for results in batched for result in results if result["level"] >= 4]
+                await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high)
+                return [result for results in batched for result in results]
+
+        try:
+            flat_results = await _run_write_transaction(_bailian_once)
+        except (WriteGateTimeout, DatabaseWriteTimeout, TransientTransactionError, IntegrityError) as error:
+            logger.warning(f"[战双·模拟抽卡] 百连写库失败，已回滚: {error}")
+            await bot.send("数据库繁忙，本次抽卡未生效，请稍后重试", at_sender)
+            return
 
         signature_code = await data_manager.get_signature(uid, ev.bot_id)
         if not signature_code:
@@ -565,47 +631,67 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
                 signature_code = ""
         daily_count = await data_manager.get_daily_count(uid, ev.bot_id, pool_type)
 
-        bg_base64 = _get_bg_base64()
+    # owned_names 与 pity 用渲染前的快照，百连各图重复判定共享同一份历史拥有集合
+    owned_names = await data_manager.get_owned_names(uid, ev.bot_id)
+    pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
+    _ai_return_draw_results(flat_results, f"{pool_name} 百连")
+
+    # 百连展示方式由控制台开关决定：协议端开启后发 10 张十连图并合并转发；
+    # 官方机器人保持关闭，只发单张汇总图，避免刷屏
+    if GachaSimConfig.get_config("PGRGachaBailianMerge").data:
+        avatar = await data_manager.get_avatar(uid)
         avatar_b64 = _image_to_base64(avatar) if avatar is not None else ""
+        bg_base64 = _get_bg_base64()
+        # 每 10 抽切一张图，与「十连图」版式一致
+        chunks = [flat_results[index : index + 10] for index in range(0, len(flat_results), 10)]
         batches = [
             {
                 "pool_name": pool_name,
                 "draw_type": 10,
-                "items": _build_items(res, owned_names),
+                "items": _build_items(results, owned_names),
                 "signature_code": signature_code,
                 "avatar": avatar_b64,
                 "daily_count": daily_count,
+                "up_count": pity["up_count"],
+                "since_up": pity["since_up"],
                 "background": bg_base64,
             }
-            for res in all_results
+            for results in chunks
         ]
         images = await render_gacha_results_batch(batches)
-
-        if not images:
-            high = [result for results in all_results for result in results if result["level"] >= 5]
-            if high:
-                lines = [f"【{pool_name} 百连】高稀有度："]
-                for result in high[:30]:
-                    up_tag = " [UP]" if result["is_up"] else ""
-                    rarity_text = _format_rarity(str(result["level"]))
-                    lines.append(f"{rarity_text} {result['name']}{up_tag}")
-                await bot.send("\n".join(lines), at_sender)
-            else:
-                await bot.send("百连渲染失败，请稍后重试", at_sender)
+        # 缺一张就不发合并转发：凑不齐的转发会变成单条图，语义上误导用户
+        if batches and len(images) == len(batches) and all(image is not None for image in images):
+            nodes = [MessageSegment.image(image) for image in images if image is not None]
+            await bot.send(MessageSegment.node(nodes))
             return
+        logger.warning("[战双·模拟抽卡] 百连合并转发有图缺失，回退汇总图")
 
-        if len(images) == 1:
-            await bot.send(MessageSegment.image(images[0]))
-        elif GachaSimConfig.get_config("PGRGachaBailianMerge").data and not _is_official_bot(ev):
-            await bot.send(MessageSegment.node([MessageSegment.image(image) for image in images]))
+    image = await render_bailian_summary(
+        _build_items(flat_results, owned_names),
+        pool_name,
+        signature_code,
+        daily_count,
+        pity["up_count"],
+        pity["since_up"],
+    )
+
+    if image is None:
+        high = [result for result in flat_results if result["level"] >= 5]
+        lines = [
+            f"【{pool_name} 百连】6★UP ×{pity['up_count']} · 距上次 UP {pity['since_up']} 抽",
+        ]
+        if high:
+            lines.append("高稀有度：")
+            for result in high[:30]:
+                up_tag = " [UP]" if result["is_up"] and result["level"] >= 6 else ""
+                rarity_text = _format_rarity(str(result["level"]))
+                lines.append(f"{rarity_text} {result['name']}{up_tag} · 第{result['pity_count']}抽")
         else:
-            # 官机不支持合并转发且单条限4图，分批按间隔发送
-            batch_size = 4 if _is_official_bot(ev) else 10
-            for start in range(0, len(images), batch_size):
-                batch = [MessageSegment.image(image) for image in images[start : start + batch_size]]
-                await bot.send(batch)
-                if _is_official_bot(ev):
-                    await asyncio.sleep(0.8)
+            lines.append("本次百连未出现 5★ 及以上")
+        await bot.send("\n".join(lines), at_sender)
+        return
+
+    await bot.send(MessageSegment.image(image))
 
 
 @sv_gacha.on_fullmatch(("抽卡百连", "战双抽卡百连"), block=True)
@@ -714,10 +800,15 @@ async def _switch_pool(bot: Bot, ev: Event) -> None:
                 selected_id = option_id
                 break
         if not selected_id:
-            for option_id, label in options:
-                if text in label:
-                    selected_id = option_id
-                    break
+            # 多个候选时不猜，列出候选让用户用编号重选，避免误命中别的池
+            candidates = [(index, label) for index, (_, label) in enumerate(options, 1) if text and text in label]
+            if len(candidates) > 1:
+                lines = [f"'{text}' 匹配到多个卡池，请用编号选择："]
+                lines.extend(f"{index}. {label}" for index, label in candidates)
+                await bot.send("\n".join(lines), at_sender)
+                return
+            if candidates:
+                selected_id = options[candidates[0][0] - 1][0]
 
     if not selected_id:
         await bot.send(f"未找到匹配 '{text}' 的卡池，请检查后重试~", at_sender)
@@ -812,7 +903,7 @@ async def update_pools(bot: Bot, ev: Event) -> None:
     await bot.send("正在从官方公告更新当期卡池...", at_sender)
     try:
         names = await update_current_pools()
-    except (HTTPError, OSError, ValueError, KeyError) as error:
+    except (HTTPError, OSError, ValueError, KeyError, TypeError) as error:
         logger.error(f"[战双·模拟抽卡] 更新卡池失败: {error}")
         await bot.send(f"更新卡池失败: {error}", at_sender)
         return
@@ -848,7 +939,7 @@ async def draw_record(bot: Bot, ev: Event) -> None:
 
     lines = [f"共 {len(records)} 条高稀有度记录："]
     for record in records[:20]:
-        up_tag = " [UP]" if record["is_up"] else ""
+        up_tag = " [UP]" if record["is_up"] and str(record["rarity"]) == "6" else ""
         rarity_str = str(record["rarity"])
         rarity_text = _format_rarity(rarity_str)
         pity_num = record["pity_count"]
@@ -895,7 +986,12 @@ async def bind_signature(bot: Bot, ev: Event) -> None:
             await bot.send("该特征码已被其他用户绑定，请更换一个~", at_sender)
         return
 
-    await data_manager.set_signature(uid, ev.bot_id, user_input)
+    try:
+        await data_manager.set_signature(uid, ev.bot_id, user_input)
+    except IntegrityError:
+        # 查重与写入之间被人抢绑，unique 兜底，别让异常穿透成静默无响应
+        await bot.send("该特征码刚被其他用户抢绑，请更换一个~", at_sender)
+        return
     await bot.send(f"特征码绑定成功！\n你的特征码: {user_input}", at_sender)
 
 
@@ -936,7 +1032,10 @@ async def query_pity(bot: Bot, ev: Event) -> None:
     lines = ["【指挥官·研发保底进度】"]
     for p in pities:
         name = pool_name_map.get(p.pool_type, p.pool_type)
-        status_line = f"• {name}：当前已垫 {p.current_count} 抽（总抽数 {p.total_count}）"
+        status_line = (
+            f"• {name}：当前已垫 {p.current_count} 抽"
+            f"（总抽数 {p.total_count} ｜ 6★UP ×{p.up_count} ｜ 距上次 UP {p.since_up} 抽）"
+        )
         if p.guaranteed_up:
             status_line += " [大保底已就绪]"
         lines.append(status_line)
@@ -1014,11 +1113,12 @@ async def _scheduled_sync_pools() -> None:
     try:
         updated = await update_current_pools()
         if updated:
-            pool_manager.reload()
+            # reload 已由 update_current_pools 内部完成，这里不再重复读盘
             logger.info("[战双·模拟抽卡] 每日卡池自动同步成功")
         else:
             logger.info("[战双·模拟抽卡] 每日卡池检查完成，暂无更新")
-    except (HTTPError, OSError, ValueError) as e:
+    # JSON 结构变化会抛 KeyError/TypeError，漏掉就等于定时任务天天静默崩
+    except (HTTPError, OSError, ValueError, KeyError, TypeError) as e:
         logger.error(f"[战双·模拟抽卡] 每日卡池自动同步异常: {e}")
 
 

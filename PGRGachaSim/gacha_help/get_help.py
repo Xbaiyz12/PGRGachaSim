@@ -2,14 +2,14 @@
 
 import json
 from copy import deepcopy
-from pathlib import Path
 from typing import Dict
+from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.sv import get_plugin_available_prefix
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_new_plugin_help import get_new_help
-from gsuid_core.sv import get_plugin_available_prefix
 
 from ..version import PGRGachaSim_version
 
@@ -18,9 +18,7 @@ HELP_DATA = Path(__file__).parent / "help.json"
 ICON_PATH = Path(__file__).parent / "icon_path"
 
 # 复用 PGRUID 的 banner 与背景素材（存在时），保持与战双插件一致的风格
-PGRUID_HELP_PATH = (
-    Path(__file__).parent.parent.parent.parent / "PGRUID" / "PGRUID" / "pgr_help"
-)
+PGRUID_HELP_PATH = Path(__file__).parent.parent.parent.parent / "PGRUID" / "PGRUID" / "pgr_help"
 
 
 def get_help_data() -> Dict[str, PluginHelp]:
@@ -56,14 +54,9 @@ async def get_help(pm: int = 6):
         group["data"] = [
             entry
             for entry in group.get("data", [])
-            if isinstance(entry, dict)
-            and (safe_pm == 0 or not entry.get("need_admin"))
+            if isinstance(entry, dict) and (safe_pm == 0 or not entry.get("need_admin"))
         ]
-    help_data = {
-        name: group
-        for name, group in help_data.items()
-        if isinstance(group, dict) and group.get("data")
-    }
+    help_data = {name: group for name, group in help_data.items() if isinstance(group, dict) and group.get("data")}
 
     if ICON.exists():
         plugin_icon = _to_circle_icon(Image.open(ICON))

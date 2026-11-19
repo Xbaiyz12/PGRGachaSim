@@ -4,6 +4,7 @@ import os
 import re
 import json
 import uuid
+import asyncio
 from pathlib import Path
 
 import httpx
@@ -19,6 +20,9 @@ IOS_UA = (
 )
 ANN_LIST_URL = "https://api.kurobbs.com/forum/companyEvent/findEventList"
 ANN_DETAIL_URL = "https://api.kurobbs.com/forum/getPostDetail"
+
+# 手动「更新卡池」与 4:00 定时任务会并发读改写同一份 json，必须互斥
+_UPDATE_LOCK = asyncio.Lock()
 
 
 def _headers() -> dict[str, str]:
@@ -141,6 +145,11 @@ def _write_user_data(raw: dict[str, object]) -> None:
 
 async def update_current_pools() -> list[str]:
     """拉公告更新当期 UP，返回实际写入的 UP 角色名"""
+    async with _UPDATE_LOCK:
+        return await _update_current_pools_locked()
+
+
+async def _update_current_pools_locked() -> list[str]:
     raw = _read_data()
     chars_node = raw["characters"] if "characters" in raw and isinstance(raw["characters"], dict) else {}
     s_items = chars_node["S"] if "S" in chars_node and isinstance(chars_node["S"], list) else []

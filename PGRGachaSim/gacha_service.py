@@ -21,6 +21,12 @@ class GachaResult(TypedDict):
     is_up: bool
     pity_count: int
     shards_icon: str
+    position: int
+
+
+def _roll_memory_position() -> int:
+    """意识随机 1~6 号位置，在抽卡时定死，避免同批多图渲染出不同位置"""
+    return random.randint(1, 6)
 
 
 class PityData(TypedDict):
@@ -28,6 +34,8 @@ class PityData(TypedDict):
     sub_count: int
     guaranteed_up: bool
     total_count: int
+    up_count: int
+    since_up: int
 
 
 class PoolData(TypedDict, total=False):
@@ -38,10 +46,8 @@ class PoolData(TypedDict, total=False):
     total: int
     weights: dict[str, float]
     up_s: list[str]
-    up_a: list[str]
     up_w6: list[str]
     up_rate_s: float
-    up_rate_a: float
     up_rate_w6: float
 
 
@@ -64,7 +70,14 @@ class GachaData(TypedDict):
 
 
 def empty_pity() -> PityData:
-    return PityData(current_count=0, sub_count=0, guaranteed_up=False, total_count=0)
+    return PityData(
+        current_count=0,
+        sub_count=0,
+        guaranteed_up=False,
+        total_count=0,
+        up_count=0,
+        since_up=0,
+    )
 
 
 def _weighted_choice(weights: list[tuple[str, float]]) -> str:
@@ -106,6 +119,7 @@ class GachaService:
         pity_count: int,
         use_shards: bool = False,
         amount: int = 1,
+        position: int = 0,
     ) -> GachaResult:
         if item is None:
             return GachaResult(
@@ -118,6 +132,7 @@ class GachaService:
                 is_up=is_up,
                 pity_count=pity_count,
                 shards_icon="",
+                position=position,
             )
         name = _item_str(item, "name") or "未知"
         shards_icon = _item_str(item, "shardsIcon")
@@ -139,6 +154,7 @@ class GachaService:
             is_up=is_up,
             pity_count=pity_count,
             shards_icon=shards_icon,
+            position=position,
         )
 
     def _pick_up(
@@ -170,6 +186,12 @@ class GachaService:
         else:
             results = self._draw_char(pool, data, pity, count)
         pity["total_count"] += count
+        # UP 记录：每抽 +1，抽出 6★ UP 时累计次数并归零重计
+        for result in results:
+            pity["since_up"] += 1
+            if result["is_up"] and result["level"] >= 6:
+                pity["up_count"] += 1
+                pity["since_up"] = 0
         return results
 
     def _draw_char(
@@ -214,14 +236,11 @@ class GachaService:
         pity_s = pool["total"] if "total" in pool else (100 if is_fate else 60)
         pity_a = 10
         up_rate_s = pool["up_rate_s"] if "up_rate_s" in pool else 100.0
-        up_rate_a = pool["up_rate_a"] if "up_rate_a" in pool else 80.0
         up_s = pool["up_s"] if "up_s" in pool else []
-        up_a = pool["up_a"] if "up_a" in pool else []
 
         standard_names = set(data["standard_s"]) if "standard_s" in data else set()
         standard_items = [item for item in s_list if _item_str(item, "name") in standard_names] or s_list
         up_items = [item for item in s_list if _item_str(item, "name") in up_s]
-        a_up_items = [item for item in a_list if _item_str(item, "name") in up_a]
 
         for _ in range(count):
             current += 1
@@ -263,8 +282,8 @@ class GachaService:
 
             # 未出S时检查 A 级次级保底
             if sub >= pity_a or prize_type == "A":
-                item, is_up, _ = self._pick_up(a_up_items, a_list, up_rate_a, False)
-                results.append(self._make_result(item, 5, "character", is_up, sub))
+                item = self._pick(a_list)
+                results.append(self._make_result(item, 5, "character", False, sub))
                 sub = 0
                 continue
 
@@ -290,7 +309,8 @@ class GachaService:
             elif prize_type == "memory":
                 mem_list = materials["memories4"] if "memories4" in materials else []
                 item = self._pick(mem_list)
-                results.append(self._make_result(item, 4, "material", False, 0))
+                position = _roll_memory_position() if item is not None and _item_str(item, "figure") else 0
+                results.append(self._make_result(item, 4, "material", False, 0, position=position))
             elif prize_type == "overclock":
                 oc_list = materials["overClock"] if "overClock" in materials else []
                 item = self._pick(oc_list)
@@ -338,13 +358,10 @@ class GachaService:
         pity_a = 10
         # UP 率从卡池配置读取，缺省时回退到 80
         up_rate_s = pool["up_rate_s"] if "up_rate_s" in pool else 80.0
-        up_rate_a = pool["up_rate_a"] if "up_rate_a" in pool else 80.0
         s_items = support["S"] if "S" in support else []
         a_items = support["A"] if "A" in support else []
         up_s = pool["up_s"] if "up_s" in pool else []
-        up_a = pool["up_a"] if "up_a" in pool else []
         up_s_items = [entry for entry in s_items if _item_str(entry, "name") in up_s]
-        up_a_items = [entry for entry in a_items if _item_str(entry, "name") in up_a]
 
         for _ in range(count):
             current += 1
@@ -370,8 +387,8 @@ class GachaService:
 
             # 次级 A 级保底或自然出 A
             if sub >= pity_a or prize_type == "A":
-                item, is_up, _ = self._pick_up(up_a_items, a_items, up_rate_a, False)
-                results.append(self._make_result(item, 5, "support", is_up, sub))
+                item = self._pick(a_items)
+                results.append(self._make_result(item, 5, "support", False, sub))
                 sub = 0
                 continue
 

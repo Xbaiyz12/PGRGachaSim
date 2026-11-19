@@ -11,11 +11,11 @@ column。这里配合 @on_core_start（reload 会重跑本插件该钩子）兜�
 
 实现与 PGRUID 的 auto_migrate.py 保持一致。
 """
+
 from typing import List, Optional
 
 from sqlmodel import SQLModel
-from sqlalchemy import text
-from sqlalchemy import inspect as sa_inspect
+from sqlalchemy import text, inspect as sa_inspect
 
 from gsuid_core.logger import logger
 from gsuid_core.utils.database import base_models
@@ -44,11 +44,7 @@ def _plugin_tables(module_name: str) -> List:
             continue
         if (cls.__module__ or "").startswith(prefix):
             names.add(table.name)
-    return [
-        SQLModel.metadata.tables[name]
-        for name in names
-        if name in SQLModel.metadata.tables
-    ]
+    return [SQLModel.metadata.tables[name] for name in names if name in SQLModel.metadata.tables]
 
 
 def _default_clause(column) -> Optional[str]:

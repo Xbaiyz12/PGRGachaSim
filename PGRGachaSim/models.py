@@ -1,8 +1,10 @@
 """战双模拟抽卡 - 数据库模型"""
 
 import time
+from typing import AsyncIterator
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from contextlib import asynccontextmanager
 
 from sqlmodel import Field, col, select, update
 from sqlalchemy import Index, UniqueConstraint, func
@@ -11,11 +13,27 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from gsuid_core.server import on_core_start
 from gsuid_core.webconsole.mount_app import PageSchema, GsAdminModel, site
-from gsuid_core.utils.database.base_models import BaseIDModel, with_session, with_read_session
+from gsuid_core.utils.database.base_models import (
+    BaseIDModel,
+    with_session,
+    with_read_session,
+    write_transaction,
+    sqlite_gated_write,
+)
 
 from .auto_migrate import auto_add_missing_columns
 
 _BEIJING = ZoneInfo("Asia/Shanghai")
+
+# 保底 / 日限 / 记录三次写必须同进同退，否则会出现垫抽没存或日限扣了记录没写
+GACHA_TX_LABEL = "pgr_gacha_draw"
+
+
+@asynccontextmanager
+async def gacha_write_transaction() -> AsyncIterator[None]:
+    async with sqlite_gated_write(GACHA_TX_LABEL):
+        async with write_transaction(GACHA_TX_LABEL):
+            yield
 
 
 class PGRGachaPity(BaseIDModel, table=True):
@@ -33,6 +51,8 @@ class PGRGachaPity(BaseIDModel, table=True):
     sub_count: int = Field(default=0, title="次级保底计数")
     guaranteed_up: bool = Field(default=False, title="大保底")
     total_count: int = Field(default=0, title="总抽数")
+    up_count: int = Field(default=0, title="UP 出货次数")
+    since_up: int = Field(default=0, title="距上次 UP 抽数")
 
     @classmethod
     @with_read_session
@@ -79,11 +99,17 @@ class PGRGachaPity(BaseIDModel, table=True):
         conds = [col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""])]
         if pool_type:
             conds.append(col(cls.pool_type) == pool_type)
-        stmt = update(cls).where(*conds).values(
-            current_count=0,
-            sub_count=0,
-            guaranteed_up=False,
-            total_count=0,
+        stmt = (
+            update(cls)
+            .where(*conds)
+            .values(
+                current_count=0,
+                sub_count=0,
+                guaranteed_up=False,
+                total_count=0,
+                up_count=0,
+                since_up=0,
+            )
         )
         result = await session.execute(stmt)
         return result.rowcount if isinstance(result, CursorResult) else 0
@@ -100,12 +126,16 @@ class PGRGachaPity(BaseIDModel, table=True):
         sub_count: int,
         guaranteed_up: bool,
         total_count: int,
+        up_count: int,
+        since_up: int,
     ) -> None:
         values = {
             "current_count": current_count,
             "sub_count": sub_count,
             "guaranteed_up": guaranteed_up,
             "total_count": total_count,
+            "up_count": up_count,
+            "since_up": since_up,
         }
         stmt = (
             update(cls)
@@ -141,6 +171,8 @@ class PGRGachaPity(BaseIDModel, table=True):
                 sub_count=sub_count,
                 guaranteed_up=guaranteed_up,
                 total_count=total_count,
+                up_count=up_count,
+                since_up=since_up,
             )
         )
 
@@ -234,8 +266,53 @@ class PGRGachaRecord(BaseIDModel, table=True):
     ) -> list["PGRGachaRecord"]:
         stmt = (
             select(cls)
-            .where(col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""]))
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+                col(cls.rarity).in_(["5", "6"]),
+            )
             .order_by(col(cls.created_at).desc())
+            .limit(limit)
+        )
+        result = await session.execute(stmt)
+        return list(result.scalars().all())
+
+    @classmethod
+    @with_read_session
+    async def get_rarity_stats(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+        bot_id: str,
+    ) -> list[tuple[str, int, int]]:
+        """按稀有度聚合 (rarity, 数量, pity_count 合计)，避免把整张表读进内存"""
+        stmt = (
+            select(col(cls.rarity), func.count(), func.sum(col(cls.pity_count)))
+            .where(col(cls.user_id) == user_id, col(cls.bot_id).in_([bot_id, ""]))
+            .group_by(col(cls.rarity))
+        )
+        result = await session.execute(stmt)
+        return [(str(row[0]), int(row[1] or 0), int(row[2] or 0)) for row in result.all()]
+
+    @classmethod
+    @with_read_session
+    async def get_recent_by_rarity(
+        cls,
+        session: AsyncSession,
+        user_id: str,
+        bot_id: str,
+        rarity: str,
+        limit: int = 5,
+    ) -> list["PGRGachaRecord"]:
+        stmt = (
+            select(cls)
+            .where(
+                col(cls.user_id) == user_id,
+                col(cls.bot_id).in_([bot_id, ""]),
+                col(cls.rarity) == rarity,
+            )
+            # 同秒写入的多条记录仅靠时间排序不稳定，用自增 id 兜底
+            .order_by(col(cls.created_at).desc(), col(cls.id).desc())
             .limit(limit)
         )
         result = await session.execute(stmt)

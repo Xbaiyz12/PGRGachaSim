@@ -17,3 +17,6 @@ data/
 # 系统
 .DS_Store
 Thumbs.db
+
+# 本地交接文档（渲染样例与说明，不随插件发布）
+plans/

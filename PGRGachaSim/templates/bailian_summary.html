@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>{{ pool_name }} · 百连汇总</title>
+<style>
+    :root {
+        --bg: #070b14;
+        --text: #eef2f8;
+        --dim: rgba(230, 236, 245, 0.55);
+        --gold: #e8a642;
+        --line: rgba(120, 160, 220, 0.18);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: var(--bg);
+        font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    .container {
+        position: relative;
+        width: 2000px;
+        background:
+            radial-gradient(ellipse at 50% -10%, rgba(90, 140, 220, 0.22), transparent 55%),
+            linear-gradient(160deg, #070b14 0%, #0d1526 52%, #070b14 100%);
+    }
+
+    .title {
+        position: absolute;
+        left: 64px;
+        top: 44px;
+        color: var(--text);
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: 6px;
+    }
+
+    .stats {
+        position: absolute;
+        right: 64px;
+        top: 58px;
+        color: var(--dim);
+        font-size: 21px;
+        letter-spacing: 2px;
+        text-align: right;
+    }
+
+    .divider {
+        position: absolute;
+        left: 64px;
+        right: 64px;
+        top: 120px;
+        height: 1px;
+        background: var(--line);
+    }
+
+    .chip {
+        position: absolute;
+        top: 152px;
+        height: 54px;
+        padding: 0 24px;
+        line-height: 52px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(28, 42, 70, 0.35);
+        color: var(--text);
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+    .chip span { color: var(--gold); }
+
+    .section {
+        position: absolute;
+        left: 64px;
+        top: 236px;
+        color: var(--text);
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 4px;
+    }
+
+    .empty {
+        position: absolute;
+        left: 64px;
+        top: 292px;
+        color: var(--dim);
+        font-size: 24px;
+        letter-spacing: 2px;
+    }
+
+    .card {
+        position: absolute;
+        width: 462px;
+        height: 150px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, rgba(28, 42, 70, 0.85), rgba(10, 16, 30, 0.95));
+        border: 1px solid var(--line);
+    }
+    .card.is-up { border-color: rgba(216, 110, 96, 0.75); }
+
+    .ci {
+        position: absolute;
+        left: 16px;
+        top: 25px;
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    .cname {
+        position: absolute;
+        left: 132px;
+        top: 34px;
+        width: 310px;
+        color: var(--text);
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 34px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cmeta {
+        position: absolute;
+        left: 132px;
+        top: 76px;
+        width: 310px;
+        color: var(--dim);
+        font-size: 20px;
+        line-height: 28px;
+        white-space: nowrap;
+    }
+
+    .up {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 6px;
+        background: rgba(200, 52, 44, 0.9);
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: rgba(230, 236, 245, 0.32);
+        font-size: 19px;
+        letter-spacing: 2px;
+    }
+</style>
+</head>
+<body>
+{% set high_count = high | length %}
+{% set rows = ((high_count + 3) // 4) if high_count > 0 else 0 %}
+{% set cards_h = (rows * 170 - 20) if rows > 0 else 110 %}
+{% set footer_y = 300 + cards_h + 40 %}
+    <div class="container" style="height: {{ footer_y + 80 }}px;">
+        <div class="title">{{ pool_name }} · 百连汇总</div>
+        <div class="stats">6★UP ×{{ up_count }} ｜ 距上次 UP {{ since_up }} 抽 ｜ 今日 {{ daily_count }} 抽</div>
+        <div class="divider"></div>
+
+        <div class="chip" style="left: 64px;">共 <span>{{ total }}</span> 抽</div>
+        <div class="chip" style="left: 276px;">6★ <span>×{{ counts["6"] }}</span></div>
+        <div class="chip" style="left: 472px;">5★ <span>×{{ counts["5"] }}</span></div>
+        <div class="chip" style="left: 668px;">4★ <span>×{{ counts["4"] }}</span></div>
+        <div class="chip" style="left: 864px;">其他 <span>×{{ counts["3"] }}</span></div>
+
+        <div class="section">5★ 及以上</div>
+        {% if high_count == 0 %}
+        <div class="empty">本次百连未出现 5★ 及以上</div>
+        {% endif %}
+        {% for item in high %}
+        <div class="card{% if item.is_up and item.level >= 6 %} is-up{% endif %}" style="left: {{ 64 + (loop.index0 % 4) * 482 }}px; top: {{ 288 + (loop.index0 // 4) * 170 }}px;">
+            {% if item.icon %}<img class="ci" src="{{ item.icon }}" alt="{{ item.name }}" onerror="this.style.display='none'">{% endif %}
+            {% if item.is_up and item.level >= 6 %}<div class="up">UP</div>{% endif %}
+            <div class="cname">{{ item.name }}</div>
+            <div class="cmeta">第 {{ item.pity_count }} 抽 · {{ item.level }}★{% if item.duplicate %} · 转碎片×{{ item.shard_amount }}{% endif %}</div>
+        </div>
+        {% endfor %}
+
+        <div class="footer" style="top: {{ footer_y }}px;">详细出货记录见「抽卡记录」 · {{ signature_code }} · PGRGachaSim</div>
+    </div>
+</body>
+</html>

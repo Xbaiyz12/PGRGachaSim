@@ -342,34 +342,34 @@
     .mini-card {
         position: absolute;
         left: 50%;
-        bottom: 56px;
+        bottom: 46px;
         transform: translateX(-50%);
-        width: 74px;
-        height: 74px;
-        background: linear-gradient(160deg, #2b3242 0%, #171b26 100%);
-        border: 1px solid rgba(216, 185, 136, 0.55);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 56px;
+        height: 56px;
+        background: rgba(10, 14, 22, 0.35);
+        border: 1px solid rgba(216, 185, 136, 0.45);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
         z-index: 5;
     }
     .mini-card img {
-        width: 62px;
-        height: 62px;
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        width: 46px;
+        height: 46px;
         object-fit: contain;
     }
     .pos-badge {
         position: absolute;
-        left: -7px;
-        top: -7px;
-        min-width: 24px;
-        height: 24px;
-        line-height: 24px;
+        left: -6px;
+        top: -6px;
+        min-width: 20px;
+        height: 20px;
+        line-height: 20px;
         padding: 0 4px;
         background: #c8342c;
         color: #fff;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 800;
         text-align: center;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
@@ -388,7 +388,7 @@
         <div class="topbar">
             <div class="pool-name">{{ pool_name }}</div>
             {% if avatar %}<img class="avatar" src="{{ avatar }}" alt="" onerror="this.style.display='none'">{% endif %}
-            <div class="daily"{% if avatar %} style="right: 118px;"{% endif %}>今日已抽 {{ daily_count }} 次</div>
+            <div class="daily"{% if avatar %} style="right: 118px;"{% endif %}>6★UP ×{{ up_count }} ｜ 距上次 UP {{ since_up }} 抽 ｜ 今日 {{ daily_count }} 抽</div>
         </div>
 
         <div class="strips">
@@ -397,7 +397,7 @@
             {% elif item.level == 5 %}{% set rc = 'rs' %}
             {% elif item.level == 4 %}{% set rc = 'ra' %}
             {% else %}{% set rc = 'rb' %}{% endif %}
-            <div class="strip {{ rc }}{% if item.duplicate %} dup{% endif %}">
+            <div class="strip {{ rc }}">
                 <div class="art">
                     {% if item.figure and item.category != 'fragment' %}
                     <img class="figure" src="{{ item.figure }}" alt="{{ item.name }}" onerror="this.style.display='none'">
@@ -416,7 +416,7 @@
                     {% if item.position %}<div class="pos-badge">{{ '%02d' % item.position }}</div>{% endif %}
                 </div>
                 {% endif %}
-                {% if item.is_up and not item.duplicate %}<div class="up">UP</div>{% endif %}
+                {% if item.is_up and item.level >= 6 and not item.duplicate %}<div class="up">UP</div>{% endif %}
                 {% if item.category != 'fragment' and item.amount > 1 %}<div class="count">x{{ item.amount }}</div>{% endif %}
                 <div class="name">{{ item.name }}{% if item.duplicate %}碎片{% elif item.position %}·{{ {1: '左', 2: '中', 3: '右', 4: '左', 5: '中', 6: '右'}[item.position] }}{% endif %}</div>
             </div>

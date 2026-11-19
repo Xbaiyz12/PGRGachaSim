@@ -1,7 +1,7 @@
 """战双模拟抽卡 - 数据管理层"""
 
-import random
 import time as time_module
+import random
 from typing import Literal, TypedDict
 from pathlib import Path
 from datetime import time, datetime, timedelta
@@ -12,7 +12,13 @@ from sqlalchemy.exc import IntegrityError
 
 from gsuid_core.logger import logger
 
-from .models import PGRGachaPity, PGRGachaPool, PGRGachaDaily, PGRGachaRecord, PGRGachaSignature
+from .models import (
+    PGRGachaPity,
+    PGRGachaPool,
+    PGRGachaDaily,
+    PGRGachaRecord,
+    PGRGachaSignature,
+)
 from .gacha_config import GACHA_SIM_MAIN_PATH
 from .gacha_service import PityData, GachaResult, empty_pity
 
@@ -21,6 +27,20 @@ _BEIJING = ZoneInfo("Asia/Shanghai")
 # 头像下载失败的内存负缓存（user_id -> 失败时间戳），避免每次抽卡都重试远程
 _AVATAR_FAIL_CACHE: dict[str, float] = {}
 _AVATAR_FAIL_TTL = 300.0  # 5 分钟内不重试
+_AVATAR_FAIL_CACHE_MAX = 2048
+
+
+def _purge_avatar_fail_cache(now: float) -> None:
+    """过期项优先清；仍超额时按时间戳丢掉最旧的一半，防止长期运行无限增长"""
+    expired = [key for key, ts in _AVATAR_FAIL_CACHE.items() if now - ts >= _AVATAR_FAIL_TTL]
+    for key in expired:
+        _AVATAR_FAIL_CACHE.pop(key, None)
+    total = len(_AVATAR_FAIL_CACHE)
+    if total <= _AVATAR_FAIL_CACHE_MAX:
+        return
+    # 丢到上限的一半，避免下次插入又立刻触发一次全量排序
+    for key, _ in sorted(_AVATAR_FAIL_CACHE.items(), key=lambda item: item[1])[: total // 2]:
+        _AVATAR_FAIL_CACHE.pop(key, None)
 
 
 class RankEntry(TypedDict):
@@ -50,6 +70,8 @@ class DataManager:
             sub_count=pity.sub_count,
             guaranteed_up=pity.guaranteed_up,
             total_count=pity.total_count,
+            up_count=pity.up_count,
+            since_up=pity.since_up,
         )
 
     @staticmethod
@@ -62,6 +84,8 @@ class DataManager:
             pity["sub_count"],
             pity["guaranteed_up"],
             pity["total_count"],
+            pity["up_count"],
+            pity["since_up"],
         )
 
     @staticmethod
@@ -130,8 +154,8 @@ class DataManager:
 
     @staticmethod
     async def get_history(user_id: str, bot_id: str, limit: int = 50) -> list[dict[str, object]]:
+        # 稀有度过滤已下推到 SQL，DB 中 4★ 记录只用于重复转碎片判定、不展示
         records = await PGRGachaRecord.get_history(user_id, bot_id, limit)
-        # DB 中存有 4★ 记录（用于跨会话重复转碎片判定），但"抽卡记录"仅展示 5★/6★
         return [
             {
                 "name": record.name,
@@ -140,19 +164,25 @@ class DataManager:
                 "pity_count": record.pity_count,
             }
             for record in records
-            if record.rarity in ("5", "6")
         ]
 
     @staticmethod
     async def get_user_stats(user_id: str, bot_id: str) -> dict[str, object]:
         """统计用户的抽卡出货和欧气情况"""
         pities = await PGRGachaPity.get_all_pity(user_id, bot_id)
-        records = await PGRGachaRecord.get_user_records(user_id, bot_id)
+        stats_rows = await PGRGachaRecord.get_rarity_stats(user_id, bot_id)
         total_pulls = sum(p.total_count for p in pities)
-        s_count = sum(1 for r in records if r.rarity == "6")
-        a_count = sum(1 for r in records if r.rarity == "5")
-        s_records = [r for r in records if r.rarity == "6"]
-        avg_s_pulls = (sum(r.pity_count for r in s_records) / len(s_records)) if s_records else 0.0
+        s_count = 0
+        s_pity_sum = 0
+        a_count = 0
+        for rarity, count, pity_sum in stats_rows:
+            if rarity == "6":
+                s_count = count
+                s_pity_sum = pity_sum
+            elif rarity == "5":
+                a_count = count
+        avg_s_pulls = (s_pity_sum / s_count) if s_count else 0.0
+        latest_s = await PGRGachaRecord.get_recent_by_rarity(user_id, bot_id, "6", 5)
 
         return {
             "total_pulls": total_pulls,
@@ -160,9 +190,7 @@ class DataManager:
             "a_count": a_count,
             "avg_s_pulls": round(avg_s_pulls, 1),
             "s_rate": round(s_count / total_pulls * 100, 2) if total_pulls > 0 else 0.0,
-            "latest_s": [
-                {"name": r.name, "pity_count": r.pity_count, "is_up": r.is_up} for r in reversed(s_records[-5:])
-            ],
+            "latest_s": [{"name": r.name, "pity_count": r.pity_count, "is_up": r.is_up} for r in latest_s],
         }
 
     @staticmethod
@@ -183,17 +211,22 @@ class DataManager:
             code = str(random.randint(100000000, 999999999))
             if await PGRGachaSignature.check_code_exists(code):
                 continue
+            # 每次重试独立事务：撞 unique 时 session 已被标 rollback，必须换一条新的
             try:
                 await PGRGachaSignature.set_signature(user_id, bot_id, code)
-            except IntegrityError:
-                # 并发下撞 unique 约束（code 或 user_id+bot_id），换一个新 code 重试
+            except IntegrityError as error:
+                # 撞用户维度约束时换码重试没有意义，直接放弃，避免空转 100 次
+                if "uq_pgr_sig_bot_user" in str(error.orig):
+                    raise ValueError("该用户同时被多个 bot 写入特征码") from error
                 continue
             logger.info(f"[战双·模拟抽卡] 用户 {user_id}({bot_id}) 生成特征码: {code}")
             return code
         raise ValueError("无法生成唯一的特征码")
 
     @staticmethod
-    async def get_rank(bot_id: str, period: Literal["day", "week", "month"] = "day", limit: int = 10) -> list[RankEntry]:
+    async def get_rank(
+        bot_id: str, period: Literal["day", "week", "month"] = "day", limit: int = 10
+    ) -> list[RankEntry]:
         today = datetime.now(_BEIJING).date()
         if period == "week":
             start = today - timedelta(days=today.weekday())
@@ -219,10 +252,6 @@ class DataManager:
     async def get_avatar(user_id: str) -> Path | None:
         if not user_id.isdigit():
             return None
-        # 失败负缓存：TTL 内不再发起远程请求
-        fail_ts = _AVATAR_FAIL_CACHE.get(user_id, 0.0)
-        if fail_ts and time_module.time() - fail_ts < _AVATAR_FAIL_TTL:
-            return None
         avatar_dir = GACHA_SIM_MAIN_PATH / "avatars"
         try:
             avatar_dir.mkdir(parents=True, exist_ok=True)
@@ -230,12 +259,21 @@ class DataManager:
             logger.warning(f"[战双·模拟抽卡] 头像目录创建失败: {error}")
             return None
         dest = avatar_dir / f"{user_id}.jpg"
+        # 本地已缓存就直接用，负缓存只拦远程请求，不能连本地文件一起挡掉
         try:
             if dest.exists() and dest.stat().st_size > 0:
                 return dest
         except OSError as error:
             logger.warning(f"[战双·模拟抽卡] 头像缓存读取失败: {error}")
             return None
+        now = time_module.time()
+        fail_ts = _AVATAR_FAIL_CACHE.get(user_id)
+        if fail_ts is not None:
+            if now - fail_ts < _AVATAR_FAIL_TTL:
+                return None
+            _AVATAR_FAIL_CACHE.pop(user_id, None)
+        if len(_AVATAR_FAIL_CACHE) >= _AVATAR_FAIL_CACHE_MAX:
+            _purge_avatar_fail_cache(now)
         url = f"https://q1.qlogo.cn/g?b=qq&nk={user_id}&s=100"
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:

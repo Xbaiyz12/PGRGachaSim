@@ -44,13 +44,13 @@ GACHA_SIM_CONFIG_DEFAULT: Dict[str, GSC] = {
     ),
     "PGRGachaEnableBailian": GsBoolConfig(
         title="百连功能开关",
-        desc="开启后可用「抽卡百连」，连续 10 次十连（共 100 抽）并发送；会增加渲染压力，请谨慎开启",
+        desc="开启后可用「抽卡百连」，连续 10 次十连（共 100 抽）",
         data=False,
     ),
     "PGRGachaBailianMerge": GsBoolConfig(
         title="百连合并转发",
-        desc="百连结果使用合并转发发送（关闭则一条消息发多张图）",
-        data=True,
+        desc="仅第三方协议端可用：开启后发送 10 张十连图并合并转发；官方机器人请保持关闭，只发单张汇总图",
+        data=False,
     ),
 }
 

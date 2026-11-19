@@ -1,8 +1,10 @@
 """战双模拟抽卡 - 卡池数据加载（数据来自 BWIKI 新抽卡模拟器）"""
 
 import json
+import time
 import shutil
 import hashlib
+from typing import Callable
 from pathlib import Path
 
 from gsuid_core.logger import logger
@@ -18,6 +20,20 @@ ICON_DIR = PLUGIN_DIR / "texture2d"
 DATA_DIR = get_res_path() / "PGRGachaSim"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 USER_DATA_FILE = DATA_DIR / "gacha_data.json"
+
+_ICON_SUBDIRS = ("角色", "角色碎片", "武器", "辅助机", "材料")
+_ICON_SUFFIXES = frozenset({".png", ".jpg", ".jpeg", ".webp"})
+# 卡池数据加载失败后的重试间隔（秒）
+_LOAD_RETRY_S = 30.0
+
+# 渲染层把「换图后要清的 base64 缓存」挂进来，避免本模块反向依赖绘图模块
+_icon_reload_hooks: list[Callable[[], None]] = []
+
+
+def register_icon_reload_hook(hook: Callable[[], None]) -> None:
+    """注册 reload 时要一起清掉的缓存清理函数"""
+    if hook not in _icon_reload_hooks:
+        _icon_reload_hooks.append(hook)
 
 
 def _parse_items(raw: object) -> list[GachaItem]:
@@ -126,22 +142,18 @@ def _parse_pool(pool_id: str, raw: object) -> PoolData | None:
                 weights[str(key)] = float(value)
         if weights:
             pool["weights"] = weights
-    for key in ("up_s", "up_a", "up_w6"):
+    for key in ("up_s", "up_w6"):
         names = _parse_str_list(raw.get(key))
         if names:
             if key == "up_s":
                 pool["up_s"] = names
-            elif key == "up_a":
-                pool["up_a"] = names
             else:
                 pool["up_w6"] = names
-    for key in ("up_rate_s", "up_rate_a", "up_rate_w6"):
+    for key in ("up_rate_s", "up_rate_w6"):
         value = raw.get(key)
         if isinstance(value, (int, float)) and not isinstance(value, bool):
             if key == "up_rate_s":
                 pool["up_rate_s"] = float(value)
-            elif key == "up_rate_a":
-                pool["up_rate_a"] = float(value)
             else:
                 pool["up_rate_w6"] = float(value)
     return pool
@@ -154,9 +166,15 @@ class PoolManager:
         self._data: GachaData | None = None
         self._pools: dict[str, PoolData] = {}
         self._loaded = False
+        # md5(url) -> 本地图标路径，首次查询时建表，避免每次十连都做几十次 exists()
+        self._icon_index: dict[str, Path] | None = None
+        # 加载失败后的退避：文件长期缺失时不要每次都重新 stat/读盘
+        self._next_load_retry = 0.0
 
     def _load(self) -> None:
         if self._loaded:
+            return
+        if self._next_load_retry > time.monotonic():
             return
         if not USER_DATA_FILE.exists() and BUILTIN_DATA_FILE.exists():
             shutil.copyfile(BUILTIN_DATA_FILE, USER_DATA_FILE)
@@ -164,26 +182,31 @@ class PoolManager:
 
         path = USER_DATA_FILE if USER_DATA_FILE.exists() else BUILTIN_DATA_FILE
         if not path.exists():
+            # 不置 _loaded，退避到期后重试，文件补上即可恢复
+            self._next_load_retry = time.monotonic() + _LOAD_RETRY_S
             logger.warning("[战双·模拟抽卡] 未找到 gacha_data.json，卡池为空")
-            self._loaded = True
             return
 
         try:
             with open(path, "r", encoding="utf-8") as file:
                 raw = json.load(file)
-        except (OSError, json.JSONDecodeError) as error:
+        # UnicodeDecodeError（编码写坏）不是 OSError，漏了会让每抽都崩
+        except (OSError, ValueError) as error:
+            self._next_load_retry = time.monotonic() + _LOAD_RETRY_S
             logger.warning(f"[战双·模拟抽卡] 读取卡池数据失败: {error}")
-            self._loaded = True
             return
 
-        self._data = _parse_data(raw)
+        # 先解析到局部变量，成功后再整体替换，避免 reload 中途抛错留下半截数据
+        pools: dict[str, PoolData] = {}
         if isinstance(raw, dict):
             pools_raw = raw.get("pools")
             if isinstance(pools_raw, dict):
                 for pool_id, pool_raw in pools_raw.items():
                     pool = _parse_pool(str(pool_id), pool_raw)
                     if pool is not None:
-                        self._pools[str(pool_id)] = pool
+                        pools[str(pool_id)] = pool
+        self._data = _parse_data(raw)
+        self._pools = pools
         self._loaded = True
         logger.info(f"[战双·模拟抽卡] 卡池数据加载完成: {len(self._pools)} 个卡池")
 
@@ -202,24 +225,39 @@ class PoolManager:
         self._data = None
         self._pools = {}
         self._loaded = False
+        self._icon_index = None
+        # 手动 reload 必须绕过失败退避，否则退避窗口内点什么都没反应
+        self._next_load_retry = 0.0
+        for hook in _icon_reload_hooks:
+            hook()
         self._load()
+
+    def _build_icon_index(self) -> dict[str, Path]:
+        index: dict[str, Path] = {}
+        if not ICON_DIR.exists():
+            return index
+        # 子目录优先：先写分类目录，根目录同名文件只在缺失时补位
+        for sub in (*_ICON_SUBDIRS, ""):
+            folder = ICON_DIR / sub if sub else ICON_DIR
+            if not folder.is_dir():
+                continue
+            try:
+                entries = list(folder.iterdir())
+            except OSError:
+                continue
+            for entry in entries:
+                if entry.suffix.lower() not in _ICON_SUFFIXES:
+                    continue
+                index.setdefault(entry.stem, entry)
+        return index
 
     def find_icon_path(self, url: str) -> Path | None:
         """按图标 URL 查本地缓存文件（文件名 = md5(url) + 扩展名）"""
         if not url.startswith("http"):
             return None
-        digest = hashlib.md5(url.encode()).hexdigest()
-        subdirs = ("角色", "角色碎片", "武器", "辅助机", "材料")
-        for ext in (".png", ".jpg", ".jpeg", ".webp"):
-            filename = digest + ext
-            path = ICON_DIR / filename
-            if path.exists():
-                return path
-            for sub in subdirs:
-                sub_path = ICON_DIR / sub / filename
-                if sub_path.exists():
-                    return sub_path
-        return None
+        if self._icon_index is None:
+            self._icon_index = self._build_icon_index()
+        return self._icon_index.get(hashlib.md5(url.encode()).hexdigest())
 
 
 pool_manager = PoolManager()
