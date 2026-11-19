@@ -1,10 +1,8 @@
 """战双模拟抽卡 - 数据库模型"""
 
 import time
-from typing import AsyncIterator
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from contextlib import asynccontextmanager
 
 from sqlmodel import Field, col, select, update
 from sqlalchemy import Index, UniqueConstraint, func
@@ -13,27 +11,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from gsuid_core.server import on_core_start
 from gsuid_core.webconsole.mount_app import PageSchema, GsAdminModel, site
-from gsuid_core.utils.database.base_models import (
-    BaseIDModel,
-    with_session,
-    with_read_session,
-    write_transaction,
-    sqlite_gated_write,
-)
+from gsuid_core.utils.database.base_models import BaseIDModel, with_session, with_read_session
 
 from .auto_migrate import auto_add_missing_columns
 
 _BEIJING = ZoneInfo("Asia/Shanghai")
-
-# 保底 / 日限 / 记录三次写必须同进同退，否则会出现垫抽没存或日限扣了记录没写
-GACHA_TX_LABEL = "pgr_gacha_draw"
-
-
-@asynccontextmanager
-async def gacha_write_transaction() -> AsyncIterator[None]:
-    async with sqlite_gated_write(GACHA_TX_LABEL):
-        async with write_transaction(GACHA_TX_LABEL):
-            yield
 
 
 class PGRGachaPity(BaseIDModel, table=True):
@@ -115,7 +97,6 @@ class PGRGachaPity(BaseIDModel, table=True):
         return result.rowcount if isinstance(result, CursorResult) else 0
 
     @classmethod
-    @with_session
     async def save_pity(
         cls,
         session: AsyncSession,
@@ -197,7 +178,6 @@ class PGRGachaRecord(BaseIDModel, table=True):
     created_at: int = Field(default=0, title="时间戳", index=True)
 
     @classmethod
-    @with_session
     async def add_record(
         cls,
         session: AsyncSession,
@@ -225,7 +205,6 @@ class PGRGachaRecord(BaseIDModel, table=True):
         )
 
     @classmethod
-    @with_session
     async def add_records_batch(
         cls,
         session: AsyncSession,
@@ -498,7 +477,6 @@ class PGRGachaDaily(BaseIDModel, table=True):
         return int(result.scalar() or 0)
 
     @classmethod
-    @with_session
     async def add_daily_count(
         cls,
         session: AsyncSession,
@@ -596,7 +574,6 @@ class PGRGachaSignature(BaseIDModel, table=True):
         return record.signature_code if record else None
 
     @classmethod
-    @with_session
     async def set_signature(
         cls,
         session: AsyncSession,

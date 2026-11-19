@@ -3,7 +3,6 @@
 import types
 import asyncio
 from typing import Literal
-from collections.abc import Callable, Awaitable
 
 from httpx import HTTPError
 from sqlalchemy.exc import IntegrityError
@@ -16,9 +15,9 @@ from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.database.write_gate import WriteGateTimeout
-from gsuid_core.utils.database.base_models import DatabaseWriteTimeout, TransientTransactionError
+from gsuid_core.utils.database.base_models import DatabaseWriteTimeout
 
-from .models import gacha_write_transaction
+from .write_tx import TransientTransactionError, run_gacha_transaction
 from .data_manager import data_manager
 from .gacha_config import GachaSimConfig
 from .gacha_update import update_current_pools
@@ -66,19 +65,6 @@ def _release_user_lock(uid: str) -> None:
         del _USER_LOCKS[uid]
     else:
         _USER_LOCKS[uid] = (entry[0] - 1, entry[1])
-
-
-async def _run_write_transaction(action: Callable[[], Awaitable[list[GachaResult]]]) -> list[GachaResult]:
-    """整段重跑瞬时写竞争：事务已回滚，重入安全，退避后重试至多 3 次"""
-    for attempt in range(_WRITE_TX_ATTEMPTS):
-        try:
-            return await action()
-        except TransientTransactionError:
-            if attempt >= _WRITE_TX_ATTEMPTS - 1:
-                raise
-            logger.warning(f"[战双·模拟抽卡] 写事务撞到瞬时竞争，第 {attempt + 1} 次重试")
-            await asyncio.sleep(0.5 * (2**attempt))
-    raise TransientTransactionError("写事务重试耗尽")
 
 
 class _UserLock:
@@ -240,18 +226,17 @@ async def _do_draw(bot: Bot, ev: Event, pool_id: str, count: int, version_name: 
             return
 
         async def _draw_once() -> list[GachaResult]:
-            async with gacha_write_transaction():
-                pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
-                drawn = gacha_service.perform_draw(pool, pool_manager.get_data(), pity, count)
-                await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
-                await data_manager.add_daily_count(uid, ev.bot_id, pool_type, count)
-                for result in drawn:
-                    if result["level"] >= 4:
-                        await data_manager.add_record(uid, ev.bot_id, pool_type, result)
-                return drawn
+            pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
+            drawn = gacha_service.perform_draw(pool, pool_manager.get_data(), pity, count)
+            await data_manager.save_pity_data(uid, ev.bot_id, pool_type, pity)
+            await data_manager.add_daily_count(uid, ev.bot_id, pool_type, count)
+            for result in drawn:
+                if result["level"] >= 4:
+                    await data_manager.add_record(uid, ev.bot_id, pool_type, result)
+            return drawn
 
         try:
-            results = await _run_write_transaction(_draw_once)
+            results = await run_gacha_transaction(_draw_once)
         except (WriteGateTimeout, DatabaseWriteTimeout, TransientTransactionError, IntegrityError) as error:
             logger.warning(f"[战双·模拟抽卡] 抽卡写库失败，已回滚: {error}")
             await bot.send("数据库繁忙，本次抽卡未生效，请稍后重试", bool(ev.group_id))
@@ -604,19 +589,18 @@ async def _do_bailian(bot: Bot, ev: Event, pool_id: str, version_name: str = "")
         await bot.send(f"🎰 开始 {pool_name} 百连（10 次十连，共 100 抽），请稍候...", at_sender)
 
         async def _bailian_once() -> list[GachaResult]:
-            async with gacha_write_transaction():
-                draw_pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
-                batched: list[list[GachaResult]] = []
-                for _ in range(10):
-                    batched.append(gacha_service.perform_draw(pool, pool_manager.get_data(), draw_pity, 10))
-                await data_manager.save_pity_data(uid, ev.bot_id, pool_type, draw_pity)
-                await data_manager.add_daily_count(uid, ev.bot_id, pool_type, 100)
-                high = [result for results in batched for result in results if result["level"] >= 4]
-                await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high)
-                return [result for results in batched for result in results]
+            draw_pity = await data_manager.get_pity_data(uid, ev.bot_id, pool_type)
+            batched: list[list[GachaResult]] = []
+            for _ in range(10):
+                batched.append(gacha_service.perform_draw(pool, pool_manager.get_data(), draw_pity, 10))
+            await data_manager.save_pity_data(uid, ev.bot_id, pool_type, draw_pity)
+            await data_manager.add_daily_count(uid, ev.bot_id, pool_type, 100)
+            high = [result for results in batched for result in results if result["level"] >= 4]
+            await data_manager.add_records_batch(uid, ev.bot_id, pool_type, high)
+            return [result for results in batched for result in results]
 
         try:
-            flat_results = await _run_write_transaction(_bailian_once)
+            flat_results = await run_gacha_transaction(_bailian_once)
         except (WriteGateTimeout, DatabaseWriteTimeout, TransientTransactionError, IntegrityError) as error:
             logger.warning(f"[战双·模拟抽卡] 百连写库失败，已回滚: {error}")
             await bot.send("数据库繁忙，本次抽卡未生效，请稍后重试", at_sender)

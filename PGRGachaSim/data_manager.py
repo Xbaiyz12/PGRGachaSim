@@ -19,6 +19,7 @@ from .models import (
     PGRGachaRecord,
     PGRGachaSignature,
 )
+from .write_tx import current_session, gacha_write_transaction
 from .gacha_config import GACHA_SIM_MAIN_PATH
 from .gacha_service import PityData, GachaResult, empty_pity
 
@@ -77,6 +78,7 @@ class DataManager:
     @staticmethod
     async def save_pity_data(user_id: str, bot_id: str, pool_type: str, pity: PityData) -> None:
         await PGRGachaPity.save_pity(
+            current_session(),
             user_id,
             bot_id,
             pool_type,
@@ -94,7 +96,7 @@ class DataManager:
 
     @staticmethod
     async def add_daily_count(user_id: str, bot_id: str, pool_type: str, count: int) -> None:
-        await PGRGachaDaily.add_daily_count(user_id, bot_id, pool_type, count)
+        await PGRGachaDaily.add_daily_count(current_session(), user_id, bot_id, pool_type, count)
 
     @staticmethod
     async def get_selected_pool(user_id: str, bot_id: str, pool_type: str) -> str | None:
@@ -121,6 +123,7 @@ class DataManager:
     @staticmethod
     async def add_record(user_id: str, bot_id: str, pool_type: str, result: GachaResult) -> None:
         await PGRGachaRecord.add_record(
+            current_session(),
             user_id,
             bot_id,
             pool_type,
@@ -137,6 +140,7 @@ class DataManager:
         if not results:
             return
         await PGRGachaRecord.add_records_batch(
+            current_session(),
             user_id,
             bot_id,
             pool_type,
@@ -199,7 +203,8 @@ class DataManager:
 
     @staticmethod
     async def set_signature(user_id: str, bot_id: str, code: str) -> None:
-        await PGRGachaSignature.set_signature(user_id, bot_id, code)
+        async with gacha_write_transaction():
+            await PGRGachaSignature.set_signature(current_session(), user_id, bot_id, code)
 
     @staticmethod
     async def check_code_exists(code: str) -> bool:
@@ -213,7 +218,7 @@ class DataManager:
                 continue
             # 每次重试独立事务：撞 unique 时 session 已被标 rollback，必须换一条新的
             try:
-                await PGRGachaSignature.set_signature(user_id, bot_id, code)
+                await DataManager.set_signature(user_id, bot_id, code)
             except IntegrityError as error:
                 # 撞用户维度约束时换码重试没有意义，直接放弃，避免空转 100 次
                 if "uq_pgr_sig_bot_user" in str(error.orig):
